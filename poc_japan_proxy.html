@@ -1,0 +1,1213 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>직구 AI 어시스턴트 — 배대지 자동 입력</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    :root {
+      --bg: #f5f5f7;
+      --surface: #ffffff;
+      --border: #e8e8ed;
+      --text-primary: #1d1d1f;
+      --text-secondary: #6e6e73;
+      --text-tertiary: #aeaeb2;
+      --accent: #0071e3;
+      --accent-hover: #0077ed;
+      --accent-light: #e8f1fb;
+      --success: #34c759;
+      --success-light: #e8f8ed;
+      --warning: #ff9f0a;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
+      --shadow-md: 0 4px 16px rgba(0,0,0,.08), 0 2px 6px rgba(0,0,0,.04);
+      --shadow-lg: 0 12px 40px rgba(0,0,0,.1), 0 4px 12px rgba(0,0,0,.05);
+      --radius: 14px;
+      --radius-sm: 8px;
+      --radius-lg: 20px;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text-primary);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Paste Zone */
+    .paste-zone {
+      border: 2px dashed var(--border);
+      border-radius: var(--radius-lg);
+      background: var(--surface);
+      transition: all 0.2s ease;
+      cursor: text;
+      position: relative;
+      min-height: 180px;
+    }
+    .paste-zone:focus-within,
+    .paste-zone.drag-over {
+      border-color: var(--accent);
+      background: var(--accent-light);
+      box-shadow: 0 0 0 4px rgba(0,113,227,.1);
+    }
+    .paste-zone.has-content {
+      border-style: solid;
+      border-color: var(--border);
+    }
+    .paste-zone textarea {
+      width: 100%;
+      height: 100%;
+      min-height: 160px;
+      background: transparent;
+      border: none;
+      outline: none;
+      resize: none;
+      font-family: inherit;
+      font-size: 13.5px;
+      line-height: 1.6;
+      color: var(--text-primary);
+      padding: 20px;
+    }
+    .paste-zone textarea::placeholder { color: var(--text-tertiary); }
+
+    /* Image preview */
+    .img-preview-wrap {
+      position: relative;
+      display: inline-block;
+      margin: 12px 20px;
+    }
+    .img-preview {
+      max-height: 180px;
+      max-width: 100%;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      object-fit: contain;
+    }
+    .img-remove-btn {
+      position: absolute;
+      top: -8px; right: -8px;
+      width: 22px; height: 22px;
+      background: #1d1d1f;
+      color: #fff;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px;
+      transition: background 0.15s;
+    }
+    .img-remove-btn:hover { background: #ff3b30; }
+
+    /* Tabs */
+    .tab-btn {
+      padding: 7px 16px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 500;
+      border: none;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      color: var(--text-secondary);
+      background: transparent;
+    }
+    .tab-btn.active {
+      background: var(--surface);
+      color: var(--text-primary);
+      box-shadow: var(--shadow-sm);
+    }
+    .tab-btn:hover:not(.active) {
+      color: var(--text-primary);
+    }
+
+    /* Shop selector */
+    .shop-card {
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      padding: 14px 16px;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex: 1;
+    }
+    .shop-card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(0,113,227,.08);
+    }
+    .shop-card.selected {
+      border-color: var(--accent);
+      background: var(--accent-light);
+      box-shadow: 0 0 0 3px rgba(0,113,227,.12);
+    }
+    .shop-logo {
+      width: 38px; height: 38px;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    /* Button */
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 12px 28px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      letter-spacing: -0.01em;
+    }
+    .btn-primary:hover:not(:disabled) {
+      background: var(--accent-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(0,113,227,.35);
+    }
+    .btn-primary:active:not(:disabled) {
+      transform: translateY(0);
+    }
+    .btn-primary:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--text-secondary);
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      padding: 6px 12px;
+      font-size: 12.5px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .btn-secondary:hover {
+      border-color: var(--text-secondary);
+      color: var(--text-primary);
+    }
+    .btn-secondary.copied {
+      border-color: var(--success);
+      color: var(--success);
+      background: var(--success-light);
+    }
+
+    /* Skeleton */
+    @keyframes shimmer {
+      0%   { background-position: -400px 0; }
+      100% { background-position: 400px 0; }
+    }
+    .skeleton {
+      background: linear-gradient(90deg, #f0f0f5 25%, #e8e8ef 50%, #f0f0f5 75%);
+      background-size: 800px 100%;
+      animation: shimmer 1.6s ease-in-out infinite;
+      border-radius: 6px;
+    }
+
+    /* Spinner */
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spinner {
+      width: 20px; height: 20px;
+      border: 2.5px solid rgba(0,113,227,.2);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.75s linear infinite;
+      flex-shrink: 0;
+    }
+
+    /* Result card */
+    .result-field {
+      padding: 14px 16px;
+      border-radius: 10px;
+      background: #fafafa;
+      border: 1px solid var(--border);
+      transition: border-color 0.15s;
+    }
+    .result-field:hover { border-color: #c7c7cc; }
+    .result-field .label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 5px;
+    }
+    .result-field .value {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-primary);
+      line-height: 1.5;
+    }
+    .result-field .value.missing {
+      color: var(--warning);
+      font-style: italic;
+    }
+
+    /* Split layout */
+    .split-pane {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    @media (max-width: 900px) {
+      .split-pane { grid-template-columns: 1fr; }
+    }
+
+    /* Badge */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 10px;
+      border-radius: 100px;
+      font-size: 11.5px;
+      font-weight: 600;
+    }
+    .badge-blue { background: var(--accent-light); color: var(--accent); }
+    .badge-green { background: var(--success-light); color: #248a3d; }
+    .badge-orange { background: #fff5e6; color: #c07000; }
+
+    /* Panel */
+    .panel {
+      background: var(--surface);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+    }
+    .panel-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .panel-body { padding: 20px; }
+
+    /* Transition */
+    .fade-in {
+      animation: fadeIn 0.35s ease both;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Original text display */
+    .original-text {
+      font-family: 'SF Mono', 'Fira Code', 'Fira Mono', monospace;
+      font-size: 12px;
+      line-height: 1.7;
+      color: var(--text-secondary);
+      white-space: pre-wrap;
+      word-break: break-all;
+      max-height: 520px;
+      overflow-y: auto;
+      padding: 16px;
+      background: #fafafa;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+    }
+
+    /* Tooltip */
+    .tooltip {
+      position: relative;
+    }
+    .tooltip::after {
+      content: attr(data-tip);
+      position: absolute;
+      bottom: calc(100% + 6px);
+      left: 50%; transform: translateX(-50%);
+      background: #1d1d1f;
+      color: #fff;
+      font-size: 11px;
+      padding: 4px 9px;
+      border-radius: 6px;
+      white-space: nowrap;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.15s;
+    }
+    .tooltip:hover::after { opacity: 1; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #d1d1d6; border-radius: 3px; }
+
+    /* Header gradient */
+    .header-gradient {
+      background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+    }
+
+    /* Step indicator */
+    .step-dot {
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .step-dot.active { background: var(--accent); color: #fff; }
+    .step-dot.done { background: var(--success); color: #fff; }
+    .step-dot.idle { background: var(--border); color: var(--text-tertiary); }
+
+    /* Demo badge */
+    .demo-indicator {
+      position: fixed;
+      bottom: 24px; right: 24px;
+      background: rgba(29,29,31,.85);
+      backdrop-filter: blur(12px);
+      color: #fff;
+      padding: 9px 16px;
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 500;
+      display: flex; align-items: center; gap: 7px;
+      box-shadow: 0 8px 32px rgba(0,0,0,.2);
+      z-index: 100;
+    }
+    .demo-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #ffd60a;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: .4; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Demo badge -->
+<div class="demo-indicator">
+  <div class="demo-dot"></div>
+  PoC Demo · v0.1
+</div>
+
+<!-- Header -->
+<header class="header-gradient text-white px-6 py-5">
+  <div class="max-w-5xl mx-auto flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-content-center backdrop-blur-sm border border-white/10" style="display:flex;align-items:center;justify-content:center;">
+        <span style="font-size:15px;">✈️</span>
+      </div>
+      <div>
+        <h1 class="text-base font-semibold tracking-tight leading-none">직구 AI 어시스턴트</h1>
+        <p class="text-xs text-white/50 mt-0.5 leading-none">배대지 자동 입력 도우미</p>
+      </div>
+    </div>
+    <div class="flex items-center gap-2">
+      <span class="badge badge-blue text-xs" style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.7);">베타</span>
+    </div>
+  </div>
+</header>
+
+<!-- Main -->
+<main class="max-w-5xl mx-auto px-4 py-8">
+
+  <!-- Step 1: Input Section -->
+  <section id="section-input">
+
+    <!-- Steps indicator -->
+    <div class="flex items-center gap-3 mb-6">
+      <div class="step-dot active" id="dot-1">1</div>
+      <span class="text-sm font-medium text-gray-700">주문 내역 붙여넣기</span>
+      <div class="flex-1 h-px bg-gray-200 mx-1"></div>
+      <div class="step-dot idle" id="dot-2">2</div>
+      <span class="text-sm text-gray-400">배대지 선택</span>
+      <div class="flex-1 h-px bg-gray-200 mx-1"></div>
+      <div class="step-dot idle" id="dot-3">3</div>
+      <span class="text-sm text-gray-400">결과 확인</span>
+    </div>
+
+    <!-- Input Card -->
+    <div class="panel mb-5">
+      <div class="panel-header">
+        <div class="flex items-center gap-2">
+          <i data-lucide="clipboard-paste" style="width:16px;height:16px;color:#6e6e73;"></i>
+          <span class="text-sm font-semibold">주문 내역 입력</span>
+        </div>
+        <!-- Example tabs -->
+        <div class="flex items-center gap-1 p-1 rounded-lg" style="background:#f5f5f7;">
+          <button class="tab-btn" onclick="loadExample('surugaya')">스루가야 예시</button>
+          <button class="tab-btn" onclick="loadExample('broccoli')">브로콜리샵 예시</button>
+          <button class="tab-btn" onclick="clearInput()">지우기</button>
+        </div>
+      </div>
+      <div class="panel-body">
+        <!-- Paste zone -->
+        <div class="paste-zone" id="pasteZone" ondrop="handleDrop(event)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)">
+          <div id="imgPreviewArea"></div>
+          <textarea
+            id="inputText"
+            placeholder="📋  주문 내역을 여기에 붙여넣으세요 (Ctrl+V)&#10;&#10;• 주문 확인 이메일 텍스트&#10;• 쇼핑몰 주문 상세 페이지 텍스트&#10;• 스크린샷 이미지도 가능합니다"
+            oninput="onInputChange()"
+          ></textarea>
+        </div>
+        <p class="text-xs mt-2" style="color:#aeaeb2;">
+          <i data-lucide="info" style="width:11px;height:11px;display:inline;vertical-align:middle;margin-right:3px;"></i>
+          이미지는 붙여넣기(Ctrl+V) 또는 드래그&드롭으로 첨부 가능합니다
+        </p>
+      </div>
+    </div>
+
+    <!-- Shop Selector -->
+    <div class="panel mb-5">
+      <div class="panel-header">
+        <div class="flex items-center gap-2">
+          <i data-lucide="store" style="width:16px;height:16px;color:#6e6e73;"></i>
+          <span class="text-sm font-semibold">배대지 선택</span>
+        </div>
+        <span class="text-xs" style="color:#aeaeb2;">현재 지원: 재팬타임몰</span>
+      </div>
+      <div class="panel-body">
+        <div class="flex gap-3">
+          <div class="shop-card selected" id="shop-japantimemall" onclick="selectShop('japantimemall')">
+            <div class="shop-logo" style="background:#fff5f5;font-size:22px;">🇯🇵</div>
+            <div>
+              <div class="text-sm font-semibold">재팬타임몰</div>
+              <div class="text-xs mt-0.5" style="color:#6e6e73;">japantimemall.com</div>
+            </div>
+            <div class="ml-auto">
+              <span class="badge badge-green" style="font-size:10px;">지원</span>
+            </div>
+          </div>
+          <div class="shop-card opacity-50 cursor-not-allowed" style="flex:1;" title="준비 중">
+            <div class="shop-logo" style="background:#f5f5f7;font-size:22px;">📦</div>
+            <div>
+              <div class="text-sm font-semibold text-gray-400">기타 배대지</div>
+              <div class="text-xs mt-0.5" style="color:#aeaeb2;">준비 중</div>
+            </div>
+            <div class="ml-auto">
+              <span class="badge" style="background:#f5f5f7;color:#aeaeb2;font-size:10px;">예정</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Source shop info -->
+    <div class="panel mb-6">
+      <div class="panel-header">
+        <div class="flex items-center gap-2">
+          <i data-lucide="shopping-bag" style="width:16px;height:16px;color:#6e6e73;"></i>
+          <span class="text-sm font-semibold">쇼핑몰 선택 (선택 사항)</span>
+        </div>
+      </div>
+      <div class="panel-body">
+        <div class="flex flex-wrap gap-2">
+          <button class="shop-tag active" id="tag-auto" onclick="selectTag('auto')">🔍 자동 감지</button>
+          <button class="shop-tag" id="tag-surugaya" onclick="selectTag('surugaya')">スルガヤ (스루가야)</button>
+          <button class="shop-tag" id="tag-broccoli" onclick="selectTag('broccoli')">ブロッコリー (브로콜리샵)</button>
+          <button class="shop-tag" id="tag-other" onclick="selectTag('other')">기타</button>
+        </div>
+        <style>
+          .shop-tag {
+            padding: 6px 14px;
+            border-radius: 100px;
+            font-size: 12.5px;
+            font-weight: 500;
+            border: 1.5px solid var(--border);
+            cursor: pointer;
+            background: var(--surface);
+            color: var(--text-secondary);
+            transition: all 0.15s;
+          }
+          .shop-tag:hover { border-color: var(--accent); color: var(--accent); }
+          .shop-tag.active { border-color: var(--accent); background: var(--accent-light); color: var(--accent); }
+        </style>
+      </div>
+    </div>
+
+    <!-- CTA Button -->
+    <div class="flex justify-end">
+      <button class="btn-primary" id="extractBtn" onclick="startExtraction()" disabled>
+        <i data-lucide="sparkles" style="width:16px;height:16px;"></i>
+        AI 데이터 추출하기
+      </button>
+    </div>
+  </section>
+
+  <!-- Step 2: Loading Section (hidden by default) -->
+  <section id="section-loading" class="hidden">
+    <div class="panel fade-in">
+      <div class="panel-body">
+        <div class="flex items-center gap-4 mb-8">
+          <div class="spinner"></div>
+          <div>
+            <p class="text-sm font-semibold">AI가 주문 내역을 분석하고 있습니다...</p>
+            <p class="text-xs mt-0.5" style="color:#6e6e73;" id="loadingSubtext">주문번호 및 상품 정보를 추출 중</p>
+          </div>
+        </div>
+
+        <!-- Skeleton rows -->
+        <div class="space-y-4">
+          <div>
+            <div class="skeleton h-3 w-20 mb-2"></div>
+            <div class="skeleton h-5 w-48"></div>
+          </div>
+          <div>
+            <div class="skeleton h-3 w-24 mb-2"></div>
+            <div class="skeleton h-5 w-64"></div>
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <div class="skeleton h-3 w-28 mb-2"></div>
+              <div class="skeleton h-5 w-40"></div>
+            </div>
+            <div>
+              <div class="skeleton h-3 w-20 mb-2"></div>
+              <div class="skeleton h-5 w-32"></div>
+            </div>
+          </div>
+          <div>
+            <div class="skeleton h-3 w-24 mb-2"></div>
+            <div class="skeleton h-5 w-56"></div>
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <div class="skeleton h-3 w-16 mb-2"></div>
+              <div class="skeleton h-5 w-24"></div>
+            </div>
+            <div>
+              <div class="skeleton h-3 w-20 mb-2"></div>
+              <div class="skeleton h-5 w-28"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Step 3: Result Section (hidden by default) -->
+  <section id="section-result" class="hidden fade-in">
+
+    <!-- Steps update -->
+    <div class="flex items-center gap-3 mb-6">
+      <div class="step-dot done" id="dot-1r">✓</div>
+      <span class="text-sm font-medium text-gray-700">주문 내역 입력</span>
+      <div class="flex-1 h-px bg-green-200 mx-1"></div>
+      <div class="step-dot done" id="dot-2r">✓</div>
+      <span class="text-sm font-medium text-gray-700">배대지 선택</span>
+      <div class="flex-1 h-px bg-green-200 mx-1"></div>
+      <div class="step-dot active" id="dot-3r">3</div>
+      <span class="text-sm font-semibold">결과 확인</span>
+    </div>
+
+    <!-- Result header bar -->
+    <div class="flex items-center justify-between mb-4">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full flex items-center justify-content-center" style="background:#e8f8ed;display:flex;align-items:center;justify-content:center;">
+          <i data-lucide="check" style="width:16px;height:16px;color:#34c759;"></i>
+        </div>
+        <div>
+          <p class="text-sm font-semibold">추출 완료</p>
+          <p class="text-xs" style="color:#6e6e73;" id="resultMeta">재팬타임몰 입력 양식 준비 완료</p>
+        </div>
+      </div>
+      <div class="flex gap-2">
+        <button class="btn-secondary tooltip" data-tip="전체 복사" onclick="copyAll()">
+          <i data-lucide="copy" style="width:13px;height:13px;"></i>
+          전체 복사
+        </button>
+        <button class="btn-secondary" onclick="resetAll()">
+          <i data-lucide="rotate-ccw" style="width:13px;height:13px;"></i>
+          다시 시작
+        </button>
+      </div>
+    </div>
+
+    <!-- Split view -->
+    <div class="split-pane">
+
+      <!-- Left: Original -->
+      <div class="panel">
+        <div class="panel-header">
+          <div class="flex items-center gap-2">
+            <i data-lucide="file-text" style="width:14px;height:14px;color:#6e6e73;"></i>
+            <span class="text-xs font-semibold uppercase tracking-wider" style="color:#6e6e73;">원본</span>
+          </div>
+          <span class="badge badge-blue" id="sourceBadge">스루가야</span>
+        </div>
+        <div class="panel-body">
+          <div class="original-text" id="originalDisplay"></div>
+        </div>
+      </div>
+
+      <!-- Right: Extracted -->
+      <div class="panel">
+        <div class="panel-header">
+          <div class="flex items-center gap-2">
+            <i data-lucide="sparkles" style="width:14px;height:14px;color:#0071e3;"></i>
+            <span class="text-xs font-semibold uppercase tracking-wider" style="color:#0071e3;">AI 추출 결과</span>
+          </div>
+          <span class="badge badge-green">재팬타임몰 형식</span>
+        </div>
+        <div class="panel-body">
+          <div class="space-y-3" id="resultFields">
+            <!-- Dynamically rendered -->
+          </div>
+
+          <!-- Divider -->
+          <div class="my-5" style="border-top:1px solid var(--border);"></div>
+
+          <!-- Copy all to clipboard as form -->
+          <button class="w-full btn-primary justify-center" style="width:100%;justify-content:center;" onclick="copyFormattedAll()">
+            <i data-lucide="clipboard-copy" style="width:15px;height:15px;"></i>
+            재팬타임몰 양식으로 복사
+          </button>
+        </div>
+      </div>
+
+    </div><!-- end split-pane -->
+
+    <!-- Confidence indicator -->
+    <div class="mt-5 panel">
+      <div class="panel-body">
+        <div class="flex items-start gap-3">
+          <i data-lucide="shield-check" style="width:16px;height:16px;color:#34c759;flex-shrink:0;margin-top:1px;"></i>
+          <div class="flex-1">
+            <p class="text-xs font-semibold mb-1">AI 신뢰도 분석</p>
+            <div class="flex items-center gap-3">
+              <div class="flex-1 h-1.5 rounded-full" style="background:#f0f0f5;">
+                <div id="confidenceBar" class="h-1.5 rounded-full transition-all duration-700" style="background:#34c759;width:0%"></div>
+              </div>
+              <span class="text-xs font-semibold" id="confidenceText" style="color:#34c759;">--</span>
+            </div>
+            <p class="text-xs mt-1.5" style="color:#6e6e73;" id="confidenceNote">입력 데이터를 분석하여 신뢰도를 계산합니다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+</main>
+
+<script>
+// ============================================================
+// State
+// ============================================================
+let selectedShop = 'japantimemall';
+let selectedSource = 'auto';
+let pastedImage = null;
+let currentResult = null;
+
+// ============================================================
+// Example data
+// ============================================================
+const examples = {
+  surugaya: `【駿河屋】ご注文確認メール
+
+ご注文番号：SRG-2024-8834521
+ご注文日：2024年3月15日
+
+────────────────────────────
+■ ご注文内容
+────────────────────────────
+
+商品名：ホロライブ 宝鐘マリン 1/7スケールフィギュア
+商品コード：2100398734
+販売価格：¥18,480（税込）
+数量：1
+状態：新品
+
+商品名：転生したらスライムだった件 リムル＝テンペスト フィギュア EXQ
+商品コード：2100312908
+販売価格：¥3,200（税込）
+数量：2
+状態：中古（B）
+
+────────────────────────────
+■ 配送情報
+────────────────────────────
+お届け先：〒150-0001 東京都渋谷区…
+配送業者：ヤマト運輸
+追跡番号：1234-5678-9012
+発送日：2024年3月16日
+
+────────────────────────────
+■ お支払い
+────────────────────────────
+商品小計：¥24,880
+送料：¥600
+合計：¥25,480
+`,
+  broccoli: `[ブロッコリー] ご注文受付のお知らせ
+
+━━━━━━━━━━━━━━━━━━━━━━━━━
+  ブロッコリーオンラインショップ
+━━━━━━━━━━━━━━━━━━━━━━━━━
+
+■ 注文番号：BRO-20240318-004421
+
+■ ご注文商品
+━━━━━━━━━━━━━━━━━━━━━━━━━
+
+【1】カードファイト!! ヴァンガード
+    overDress スペシャルシリーズ Vol.4
+    超天編集結!! Vクランコレクション Vol.4
+    定価：¥4,950（税込）
+    数量：3
+
+【2】アイドルマスター シンデレラガールズ
+    アクリルスタンド 渋谷凛 Wish ver.
+    定価：¥2,750（税込）
+    数量：1
+
+━━━━━━━━━━━━━━━━━━━━━━━━━
+■ お支払い情報
+
+商品代金合計：¥17,600
+送料：¥880
+手数料：¥0
+ご請求合計：¥18,480
+
+■ 配送状況
+追跡番号：未発行（準備中）
+予定発送日：2024年3月22日
+`
+};
+
+// ============================================================
+// Mock AI extraction results
+// ============================================================
+const mockResults = {
+  surugaya: {
+    source: '스루가야 (駿河屋)',
+    confidence: 94,
+    items: [
+      {
+        orderNumber: 'SRG-2024-8834521',
+        japaneseName: 'ホロライブ 宝鐘マリン 1/7スケールフィギュア',
+        englishName: 'Hololive Houshou Marine 1/7 Scale Figure',
+        unitPrice: '18,480',
+        quantity: '1',
+        tracking: '1234-5678-9012'
+      },
+      {
+        orderNumber: 'SRG-2024-8834521',
+        japaneseName: '転生したらスライムだった件 リムル＝テンペスト フィギュア EXQ',
+        englishName: 'That Time I Got Reincarnated as a Slime Rimuru Tempest Figure EXQ',
+        unitPrice: '3,200',
+        quantity: '2',
+        tracking: '1234-5678-9012'
+      }
+    ]
+  },
+  broccoli: {
+    source: 'ブロッコリー (브로콜리샵)',
+    confidence: 88,
+    items: [
+      {
+        orderNumber: 'BRO-20240318-004421',
+        japaneseName: 'カードファイト!! ヴァンガード overDress スペシャルシリーズ Vol.4 超天編集結!! Vクランコレクション Vol.4',
+        englishName: 'Cardfight!! Vanguard overDress Special Series Vol.4 V Clan Collection Vol.4',
+        unitPrice: '4,950',
+        quantity: '3',
+        tracking: null
+      },
+      {
+        orderNumber: 'BRO-20240318-004421',
+        japaneseName: 'アイドルマスター シンデレラガールズ アクリルスタンド 渋谷凛 Wish ver.',
+        englishName: 'The Idolmaster Cinderella Girls Acrylic Stand Shibuya Rin Wish ver.',
+        unitPrice: '2,750',
+        quantity: '1',
+        tracking: null
+      }
+    ]
+  }
+};
+
+// ============================================================
+// Init
+// ============================================================
+document.addEventListener('DOMContentLoaded', () => {
+  lucide.createIcons();
+
+  // Global paste handler
+  document.addEventListener('paste', handleGlobalPaste);
+});
+
+// ============================================================
+// Input handling
+// ============================================================
+function onInputChange() {
+  const txt = document.getElementById('inputText').value.trim();
+  const btn = document.getElementById('extractBtn');
+  const zone = document.getElementById('pasteZone');
+  if (txt.length > 10 || pastedImage) {
+    btn.disabled = false;
+    zone.classList.add('has-content');
+  } else {
+    btn.disabled = pastedImage == null;
+    zone.classList.remove('has-content');
+  }
+}
+
+function handleGlobalPaste(e) {
+  const items = e.clipboardData && e.clipboardData.items;
+  if (!items) return;
+  for (const item of items) {
+    if (item.type.startsWith('image/')) {
+      const file = item.getAsFile();
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        pastedImage = ev.target.result;
+        renderImagePreview(ev.target.result);
+        document.getElementById('extractBtn').disabled = false;
+      };
+      reader.readAsDataURL(file);
+      e.preventDefault();
+    }
+  }
+}
+
+function renderImagePreview(src) {
+  const area = document.getElementById('imgPreviewArea');
+  area.innerHTML = `
+    <div class="img-preview-wrap">
+      <img src="${src}" class="img-preview" alt="첨부 이미지" />
+      <button class="img-remove-btn" onclick="removeImage()" title="이미지 제거">✕</button>
+    </div>
+  `;
+  lucide.createIcons();
+}
+
+function removeImage() {
+  pastedImage = null;
+  document.getElementById('imgPreviewArea').innerHTML = '';
+  onInputChange();
+}
+
+function handleDrop(e) {
+  e.preventDefault();
+  document.getElementById('pasteZone').classList.remove('drag-over');
+  const file = e.dataTransfer.files[0];
+  if (file && file.type.startsWith('image/')) {
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      pastedImage = ev.target.result;
+      renderImagePreview(ev.target.result);
+      document.getElementById('extractBtn').disabled = false;
+    };
+    reader.readAsDataURL(file);
+  }
+}
+
+function handleDragOver(e) {
+  e.preventDefault();
+  document.getElementById('pasteZone').classList.add('drag-over');
+}
+
+function handleDragLeave() {
+  document.getElementById('pasteZone').classList.remove('drag-over');
+}
+
+// ============================================================
+// Examples & controls
+// ============================================================
+function loadExample(type) {
+  document.getElementById('inputText').value = examples[type];
+  document.getElementById('pasteZone').classList.add('has-content');
+  document.getElementById('extractBtn').disabled = false;
+  if (type === 'surugaya') selectTag('surugaya');
+  else if (type === 'broccoli') selectTag('broccoli');
+}
+
+function clearInput() {
+  document.getElementById('inputText').value = '';
+  pastedImage = null;
+  document.getElementById('imgPreviewArea').innerHTML = '';
+  document.getElementById('extractBtn').disabled = true;
+  document.getElementById('pasteZone').classList.remove('has-content');
+}
+
+function selectShop(id) {
+  selectedShop = id;
+  document.querySelectorAll('.shop-card[id^="shop-"]').forEach(el => el.classList.remove('selected'));
+  const el = document.getElementById('shop-' + id);
+  if (el) el.classList.add('selected');
+}
+
+function selectTag(id) {
+  selectedSource = id;
+  document.querySelectorAll('.shop-tag').forEach(el => el.classList.remove('active'));
+  const el = document.getElementById('tag-' + id);
+  if (el) el.classList.add('active');
+}
+
+// ============================================================
+// Extraction flow
+// ============================================================
+function startExtraction() {
+  const inputText = document.getElementById('inputText').value.trim();
+  if (!inputText && !pastedImage) return;
+
+  // Detect source
+  let detectedSource = 'surugaya';
+  if (selectedSource !== 'auto') {
+    detectedSource = selectedSource;
+  } else {
+    if (inputText.includes('ブロッコリー') || inputText.includes('BRO-')) detectedSource = 'broccoli';
+    else if (inputText.includes('駿河屋') || inputText.includes('SRG-')) detectedSource = 'surugaya';
+    else detectedSource = 'surugaya'; // default fallback for demo
+  }
+
+  // Show loading
+  document.getElementById('section-input').classList.add('hidden');
+  document.getElementById('section-result').classList.add('hidden');
+  document.getElementById('section-loading').classList.remove('hidden');
+
+  // Cycle loading text
+  const loadingTexts = [
+    '주문번호 및 상품 정보를 추출 중...',
+    '일본어 상품명 파싱 중...',
+    '영문 상품명 번역 생성 중...',
+    '가격 및 수량 정보 확인 중...',
+    '재팬타임몰 양식으로 변환 중...'
+  ];
+  let li = 0;
+  const interval = setInterval(() => {
+    li = (li + 1) % loadingTexts.length;
+    const el = document.getElementById('loadingSubtext');
+    if (el) el.textContent = loadingTexts[li];
+  }, 700);
+
+  // Simulate AI delay
+  setTimeout(() => {
+    clearInterval(interval);
+    showResult(detectedSource, inputText || '(이미지 입력)');
+  }, 3200);
+}
+
+// ============================================================
+// Result rendering
+// ============================================================
+function showResult(source, originalText) {
+  currentResult = mockResults[source] || mockResults.surugaya;
+
+  document.getElementById('section-loading').classList.add('hidden');
+  document.getElementById('section-result').classList.remove('hidden');
+
+  // Original text display
+  document.getElementById('originalDisplay').textContent = originalText.length > 800
+    ? originalText.slice(0, 800) + '\n\n... (이하 생략)'
+    : originalText;
+
+  // Source badge
+  document.getElementById('sourceBadge').textContent = currentResult.source;
+
+  // Render items
+  renderResultFields(currentResult.items);
+
+  // Confidence bar animation
+  setTimeout(() => {
+    const pct = currentResult.confidence;
+    document.getElementById('confidenceBar').style.width = pct + '%';
+    document.getElementById('confidenceText').textContent = pct + '%';
+    const barEl = document.getElementById('confidenceBar');
+    if (pct >= 90) barEl.style.background = '#34c759';
+    else if (pct >= 70) barEl.style.background = '#ff9f0a';
+    else barEl.style.background = '#ff3b30';
+    document.getElementById('confidenceNote').textContent =
+      pct >= 90 ? '높은 신뢰도 — 데이터가 정확하게 추출되었습니다.' :
+      pct >= 70 ? '보통 신뢰도 — 결과를 한 번 검토해 주세요.' :
+      '낮은 신뢰도 — 결과를 주의 깊게 확인하세요.';
+  }, 400);
+
+  lucide.createIcons();
+}
+
+function renderResultFields(items) {
+  const container = document.getElementById('resultFields');
+  if (!items || items.length === 0) {
+    container.innerHTML = '<p class="text-sm text-gray-400 text-center py-8">추출된 항목이 없습니다.</p>';
+    return;
+  }
+
+  let html = '';
+  items.forEach((item, idx) => {
+    const trackingVal = item.tracking || null;
+    html += `
+      <div class="mb-5">
+        ${items.length > 1 ? `<div class="flex items-center gap-2 mb-3"><span class="text-xs font-bold px-2 py-0.5 rounded-full" style="background:#f5f5f7;color:#6e6e73;">상품 ${idx+1}</span></div>` : ''}
+
+        <div class="space-y-2.5">
+          ${renderField('주문번호 (Order Number)', item.orderNumber, 'order-' + idx, false)}
+          ${renderField('일본어 상품명', item.japaneseName, 'ja-name-' + idx, false)}
+          ${renderField('영문 상품명 (세관 신고용)', item.englishName, 'en-name-' + idx, false)}
+
+          <div class="grid grid-cols-2 gap-2.5">
+            <div class="result-field">
+              <div class="label">단가 (JPY)</div>
+              <div class="flex items-center justify-between">
+                <span class="value">¥${item.unitPrice}</span>
+                <button class="btn-secondary tooltip" data-tip="복사" id="btn-price-${idx}" onclick="copyField('¥${item.unitPrice}', 'btn-price-${idx}')">
+                  <i data-lucide="copy" style="width:11px;height:11px;"></i>
+                </button>
+              </div>
+            </div>
+            <div class="result-field">
+              <div class="label">수량</div>
+              <div class="flex items-center justify-between">
+                <span class="value">${item.quantity}</span>
+                <button class="btn-secondary tooltip" data-tip="복사" id="btn-qty-${idx}" onclick="copyField('${item.quantity}', 'btn-qty-${idx}')">
+                  <i data-lucide="copy" style="width:11px;height:11px;"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="result-field">
+            <div class="label">트래킹 번호</div>
+            <div class="flex items-center justify-between">
+              ${trackingVal
+                ? `<span class="value font-mono">${trackingVal}</span>
+                   <button class="btn-secondary tooltip" data-tip="복사" id="btn-track-${idx}" onclick="copyField('${trackingVal}', 'btn-track-${idx}')"><i data-lucide="copy" style="width:11px;height:11px;"></i></button>`
+                : `<span class="value missing">⚠ 미발급 — 발송 후 재확인 필요</span>`
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  });
+  container.innerHTML = html;
+  lucide.createIcons();
+}
+
+function renderField(label, value, id, missing) {
+  return `
+    <div class="result-field">
+      <div class="label">${label}</div>
+      <div class="flex items-start justify-between gap-3">
+        <span class="value ${missing ? 'missing' : ''}" style="flex:1;">${value}</span>
+        <button class="btn-secondary tooltip flex-shrink-0" data-tip="복사" id="btn-${id}" onclick="copyField(${JSON.stringify(value)}, 'btn-${id}')">
+          <i data-lucide="copy" style="width:11px;height:11px;"></i>
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+// ============================================================
+// Copy utilities
+// ============================================================
+function copyField(text, btnId) {
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById(btnId);
+    if (!btn) return;
+    btn.classList.add('copied');
+    btn.innerHTML = '<i data-lucide="check" style="width:11px;height:11px;"></i> 복사됨';
+    lucide.createIcons();
+    setTimeout(() => {
+      btn.classList.remove('copied');
+      btn.innerHTML = '<i data-lucide="copy" style="width:11px;height:11px;"></i>';
+      lucide.createIcons();
+    }, 2000);
+  });
+}
+
+function copyAll() {
+  if (!currentResult) return;
+  const lines = currentResult.items.map((item, i) => {
+    return [
+      `[상품 ${i+1}]`,
+      `주문번호: ${item.orderNumber}`,
+      `일본어 상품명: ${item.japaneseName}`,
+      `영문 상품명: ${item.englishName}`,
+      `단가: ¥${item.unitPrice}`,
+      `수량: ${item.quantity}`,
+      `트래킹: ${item.tracking || '미발급'}`,
+    ].join('\n');
+  }).join('\n\n');
+  navigator.clipboard.writeText(lines);
+  showToast('클립보드에 복사되었습니다');
+}
+
+function copyFormattedAll() {
+  if (!currentResult) return;
+  const lines = currentResult.items.map((item, i) => {
+    return [
+      `[재팬타임몰 입력 양식 - 상품 ${i+1}]`,
+      `Order Number: ${item.orderNumber}`,
+      `商品名 (Japanese): ${item.japaneseName}`,
+      `Item Name (English): ${item.englishName}`,
+      `Unit Price (JPY): ¥${item.unitPrice}`,
+      `Quantity: ${item.quantity}`,
+      `Tracking No: ${item.tracking || 'N/A - Not yet issued'}`,
+    ].join('\n');
+  }).join('\n\n');
+  navigator.clipboard.writeText(lines);
+  showToast('재팬타임몰 양식으로 복사되었습니다 ✓');
+}
+
+// ============================================================
+// Toast
+// ============================================================
+function showToast(msg) {
+  const existing = document.getElementById('toast');
+  if (existing) existing.remove();
+  const t = document.createElement('div');
+  t.id = 'toast';
+  t.style.cssText = `
+    position:fixed; bottom:80px; left:50%; transform:translateX(-50%);
+    background:#1d1d1f; color:#fff; padding:10px 20px; border-radius:100px;
+    font-size:13px; font-weight:500; z-index:999; white-space:nowrap;
+    animation:fadeIn .25s ease;
+    box-shadow: 0 8px 32px rgba(0,0,0,.25);
+  `;
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => { t.style.opacity = '0'; t.style.transition = 'opacity .3s'; }, 2000);
+  setTimeout(() => t.remove(), 2400);
+}
+
+// ============================================================
+// Reset
+// ============================================================
+function resetAll() {
+  currentResult = null;
+  pastedImage = null;
+  document.getElementById('inputText').value = '';
+  document.getElementById('imgPreviewArea').innerHTML = '';
+  document.getElementById('extractBtn').disabled = true;
+  document.getElementById('pasteZone').classList.remove('has-content');
+  document.getElementById('section-result').classList.add('hidden');
+  document.getElementById('section-loading').classList.add('hidden');
+  document.getElementById('section-input').classList.remove('hidden');
+  selectTag('auto');
+
+  // Reset step dots
+  document.getElementById('dot-1').className = 'step-dot active';
+  document.getElementById('dot-1').textContent = '1';
+  document.getElementById('dot-2').className = 'step-dot idle';
+  document.getElementById('dot-2').textContent = '2';
+  document.getElementById('dot-3').className = 'step-dot idle';
+  document.getElementById('dot-3').textContent = '3';
+}
+</script>
+</body>
+</html>
