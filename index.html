@@ -125,34 +125,79 @@
       color: var(--text-primary);
     }
 
-    /* Shop selector */
-    .shop-card {
+    /* Shop tag chips */
+    .shop-tag {
+      padding: 6px 14px;
+      border-radius: 100px;
+      font-size: 12.5px;
+      font-weight: 500;
       border: 1.5px solid var(--border);
-      border-radius: var(--radius);
+      cursor: pointer;
       background: var(--surface);
-      padding: 14px 16px;
+      color: var(--text-secondary);
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+    .shop-tag:hover { border-color: var(--accent); color: var(--accent); }
+    .shop-tag.active { border-color: var(--accent); background: var(--accent-light); color: var(--accent); }
+
+    /* Country section header */
+    .country-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      margin-bottom: 8px;
+    }
+
+    /* Forwarder cards */
+    .forwarder-card {
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: var(--surface);
+      padding: 12px 14px;
       cursor: pointer;
       transition: all 0.18s ease;
       display: flex;
       align-items: center;
-      gap: 12px;
-      flex: 1;
+      gap: 10px;
     }
-    .shop-card:hover {
+    .forwarder-card:hover {
       border-color: var(--accent);
       box-shadow: 0 0 0 3px rgba(0,113,227,.08);
     }
-    .shop-card.selected {
+    .forwarder-card.selected {
       border-color: var(--accent);
       background: var(--accent-light);
       box-shadow: 0 0 0 3px rgba(0,113,227,.12);
     }
-    .shop-logo {
-      width: 38px; height: 38px;
-      border-radius: 8px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 18px;
+    .forwarder-flag {
+      font-size: 20px;
       flex-shrink: 0;
+    }
+    .forwarder-card .fw-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    .forwarder-card .fw-url {
+      font-size: 11px;
+      color: var(--text-tertiary);
+      margin-top: 1px;
+    }
+    .forwarder-card .sel-dot {
+      margin-left: auto;
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      border: 1.5px solid var(--border);
+      flex-shrink: 0;
+      transition: all 0.15s;
+    }
+    .forwarder-card.selected .sel-dot {
+      background: var(--accent);
+      border-color: var(--accent);
+      box-shadow: inset 0 0 0 3px #fff;
     }
 
     /* Button */
@@ -395,6 +440,38 @@
       0%, 100% { opacity: 1; }
       50% { opacity: .4; }
     }
+
+    /* Forwarder grid */
+    .forwarder-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    @media (max-width: 640px) {
+      .forwarder-grid { grid-template-columns: 1fr; }
+    }
+
+    /* Divider with label */
+    .section-divider {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 16px 0 12px;
+    }
+    .section-divider::before,
+    .section-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+    .section-divider span {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-tertiary);
+      letter-spacing: 0.05em;
+      white-space: nowrap;
+    }
   </style>
 </head>
 <body>
@@ -402,7 +479,7 @@
 <!-- Demo badge -->
 <div class="demo-indicator">
   <div class="demo-dot"></div>
-  PoC Demo · v0.1
+  PoC Demo · v0.2
 </div>
 
 <!-- Header -->
@@ -418,7 +495,7 @@
       </div>
     </div>
     <div class="flex items-center gap-2">
-      <span class="badge badge-blue text-xs" style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.7);">베타</span>
+      <span class="badge" style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.7);">베타</span>
     </div>
   </div>
 </header>
@@ -449,9 +526,11 @@
           <span class="text-sm font-semibold">주문 내역 입력</span>
         </div>
         <!-- Example tabs -->
-        <div class="flex items-center gap-1 p-1 rounded-lg" style="background:#f5f5f7;">
-          <button class="tab-btn" onclick="loadExample('surugaya')">스루가야 예시</button>
-          <button class="tab-btn" onclick="loadExample('broccoli')">브로콜리샵 예시</button>
+        <div class="flex items-center gap-1 p-1 rounded-lg flex-wrap" style="background:#f5f5f7;">
+          <button class="tab-btn" onclick="loadExample('surugaya')">🇯🇵 스루가야</button>
+          <button class="tab-btn" onclick="loadExample('broccoli')">🇯🇵 브로콜리</button>
+          <button class="tab-btn" onclick="loadExample('aliexpress')">🇨🇳 알리익스</button>
+          <button class="tab-btn" onclick="loadExample('amazon')">🇺🇸 아마존</button>
           <button class="tab-btn" onclick="clearInput()">지우기</button>
         </div>
       </div>
@@ -467,76 +546,127 @@
         </div>
         <p class="text-xs mt-2" style="color:#aeaeb2;">
           <i data-lucide="info" style="width:11px;height:11px;display:inline;vertical-align:middle;margin-right:3px;"></i>
-          이미지는 붙여넣기(Ctrl+V) 또는 드래그&드롭으로 첨부 가능합니다
+          이미지는 붙여넣기(Ctrl+V) 또는 드래그&amp;드롭으로 첨부 가능합니다
         </p>
       </div>
     </div>
 
-    <!-- Shop Selector -->
+    <!-- Source shop selector (chips grouped by country) -->
     <div class="panel mb-5">
       <div class="panel-header">
         <div class="flex items-center gap-2">
-          <i data-lucide="store" style="width:16px;height:16px;color:#6e6e73;"></i>
-          <span class="text-sm font-semibold">배대지 선택</span>
+          <i data-lucide="shopping-bag" style="width:16px;height:16px;color:#6e6e73;"></i>
+          <span class="text-sm font-semibold">쇼핑몰 선택 <span style="color:#aeaeb2;font-weight:400;">(선택 사항 — 자동 감지 지원)</span></span>
         </div>
-        <span class="text-xs" style="color:#aeaeb2;">현재 지원: 재팬타임몰</span>
       </div>
       <div class="panel-body">
-        <div class="flex gap-3">
-          <div class="shop-card selected" id="shop-japantimemall" onclick="selectShop('japantimemall')">
-            <div class="shop-logo" style="background:#fff5f5;font-size:22px;">🇯🇵</div>
-            <div>
-              <div class="text-sm font-semibold">재팬타임몰</div>
-              <div class="text-xs mt-0.5" style="color:#6e6e73;">japantimemall.com</div>
-            </div>
-            <div class="ml-auto">
-              <span class="badge badge-green" style="font-size:10px;">지원</span>
-            </div>
-          </div>
-          <div class="shop-card opacity-50 cursor-not-allowed" style="flex:1;" title="준비 중">
-            <div class="shop-logo" style="background:#f5f5f7;font-size:22px;">📦</div>
-            <div>
-              <div class="text-sm font-semibold text-gray-400">기타 배대지</div>
-              <div class="text-xs mt-0.5" style="color:#aeaeb2;">준비 중</div>
-            </div>
-            <div class="ml-auto">
-              <span class="badge" style="background:#f5f5f7;color:#aeaeb2;font-size:10px;">예정</span>
-            </div>
-          </div>
+
+        <!-- Auto detect -->
+        <div class="flex flex-wrap gap-2 mb-4">
+          <button class="shop-tag active" id="tag-auto" onclick="selectTag('auto')">🔍 자동 감지</button>
         </div>
+
+        <!-- 🇯🇵 Japan -->
+        <div class="section-divider"><span>🇯🇵 일본</span></div>
+        <div class="flex flex-wrap gap-2 mb-1">
+          <button class="shop-tag" id="tag-surugaya" onclick="selectTag('surugaya')">스루가야</button>
+          <button class="shop-tag" id="tag-broccoli" onclick="selectTag('broccoli')">브로콜리샵</button>
+          <button class="shop-tag" id="tag-rakuten" onclick="selectTag('rakuten')">라쿠텐</button>
+          <button class="shop-tag" id="tag-yahooshopping" onclick="selectTag('yahooshopping')">야후쇼핑</button>
+        </div>
+
+        <!-- 🇨🇳 China -->
+        <div class="section-divider"><span>🇨🇳 중국</span></div>
+        <div class="flex flex-wrap gap-2 mb-1">
+          <button class="shop-tag" id="tag-aliexpress" onclick="selectTag('aliexpress')">알리익스프레스</button>
+          <button class="shop-tag" id="tag-temu" onclick="selectTag('temu')">테무</button>
+          <button class="shop-tag" id="tag-taobao" onclick="selectTag('taobao')">타오바오</button>
+        </div>
+
+        <!-- 🇺🇸 USA -->
+        <div class="section-divider"><span>🇺🇸 미국</span></div>
+        <div class="flex flex-wrap gap-2">
+          <button class="shop-tag" id="tag-amazon" onclick="selectTag('amazon')">아마존</button>
+          <button class="shop-tag" id="tag-iherb" onclick="selectTag('iherb')">아이허브</button>
+        </div>
+
       </div>
     </div>
 
-    <!-- Source shop info -->
+    <!-- Forwarder (배대지) selector -->
     <div class="panel mb-6">
       <div class="panel-header">
         <div class="flex items-center gap-2">
-          <i data-lucide="shopping-bag" style="width:16px;height:16px;color:#6e6e73;"></i>
-          <span class="text-sm font-semibold">쇼핑몰 선택 (선택 사항)</span>
+          <i data-lucide="truck" style="width:16px;height:16px;color:#6e6e73;"></i>
+          <span class="text-sm font-semibold">배대지 선택</span>
         </div>
+        <span class="text-xs" style="color:#aeaeb2;">6개 배대지 지원</span>
       </div>
       <div class="panel-body">
-        <div class="flex flex-wrap gap-2">
-          <button class="shop-tag active" id="tag-auto" onclick="selectTag('auto')">🔍 자동 감지</button>
-          <button class="shop-tag" id="tag-surugaya" onclick="selectTag('surugaya')">スルガヤ (스루가야)</button>
-          <button class="shop-tag" id="tag-broccoli" onclick="selectTag('broccoli')">ブロッコリー (브로콜리샵)</button>
-          <button class="shop-tag" id="tag-other" onclick="selectTag('other')">기타</button>
+
+        <!-- 🇯🇵 Japan forwarders -->
+        <div class="country-label">🇯🇵 일본 배대지</div>
+        <div class="forwarder-grid mb-4">
+          <div class="forwarder-card selected" id="fw-japantimemall" onclick="selectForwarder('japantimemall')">
+            <span class="forwarder-flag">🇯🇵</span>
+            <div>
+              <div class="fw-name">재팬타임몰</div>
+              <div class="fw-url">japantimemall.com</div>
+            </div>
+            <div class="sel-dot"></div>
+          </div>
+          <div class="forwarder-card" id="fw-osaka" onclick="selectForwarder('osaka')">
+            <span class="forwarder-flag">🇯🇵</span>
+            <div>
+              <div class="fw-name">오사카익스프레스</div>
+              <div class="fw-url">osakaexpress.co.kr</div>
+            </div>
+            <div class="sel-dot"></div>
+          </div>
         </div>
-        <style>
-          .shop-tag {
-            padding: 6px 14px;
-            border-radius: 100px;
-            font-size: 12.5px;
-            font-weight: 500;
-            border: 1.5px solid var(--border);
-            cursor: pointer;
-            background: var(--surface);
-            color: var(--text-secondary);
-            transition: all 0.15s;
-          }
-          .shop-tag:hover { border-color: var(--accent); color: var(--accent); }
-          .shop-tag.active { border-color: var(--accent); background: var(--accent-light); color: var(--accent); }
-        </style>
+
+        <!-- 🇨🇳 China forwarders -->
+        <div class="country-label">🇨🇳 중국 배대지</div>
+        <div class="forwarder-grid mb-4">
+          <div class="forwarder-card" id="fw-taobaokorea" onclick="selectForwarder('taobaokorea')">
+            <span class="forwarder-flag">🇨🇳</span>
+            <div>
+              <div class="fw-name">타오바오코리아</div>
+              <div class="fw-url">taobaokorea.com</div>
+            </div>
+            <div class="sel-dot"></div>
+          </div>
+          <div class="forwarder-card" id="fw-postteam" onclick="selectForwarder('postteam')">
+            <span class="forwarder-flag">🇨🇳</span>
+            <div>
+              <div class="fw-name">포스트팀</div>
+              <div class="fw-url">postteam.kr</div>
+            </div>
+            <div class="sel-dot"></div>
+          </div>
+        </div>
+
+        <!-- 🇺🇸 USA forwarders -->
+        <div class="country-label">🇺🇸 미국 배대지</div>
+        <div class="forwarder-grid">
+          <div class="forwarder-card" id="fw-malltail" onclick="selectForwarder('malltail')">
+            <span class="forwarder-flag">🇺🇸</span>
+            <div>
+              <div class="fw-name">몰테일</div>
+              <div class="fw-url">malltail.com</div>
+            </div>
+            <div class="sel-dot"></div>
+          </div>
+          <div class="forwarder-card" id="fw-ohmyzip" onclick="selectForwarder('ohmyzip')">
+            <span class="forwarder-flag">🇺🇸</span>
+            <div>
+              <div class="fw-name">오마이집</div>
+              <div class="fw-url">ohmyzip.com</div>
+            </div>
+            <div class="sel-dot"></div>
+          </div>
+        </div>
+
       </div>
     </div>
 
@@ -556,7 +686,7 @@
         <div class="flex items-center gap-4 mb-8">
           <div class="spinner"></div>
           <div>
-            <p class="text-sm font-semibold">AI가 주문 내역을 분석하고 있습니다...</p>
+            <p class="text-sm font-semibold" id="loadingMainText">AI가 주문 내역을 분석하고 있습니다...</p>
             <p class="text-xs mt-0.5" style="color:#6e6e73;" id="loadingSubtext">주문번호 및 상품 정보를 추출 중</p>
           </div>
         </div>
@@ -605,13 +735,13 @@
 
     <!-- Steps update -->
     <div class="flex items-center gap-3 mb-6">
-      <div class="step-dot done" id="dot-1r">✓</div>
+      <div class="step-dot done">✓</div>
       <span class="text-sm font-medium text-gray-700">주문 내역 입력</span>
       <div class="flex-1 h-px bg-green-200 mx-1"></div>
-      <div class="step-dot done" id="dot-2r">✓</div>
+      <div class="step-dot done">✓</div>
       <span class="text-sm font-medium text-gray-700">배대지 선택</span>
       <div class="flex-1 h-px bg-green-200 mx-1"></div>
-      <div class="step-dot active" id="dot-3r">3</div>
+      <div class="step-dot active">3</div>
       <span class="text-sm font-semibold">결과 확인</span>
     </div>
 
@@ -623,7 +753,7 @@
         </div>
         <div>
           <p class="text-sm font-semibold">추출 완료</p>
-          <p class="text-xs" style="color:#6e6e73;" id="resultMeta">재팬타임몰 입력 양식 준비 완료</p>
+          <p class="text-xs" style="color:#6e6e73;" id="resultMeta">배대지 입력 양식 준비 완료</p>
         </div>
       </div>
       <div class="flex gap-2">
@@ -648,7 +778,7 @@
             <i data-lucide="file-text" style="width:14px;height:14px;color:#6e6e73;"></i>
             <span class="text-xs font-semibold uppercase tracking-wider" style="color:#6e6e73;">원본</span>
           </div>
-          <span class="badge badge-blue" id="sourceBadge">스루가야</span>
+          <span class="badge badge-blue" id="sourceBadge">쇼핑몰</span>
         </div>
         <div class="panel-body">
           <div class="original-text" id="originalDisplay"></div>
@@ -662,7 +792,7 @@
             <i data-lucide="sparkles" style="width:14px;height:14px;color:#0071e3;"></i>
             <span class="text-xs font-semibold uppercase tracking-wider" style="color:#0071e3;">AI 추출 결과</span>
           </div>
-          <span class="badge badge-green">재팬타임몰 형식</span>
+          <span class="badge badge-green" id="forwarderBadge">배대지 형식</span>
         </div>
         <div class="panel-body">
           <div class="space-y-3" id="resultFields">
@@ -673,9 +803,9 @@
           <div class="my-5" style="border-top:1px solid var(--border);"></div>
 
           <!-- Copy all to clipboard as form -->
-          <button class="w-full btn-primary justify-center" style="width:100%;justify-content:center;" onclick="copyFormattedAll()">
+          <button class="w-full btn-primary justify-center" id="copyFormBtn" style="width:100%;justify-content:center;" onclick="copyFormattedAll()">
             <i data-lucide="clipboard-copy" style="width:15px;height:15px;"></i>
-            재팬타임몰 양식으로 복사
+            <span id="copyFormBtnText">배대지 양식으로 복사</span>
           </button>
         </div>
       </div>
@@ -709,10 +839,58 @@
 // ============================================================
 // State
 // ============================================================
-let selectedShop = 'japantimemall';
+let selectedForwarder = 'japantimemall';
 let selectedSource = 'auto';
 let pastedImage = null;
 let currentResult = null;
+
+// Forwarder metadata
+const forwarderMeta = {
+  japantimemall: { name: '재팬타임몰', country: 'JP' },
+  osaka:         { name: '오사카익스프레스', country: 'JP' },
+  taobaokorea:   { name: '타오바오코리아', country: 'CN' },
+  postteam:      { name: '포스트팀', country: 'CN' },
+  malltail:      { name: '몰테일', country: 'US' },
+  ohmyzip:       { name: '오마이집', country: 'US' },
+};
+
+// Source shop metadata
+const shopMeta = {
+  surugaya:     { country: 'JP' },
+  broccoli:     { country: 'JP' },
+  rakuten:      { country: 'JP' },
+  yahooshopping:{ country: 'JP' },
+  aliexpress:   { country: 'CN' },
+  temu:         { country: 'CN' },
+  taobao:       { country: 'CN' },
+  amazon:       { country: 'US' },
+  iherb:        { country: 'US' },
+};
+
+// Loading text by country
+const loadingTextsByCountry = {
+  JP: [
+    '복잡한 일본어 상품명을 변환 중입니다...',
+    '일본어 상품명 파싱 중...',
+    '영문 상품명 번역 생성 중...',
+    '가격 및 수량 정보 확인 중...',
+    '배대지 양식으로 변환 중...',
+  ],
+  CN: [
+    '중국어 상품 정보를 한국 세관 양식으로 변환 중...',
+    '중국어 상품명 분석 중...',
+    '영문 세관 신고명 생성 중...',
+    '위안화 가격 환산 중...',
+    '배대지 입력 양식 준비 중...',
+  ],
+  US: [
+    '영문 주문 정보를 배대지 양식으로 정리 중...',
+    '영문 상품명 확인 중...',
+    '배송 트래킹 번호 추출 중...',
+    '가격 및 수량 검증 중...',
+    '배대지 입력 양식 준비 중...',
+  ],
+};
 
 // ============================================================
 // Example data
@@ -787,7 +965,83 @@ const examples = {
 ■ 配送状況
 追跡番号：未発行（準備中）
 予定発送日：2024年3月22日
-`
+`,
+  aliexpress: `AliExpress Order Confirmation
+
+Order ID: 8171234567890
+Order Date: 2024-03-20
+
+─────────────────────────────────
+  ORDER DETAILS
+─────────────────────────────────
+
+Product: 2023新款动漫周边cos服装 僧侣与女神的秘密 全套服装套装道具
+          (2023 New Anime Peripheral COS Costume Monk and Goddess Secret Full Set)
+Store: CosplayMaster Official Store
+Unit Price: $28.99 / CNY 209.00
+Quantity: 1
+Item ID: 32984712340
+
+Product: 手工定制亚克力徽章胸针 原神角色周边 魈 钟离 班尼特
+          (Handmade Custom Acrylic Badge Brooch Genshin Character Peripheral)
+Store: ACGArtStore
+Unit Price: $4.50 / CNY 32.50
+Quantity: 3
+
+─────────────────────────────────
+  SHIPPING INFORMATION
+─────────────────────────────────
+Shipping Method: AliExpress Standard Shipping
+Tracking Number: LP00424118109CN
+Estimated Delivery: 15–25 business days
+
+─────────────────────────────────
+  PAYMENT SUMMARY
+─────────────────────────────────
+Subtotal: $42.49
+Shipping: $0.00 (Free)
+Total Paid: $42.49
+`,
+  amazon: `Amazon.com Order Confirmation
+
+Hello,
+Thank you for your order!
+
+Order #: 113-8472901-3845621
+Order Date: March 21, 2024
+
+─────────────────────────────────
+  ORDER DETAILS
+─────────────────────────────────
+
+1. COSRX Advanced Snail 96 Mucin Power Essence, 3.38 fl.oz / 100ml
+   Sold by: COSRX Official
+   Condition: New
+   Price: $13.99
+   Quantity: 2
+
+2. Anker Nano Charger 30W, USB C Charger PIQ 3.0, Foldable PPS Fast Charger
+   Sold by: Anker Direct
+   Condition: New
+   Price: $15.99
+   Quantity: 1
+
+─────────────────────────────────
+  SHIPPING ADDRESS
+─────────────────────────────────
+Malltail US Warehouse
+c/o [Your ID]
+16001 NW 82nd Ave, Miami, FL 33016
+
+─────────────────────────────────
+  ORDER TOTAL
+─────────────────────────────────
+Item(s) Subtotal: $43.97
+Shipping & Handling: $0.00
+Total: $43.97
+
+Tracking: TBA1234567890 (UPS)
+`,
 };
 
 // ============================================================
@@ -796,21 +1050,22 @@ const examples = {
 const mockResults = {
   surugaya: {
     source: '스루가야 (駿河屋)',
+    sourceCountry: 'JP',
     confidence: 94,
     items: [
       {
         orderNumber: 'SRG-2024-8834521',
-        japaneseName: 'ホロライブ 宝鐘マリン 1/7スケールフィギュア',
+        originalName: 'ホロライブ 宝鐘マリン 1/7スケールフィギュア',
         englishName: 'Hololive Houshou Marine 1/7 Scale Figure',
-        unitPrice: '18,480',
+        unitPrice: '18,480 JPY',
         quantity: '1',
         tracking: '1234-5678-9012'
       },
       {
         orderNumber: 'SRG-2024-8834521',
-        japaneseName: '転生したらスライムだった件 リムル＝テンペスト フィギュア EXQ',
+        originalName: '転生したらスライムだった件 リムル＝テンペスト フィギュア EXQ',
         englishName: 'That Time I Got Reincarnated as a Slime Rimuru Tempest Figure EXQ',
-        unitPrice: '3,200',
+        unitPrice: '3,200 JPY',
         quantity: '2',
         tracking: '1234-5678-9012'
       }
@@ -818,23 +1073,70 @@ const mockResults = {
   },
   broccoli: {
     source: 'ブロッコリー (브로콜리샵)',
+    sourceCountry: 'JP',
     confidence: 88,
     items: [
       {
         orderNumber: 'BRO-20240318-004421',
-        japaneseName: 'カードファイト!! ヴァンガード overDress スペシャルシリーズ Vol.4 超天編集結!! Vクランコレクション Vol.4',
+        originalName: 'カードファイト!! ヴァンガード overDress スペシャルシリーズ Vol.4 超天編集結!! Vクランコレクション Vol.4',
         englishName: 'Cardfight!! Vanguard overDress Special Series Vol.4 V Clan Collection Vol.4',
-        unitPrice: '4,950',
+        unitPrice: '4,950 JPY',
         quantity: '3',
         tracking: null
       },
       {
         orderNumber: 'BRO-20240318-004421',
-        japaneseName: 'アイドルマスター シンデレラガールズ アクリルスタンド 渋谷凛 Wish ver.',
+        originalName: 'アイドルマスター シンデレラガールズ アクリルスタンド 渋谷凛 Wish ver.',
         englishName: 'The Idolmaster Cinderella Girls Acrylic Stand Shibuya Rin Wish ver.',
-        unitPrice: '2,750',
+        unitPrice: '2,750 JPY',
         quantity: '1',
         tracking: null
+      }
+    ]
+  },
+  aliexpress: {
+    source: '알리익스프레스 (AliExpress)',
+    sourceCountry: 'CN',
+    confidence: 91,
+    items: [
+      {
+        orderNumber: '8171234567890',
+        originalName: '2023新款动漫周边cos服装 僧侣与女神的秘密 全套服装套装道具',
+        englishName: 'Anime Cosplay Costume Full Set — Clothing & Props',
+        unitPrice: '$28.99 / CNY 209.00',
+        quantity: '1',
+        tracking: 'LP00424118109CN'
+      },
+      {
+        orderNumber: '8171234567890',
+        originalName: '手工定制亚克力徽章胸针 原神角色周边 魈 钟离 班尼特',
+        englishName: 'Handmade Acrylic Badge Brooch — Anime Character Accessory',
+        unitPrice: '$4.50 / CNY 32.50',
+        quantity: '3',
+        tracking: 'LP00424118109CN'
+      }
+    ]
+  },
+  amazon: {
+    source: '아마존 (Amazon US)',
+    sourceCountry: 'US',
+    confidence: 97,
+    items: [
+      {
+        orderNumber: '113-8472901-3845621',
+        originalName: 'COSRX Advanced Snail 96 Mucin Power Essence, 3.38 fl.oz / 100ml',
+        englishName: 'Skincare Essence (Snail Mucin) — Cosmetics',
+        unitPrice: '$13.99',
+        quantity: '2',
+        tracking: 'TBA1234567890'
+      },
+      {
+        orderNumber: '113-8472901-3845621',
+        originalName: 'Anker Nano Charger 30W, USB C Charger PIQ 3.0, Foldable PPS Fast Charger',
+        englishName: 'USB-C Fast Charger 30W — Electronics',
+        unitPrice: '$15.99',
+        quantity: '1',
+        tracking: 'TBA1234567890'
       }
     ]
   }
@@ -845,8 +1147,6 @@ const mockResults = {
 // ============================================================
 document.addEventListener('DOMContentLoaded', () => {
   lucide.createIcons();
-
-  // Global paste handler
   document.addEventListener('paste', handleGlobalPaste);
 });
 
@@ -929,11 +1229,17 @@ function handleDragLeave() {
 // Examples & controls
 // ============================================================
 function loadExample(type) {
-  document.getElementById('inputText').value = examples[type];
+  document.getElementById('inputText').value = examples[type] || '';
   document.getElementById('pasteZone').classList.add('has-content');
   document.getElementById('extractBtn').disabled = false;
-  if (type === 'surugaya') selectTag('surugaya');
-  else if (type === 'broccoli') selectTag('broccoli');
+
+  const tagMap = {
+    surugaya: 'surugaya',
+    broccoli: 'broccoli',
+    aliexpress: 'aliexpress',
+    amazon: 'amazon',
+  };
+  if (tagMap[type]) selectTag(tagMap[type]);
 }
 
 function clearInput() {
@@ -944,10 +1250,10 @@ function clearInput() {
   document.getElementById('pasteZone').classList.remove('has-content');
 }
 
-function selectShop(id) {
-  selectedShop = id;
-  document.querySelectorAll('.shop-card[id^="shop-"]').forEach(el => el.classList.remove('selected'));
-  const el = document.getElementById('shop-' + id);
+function selectForwarder(id) {
+  selectedForwarder = id;
+  document.querySelectorAll('.forwarder-card').forEach(el => el.classList.remove('selected'));
+  const el = document.getElementById('fw-' + id);
   if (el) el.classList.add('selected');
 }
 
@@ -959,6 +1265,19 @@ function selectTag(id) {
 }
 
 // ============================================================
+// Determine country from source/content
+// ============================================================
+function detectCountry(inputText, detectedSource) {
+  if (detectedSource && shopMeta[detectedSource]) {
+    return shopMeta[detectedSource].country;
+  }
+  // Heuristic from text
+  if (/[\u4e00-\u9fff]/.test(inputText) && /aliexpress|taobao|temu|AliExpress/i.test(inputText)) return 'CN';
+  if (/amazon\.com|iherb/i.test(inputText)) return 'US';
+  return 'JP'; // default
+}
+
+// ============================================================
 // Extraction flow
 // ============================================================
 function startExtraction() {
@@ -966,28 +1285,34 @@ function startExtraction() {
   if (!inputText && !pastedImage) return;
 
   // Detect source
-  let detectedSource = 'surugaya';
+  let detectedSource = null;
   if (selectedSource !== 'auto') {
     detectedSource = selectedSource;
   } else {
     if (inputText.includes('ブロッコリー') || inputText.includes('BRO-')) detectedSource = 'broccoli';
     else if (inputText.includes('駿河屋') || inputText.includes('SRG-')) detectedSource = 'surugaya';
-    else detectedSource = 'surugaya'; // default fallback for demo
+    else if (/aliexpress|LP00\d+CN/i.test(inputText)) detectedSource = 'aliexpress';
+    else if (/amazon\.com|Order #: \d{3}-/i.test(inputText)) detectedSource = 'amazon';
+    else detectedSource = 'surugaya'; // demo fallback
   }
+
+  // Determine country for loading animation
+  const country = detectCountry(inputText, detectedSource);
+  const loadingTexts = loadingTextsByCountry[country] || loadingTextsByCountry['JP'];
 
   // Show loading
   document.getElementById('section-input').classList.add('hidden');
   document.getElementById('section-result').classList.add('hidden');
   document.getElementById('section-loading').classList.remove('hidden');
 
-  // Cycle loading text
-  const loadingTexts = [
-    '주문번호 및 상품 정보를 추출 중...',
-    '일본어 상품명 파싱 중...',
-    '영문 상품명 번역 생성 중...',
-    '가격 및 수량 정보 확인 중...',
-    '재팬타임몰 양식으로 변환 중...'
-  ];
+  // Country-aware primary loading text
+  const primaryText = {
+    JP: '복잡한 일본어 상품명을 변환 중입니다...',
+    CN: '중국어 상품 정보를 한국 세관 양식으로 변환 중...',
+    US: '영문 주문 정보를 배대지 양식으로 정리 중...',
+  };
+  document.getElementById('loadingMainText').textContent = primaryText[country] || primaryText['JP'];
+
   let li = 0;
   const interval = setInterval(() => {
     li = (li + 1) % loadingTexts.length;
@@ -1006,7 +1331,9 @@ function startExtraction() {
 // Result rendering
 // ============================================================
 function showResult(source, originalText) {
-  currentResult = mockResults[source] || mockResults.surugaya;
+  // Pick mock result — map to existing keys or use aliexpress/amazon directly
+  const resultKey = (['surugaya','broccoli','aliexpress','amazon'].includes(source)) ? source : 'surugaya';
+  currentResult = mockResults[resultKey];
 
   document.getElementById('section-loading').classList.add('hidden');
   document.getElementById('section-result').classList.remove('hidden');
@@ -1018,6 +1345,12 @@ function showResult(source, originalText) {
 
   // Source badge
   document.getElementById('sourceBadge').textContent = currentResult.source;
+
+  // Forwarder badge and button label
+  const fwName = forwarderMeta[selectedForwarder]?.name || '배대지';
+  document.getElementById('forwarderBadge').textContent = fwName + ' 형식';
+  document.getElementById('copyFormBtnText').textContent = fwName + ' 양식으로 복사';
+  document.getElementById('resultMeta').textContent = fwName + ' 입력 양식 준비 완료';
 
   // Render items
   renderResultFields(currentResult.items);
@@ -1047,6 +1380,12 @@ function renderResultFields(items) {
     return;
   }
 
+  // Label for original name depends on source country
+  const sourceCountry = currentResult?.sourceCountry || 'JP';
+  const origLabel = sourceCountry === 'JP' ? '원문 상품명 (일본어)' :
+                    sourceCountry === 'CN' ? '원문 상품명 (중국어)' :
+                    '원문 상품명 (영문)';
+
   let html = '';
   items.forEach((item, idx) => {
     const trackingVal = item.tracking || null;
@@ -1056,24 +1395,24 @@ function renderResultFields(items) {
 
         <div class="space-y-2.5">
           ${renderField('주문번호 (Order Number)', item.orderNumber, 'order-' + idx, false)}
-          ${renderField('일본어 상품명', item.japaneseName, 'ja-name-' + idx, false)}
-          ${renderField('영문 상품명 (세관 신고용)', item.englishName, 'en-name-' + idx, false)}
+          ${renderField(origLabel, item.originalName, 'orig-name-' + idx, false)}
+          ${renderField('영문 세관 신고명 (Customs Name)', item.englishName, 'en-name-' + idx, false)}
 
           <div class="grid grid-cols-2 gap-2.5">
             <div class="result-field">
-              <div class="label">단가 (JPY)</div>
+              <div class="label">단가 (Price)</div>
               <div class="flex items-center justify-between">
-                <span class="value">¥${item.unitPrice}</span>
-                <button class="btn-secondary tooltip" data-tip="복사" id="btn-price-${idx}" onclick="copyField('¥${item.unitPrice}', 'btn-price-${idx}')">
+                <span class="value">${item.unitPrice}</span>
+                <button class="btn-secondary tooltip" data-tip="복사" id="btn-price-${idx}" onclick="copyField(${JSON.stringify(item.unitPrice)}, 'btn-price-${idx}')">
                   <i data-lucide="copy" style="width:11px;height:11px;"></i>
                 </button>
               </div>
             </div>
             <div class="result-field">
-              <div class="label">수량</div>
+              <div class="label">수량 (Qty)</div>
               <div class="flex items-center justify-between">
                 <span class="value">${item.quantity}</span>
-                <button class="btn-secondary tooltip" data-tip="복사" id="btn-qty-${idx}" onclick="copyField('${item.quantity}', 'btn-qty-${idx}')">
+                <button class="btn-secondary tooltip" data-tip="복사" id="btn-qty-${idx}" onclick="copyField(${JSON.stringify(item.quantity)}, 'btn-qty-${idx}')">
                   <i data-lucide="copy" style="width:11px;height:11px;"></i>
                 </button>
               </div>
@@ -1085,7 +1424,7 @@ function renderResultFields(items) {
             <div class="flex items-center justify-between">
               ${trackingVal
                 ? `<span class="value font-mono">${trackingVal}</span>
-                   <button class="btn-secondary tooltip" data-tip="복사" id="btn-track-${idx}" onclick="copyField('${trackingVal}', 'btn-track-${idx}')"><i data-lucide="copy" style="width:11px;height:11px;"></i></button>`
+                   <button class="btn-secondary tooltip" data-tip="복사" id="btn-track-${idx}" onclick="copyField(${JSON.stringify(trackingVal)}, 'btn-track-${idx}')"><i data-lucide="copy" style="width:11px;height:11px;"></i></button>`
                 : `<span class="value missing">⚠ 미발급 — 발송 후 재확인 필요</span>`
               }
             </div>
@@ -1136,9 +1475,9 @@ function copyAll() {
     return [
       `[상품 ${i+1}]`,
       `주문번호: ${item.orderNumber}`,
-      `일본어 상품명: ${item.japaneseName}`,
-      `영문 상품명: ${item.englishName}`,
-      `단가: ¥${item.unitPrice}`,
+      `원문 상품명: ${item.originalName}`,
+      `영문 세관 신고명: ${item.englishName}`,
+      `단가: ${item.unitPrice}`,
       `수량: ${item.quantity}`,
       `트래킹: ${item.tracking || '미발급'}`,
     ].join('\n');
@@ -1149,19 +1488,20 @@ function copyAll() {
 
 function copyFormattedAll() {
   if (!currentResult) return;
+  const fwName = forwarderMeta[selectedForwarder]?.name || '배대지';
   const lines = currentResult.items.map((item, i) => {
     return [
-      `[재팬타임몰 입력 양식 - 상품 ${i+1}]`,
+      `[${fwName} 입력 양식 - 상품 ${i+1}]`,
       `Order Number: ${item.orderNumber}`,
-      `商品名 (Japanese): ${item.japaneseName}`,
-      `Item Name (English): ${item.englishName}`,
-      `Unit Price (JPY): ¥${item.unitPrice}`,
+      `Original Product Name: ${item.originalName}`,
+      `Item Name (Customs/English): ${item.englishName}`,
+      `Unit Price: ${item.unitPrice}`,
       `Quantity: ${item.quantity}`,
       `Tracking No: ${item.tracking || 'N/A - Not yet issued'}`,
     ].join('\n');
   }).join('\n\n');
   navigator.clipboard.writeText(lines);
-  showToast('재팬타임몰 양식으로 복사되었습니다 ✓');
+  showToast(`${fwName} 양식으로 복사되었습니다 ✓`);
 }
 
 // ============================================================
