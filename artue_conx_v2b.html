@@ -823,7 +823,7 @@
     <div class="partner-cell">
       <a href="https://artue.io/" target="_blank" rel="noopener">
         <img
-          src="https://drive.google.com/uc?export=view&id=19xETOfmqMDNvRRUiJ0xwnnfQw4bCRJhR"
+          src="ARTUE.png"
           alt="ARTUE"
           class="partner-logo"
         />
@@ -841,7 +841,7 @@
     <div class="partner-cell">
       <a href="https://conx.xyz/" target="_blank" rel="noopener">
         <img
-          src="https://drive.google.com/uc?export=view&id=1PHB3Mog_6wsEUBgphYFsX099oJpk7qL2"
+          src="ConX_logo_black.png"
           alt="CONX"
           class="partner-logo"
         />
@@ -898,21 +898,21 @@
       <div class="carousel-wrapper" id="artistCarouselWrapper">
         <div class="carousel-track" id="artistCarouselTrack">
           <img
-            src="https://drive.google.com/uc?export=view&id=1R9uQM3gRTTiIZGWvX0BEemW_lsFKOhxt"
+            src="artist_joojaebum_1.png"
             alt="주재범 작가 사진 1"
           />
           <img
-            src="https://drive.google.com/uc?export=view&id=181aYUKUlhWsGJxY4e4UEX4fkrAyUnpLZ"
+            src="artist_joojaebum_2.jpg"
             alt="주재범 작가 사진 2"
           />
           <!-- Duplicate for seamless loop -->
           <img
-            src="https://drive.google.com/uc?export=view&id=1R9uQM3gRTTiIZGWvX0BEemW_lsFKOhxt"
+            src="artist_joojaebum_1.png"
             alt="주재범 작가 사진 1"
             aria-hidden="true"
           />
           <img
-            src="https://drive.google.com/uc?export=view&id=181aYUKUlhWsGJxY4e4UEX4fkrAyUnpLZ"
+            src="artist_joojaebum_2.jpg"
             alt="주재범 작가 사진 2"
             aria-hidden="true"
           />
@@ -950,9 +950,9 @@
         </div>
       </div>
       <div class="artwork-strip">
-        <img src="https://drive.google.com/uc?export=view&id=1CT9Pf35FDfBfW2W4_W0dlhiqU01oJ9q9" alt="계속되는 많고 작은 움직임 1" />
-        <img src="https://drive.google.com/uc?export=view&id=1yY4oll3y93ihhEb504J6FA-Y4IbB3c0k" alt="계속되는 많고 작은 움직임 2" />
-        <img src="https://drive.google.com/uc?export=view&id=1tZpBtfvG4FunHhdNrsrwXwqTnXi6Dtg4" alt="계속되는 많고 작은 움직임 3" />
+        <img src="art1_1.jpg" alt="계속되는 많고 작은 움직임 1" />
+        <img src="art1_2.jpg" alt="계속되는 많고 작은 움직임 2" />
+        <img src="art1_3.jpg" alt="계속되는 많고 작은 움직임 3" />
       </div>
     </div>
   </div>
@@ -978,9 +978,9 @@
         </div>
       </div>
       <div class="artwork-strip">
-        <img src="https://drive.google.com/uc?export=view&id=1ajIB7nt6IExfjoTfz8t-F5_FKtQPHaal" alt="작고도 큰 귀여움 1" />
-        <img src="https://drive.google.com/uc?export=view&id=1Av9jzMiYfKCFVfPJF5tIsLhApOKDWUbG" alt="작고도 큰 귀여움 2" />
-        <img src="https://drive.google.com/uc?export=view&id=1-EDr6dnDWwJ7CJR08LyaA7bLBdbdKwMK" alt="작고도 큰 귀여움 3" />
+        <img src="art2_1.jpg" alt="작고도 큰 귀여움 1" />
+        <img src="art2_2.jpg" alt="작고도 큰 귀여움 2" />
+        <img src="art2_3.jpg" alt="작고도 큰 귀여움 3" />
       </div>
     </div>
   </div>
@@ -1089,7 +1089,7 @@
         </div>
         <div class="arena-panel-right" style="display:flex; align-items:center;">
           <img
-            src="https://drive.google.com/uc?export=view&id=1Dobs9l7lFefR8w_oefpfCKPAL_M8RKKN"
+            src="chart_1.png"
             alt="순환형 RWA 다이어그램"
             class="rwa-image"
           />
@@ -1130,12 +1130,12 @@
   <!-- Crossfade image area -->
   <div class="exhibition-image-wrapper">
     <img
-      src="https://drive.google.com/uc?export=view&id=1qNctyH1riIGRxwZ6iI5VoiLz-pkE76rB"
+      src="artono_Image_1.png"
       alt="전시 전경 1"
       class="exhibition-img-base"
     />
     <img
-      src="https://drive.google.com/uc?export=view&id=1QAjFBgErWgJdf6olPeTZS3uA6KMbxfM3"
+      src="artono_Image_2.png"
       alt="전시 전경 2"
       class="exhibition-img-hover"
     />
@@ -1293,6 +1293,24 @@
         updateArrows();
       }
     }, { passive: true });
+
+    // Mouse wheel hijack: convert vertical scroll to horizontal panel change
+    const arenaEl = document.getElementById('section-arena');
+    let wheelLocked = false;
+    arenaEl.addEventListener('wheel', (e) => {
+      // Only intercept if not at first/last panel boundary
+      const atFirst = currentPanel === 0 && e.deltaY < 0;
+      const atLast  = currentPanel === totalPanels - 1 && e.deltaY > 0;
+      if (atFirst || atLast) return; // let page scroll normally
+
+      e.preventDefault();
+      if (wheelLocked) return;
+      wheelLocked = true;
+      setTimeout(() => { wheelLocked = false; }, 700);
+
+      if (e.deltaY > 0) scrollToPanel(currentPanel + 1);
+      else               scrollToPanel(currentPanel - 1);
+    }, { passive: false });
 
     updateArrows();
   })();
