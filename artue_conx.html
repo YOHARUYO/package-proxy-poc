@@ -248,43 +248,7 @@
       width: 100%;
       display: block;
     }
-    .highlight-308 {
-      position: absolute;
-      /* Approximate position for "308 ARTUE" area — adjust if needed */
-      top: 30%;
-      left: 38%;
-      width: 14%;
-      height: 12%;
-      border: 2px solid transparent;
-      box-shadow: 0 0 0 0 rgba(255,255,255,0);
-      transition: border-color 0.3s ease, box-shadow 0.3s ease;
-      cursor: pointer;
-    }
-    .highlight-308-label {
-      position: absolute;
-      bottom: -28px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #fff;
-      color: #000;
-      font-size: 0.65rem;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      padding: 3px 8px;
-      white-space: nowrap;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      pointer-events: none;
-    }
-    .exhibition-img-wrapper:hover .highlight-308,
-    .highlight-308:hover {
-      border-color: rgba(255,255,255,0.9);
-      box-shadow: 0 0 0 4px rgba(255,255,255,0.15), 0 0 20px rgba(255,255,255,0.3);
-    }
-    .exhibition-img-wrapper:hover .highlight-308-label,
-    .highlight-308:hover .highlight-308-label {
-      opacity: 1;
-    }
+
 
     /* Divider line */
     .divider {
@@ -753,10 +717,7 @@
             alt="ART OnO 2026 전경 2"
             style="width:100%; display:block; max-width:100%; position:absolute; top:0; left:0; z-index:2; opacity:0; object-fit:cover; height:100%; transition: opacity 0.6s ease;"
           />
-          <!-- 308 ARTUE hover overlay -->
-          <div class="highlight-308" id="highlight308" style="z-index:3;">
-            <span class="highlight-308-label">308 ARTUE</span>
-          </div>
+
         </div>
       </div>
 
@@ -830,6 +791,39 @@
         }
       });
     });
+
+    // V1 Artist slideshow
+    (function() {
+      var slidesEl = document.getElementById('artist-slides-v1');
+      var dots = document.querySelectorAll('.v1-slide-dot');
+      if (!slidesEl) return;
+      var cur = 0;
+      var total = slidesEl.children.length;
+      var timer = setInterval(function() { go((cur + 1) % total); }, 4000);
+      function go(idx) {
+        cur = idx;
+        slidesEl.style.transform = 'translateX(-' + (idx * 100) + '%)';
+        dots.forEach(function(d, i) { d.style.opacity = i === idx ? '1' : '0.4'; });
+      }
+      dots.forEach(function(d) {
+        d.addEventListener('click', function() {
+          clearInterval(timer);
+          go(parseInt(d.dataset.idx));
+          timer = setInterval(function() { go((cur + 1) % total); }, 4000);
+        });
+      });
+    })();
+
+    // V1 Exhibition crossfade
+    (function() {
+      var wrapper = document.getElementById('exhib-wrapper-v1');
+      if (!wrapper) return;
+      var imgs = wrapper.querySelectorAll('img');
+      if (imgs.length < 2) return;
+      var img2 = imgs[1];
+      wrapper.addEventListener('mouseenter', function() { img2.style.opacity = '1'; });
+      wrapper.addEventListener('mouseleave', function() { img2.style.opacity = '0'; });
+    })();
   </script>
 
 </body>
