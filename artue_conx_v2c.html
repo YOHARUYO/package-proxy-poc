@@ -393,7 +393,7 @@
         <div class="fade-in">
           <div style="display:flex; flex-direction:column; gap:12px;">
             <img src="artist_joojaebum_1.png" alt="주재범 작가 사진 1" style="width:100%; height:auto; display:block;" />
-            <img src="artist_joojaebum_2.png" alt="주재범 작가 사진 2" style="width:100%; height:auto; display:block;" />
+            <img src="artist_joojaebum_2.jpg" alt="주재범 작가 사진 2" style="width:100%; height:auto; display:block;" />
           </div>
         </div>
 
@@ -674,47 +674,49 @@
       });
     });
 
-    // Dot navigation
-    const dotItems = document.querySelectorAll('.dot-item');
-    const sectionIds = ['section-intro','section-partners','section-artist','section-works','section-arena','section-exhibition'];
+    // Dot navigation + Exhibition crossfade
+    window.addEventListener('DOMContentLoaded', () => {
+      const dotItems = document.querySelectorAll('.dot-item');
+      const sectionIds = ['section-intro','section-partners','section-artist','section-works','section-arena','section-exhibition'];
 
-    dotItems.forEach(item => {
-      item.addEventListener('click', () => {
-        const el = document.getElementById(item.dataset.target);
-        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      dotItems.forEach(item => {
+        item.addEventListener('click', () => {
+          const el = document.getElementById(item.dataset.target);
+          if (el) el.scrollIntoView({ behavior: 'smooth' });
+        });
+        item.addEventListener('mouseenter', () => {
+          item.querySelector('.dot-tip').style.opacity = '1';
+        });
+        item.addEventListener('mouseleave', () => {
+          item.querySelector('.dot-tip').style.opacity = '0';
+        });
       });
-      item.addEventListener('mouseenter', () => {
-        item.querySelector('.dot-tip').style.opacity = '1';
-      });
-      item.addEventListener('mouseleave', () => {
-        item.querySelector('.dot-tip').style.opacity = '0';
-      });
-    });
 
-    function updateDots() {
-      const scrollY = window.scrollY + window.innerHeight / 2;
-      let activeIdx = 0;
-      sectionIds.forEach((id, i) => {
-        const el = document.getElementById(id);
-        if (el && el.offsetTop <= scrollY) activeIdx = i;
-      });
-      dotItems.forEach((item, i) => {
-        const circle = item.querySelector('.dot-circle');
-        circle.style.background = i === activeIdx ? '#fff' : 'transparent';
-      });
-    }
-    window.addEventListener('scroll', updateDots, { passive: true });
-    updateDots();
-
-    // Exhibition crossfade
-    const exhibWrapper = document.querySelector('#section-exhibition .fade-in[style*="cursor:pointer"]');
-    if (exhibWrapper) {
-      const img2 = exhibWrapper.querySelectorAll('img')[1];
-      if (img2) {
-        exhibWrapper.addEventListener('mouseenter', () => { img2.style.opacity = '1'; });
-        exhibWrapper.addEventListener('mouseleave', () => { img2.style.opacity = '0'; });
+      function updateDots() {
+        const scrollY = window.scrollY + window.innerHeight / 2;
+        let activeIdx = 0;
+        sectionIds.forEach((id, i) => {
+          const el = document.getElementById(id);
+          if (el && el.offsetTop <= scrollY) activeIdx = i;
+        });
+        dotItems.forEach((item, i) => {
+          const circle = item.querySelector('.dot-circle');
+          circle.style.background = i === activeIdx ? '#fff' : 'transparent';
+        });
       }
-    }
+      window.addEventListener('scroll', updateDots, { passive: true });
+      updateDots();
+
+      // Exhibition crossfade
+      const exhibWrapper = document.querySelector('#section-exhibition .fade-in[style*="cursor:pointer"]');
+      if (exhibWrapper) {
+        const img2 = exhibWrapper.querySelectorAll('img')[1];
+        if (img2) {
+          exhibWrapper.addEventListener('mouseenter', () => { img2.style.opacity = '1'; });
+          exhibWrapper.addEventListener('mouseleave', () => { img2.style.opacity = '0'; });
+        }
+      }
+    });
   </script>
 
 
