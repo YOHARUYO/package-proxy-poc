@@ -1,0 +1,1302 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ARTUE × CONX — Project JOO JAEBUM Arena</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts: Notable + Nanum Myeongjo + Gowun Batang + Noto Serif KR -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Notable&family=Nanum+Myeongjo:wght@400;700;800&family=Gowun+Batang:wght@400;700&family=Noto+Serif+KR:wght@300;900&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ─────────────── Base ─────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: #000;
+      color: #fff;
+      font-family: 'Gowun Batang', 'Noto Serif KR', serif;
+      font-size: 15px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* Font helpers */
+    .font-notable  { font-family: 'Notable', serif; }
+    .font-nanum    { font-family: 'Nanum Myeongjo', serif; }
+    .font-gowun    { font-family: 'Gowun Batang', serif; }
+
+    /* ─────────────── Thin rule ─────────────── */
+    .rule { border: none; border-top: 1px solid rgba(255,255,255,0.18); }
+    .rule-dark { border: none; border-top: 1px solid rgba(0,0,0,0.18); }
+
+    /* ─────────────── Section label ─────────────── */
+    .section-label {
+      font-family: 'Notable', serif;
+      font-size: 10px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      opacity: 0.45;
+    }
+
+    /* ══════════════════════════════════════
+       SECTION 1 — HERO
+    ══════════════════════════════════════ */
+    #section-intro {
+      height: 100vh;
+      background: #000;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 0 80px;
+      position: relative;
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .hero-eyebrow {
+      font-family: 'Notable', serif;
+      font-size: 11px;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      opacity: 0.5;
+      margin-bottom: 28px;
+    }
+
+    .hero-title {
+      font-family: 'Notable', serif;
+      font-size: clamp(42px, 7vw, 88px);
+      line-height: 1.0;
+      letter-spacing: -0.02em;
+      margin-bottom: 32px;
+      max-width: 900px;
+    }
+
+    .hero-subtitle {
+      font-family: 'Nanum Myeongjo', serif;
+      font-size: clamp(15px, 1.6vw, 19px);
+      opacity: 0.72;
+      margin-bottom: 48px;
+      max-width: 640px;
+      line-height: 1.65;
+    }
+
+    .hero-flow {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 40px;
+      font-family: 'Notable', serif;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      opacity: 0.55;
+    }
+    .hero-flow span.arrow { opacity: 0.35; }
+
+    .hero-body {
+      font-family: 'Gowun Batang', serif;
+      font-size: 14px;
+      line-height: 1.8;
+      opacity: 0.55;
+      max-width: 680px;
+    }
+
+    /* Scroll indicator */
+    .scroll-indicator {
+      position: absolute;
+      bottom: 36px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      opacity: 0.38;
+      font-family: 'Notable', serif;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+    .scroll-arrow {
+      width: 14px;
+      height: 14px;
+      border-right: 1px solid #fff;
+      border-bottom: 1px solid #fff;
+      transform: rotate(45deg);
+      animation: bounce-arrow 1.8s ease-in-out infinite;
+    }
+    @keyframes bounce-arrow {
+      0%, 100% { transform: rotate(45deg) translateY(0); opacity: 0.5; }
+      50%       { transform: rotate(45deg) translateY(6px); opacity: 1; }
+    }
+
+    /* ══════════════════════════════════════
+       SECTION 2 — PARTNERS
+    ══════════════════════════════════════ */
+    #section-partners {
+      background: #000;
+      padding: 100px 80px;
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .partners-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      margin-top: 64px;
+    }
+    .partner-cell {
+      padding: 48px 0;
+      border-top: 1px solid rgba(255,255,255,0.18);
+    }
+    .partner-cell:nth-child(2) {
+      padding-left: 60px;
+      border-left: 1px solid rgba(255,255,255,0.18);
+    }
+
+    .partner-logo {
+      height: 48px;
+      width: auto;
+      filter: invert(1) brightness(2);
+      margin-bottom: 24px;
+      display: block;
+    }
+
+    .partner-name {
+      font-family: 'Notable', serif;
+      font-size: 18px;
+      letter-spacing: 0.06em;
+      margin-bottom: 6px;
+    }
+    .partner-tagline {
+      font-family: 'Nanum Myeongjo', serif;
+      font-size: 12px;
+      opacity: 0.5;
+      letter-spacing: 0.05em;
+      margin-bottom: 20px;
+    }
+    .partner-body {
+      font-family: 'Gowun Batang', serif;
+      font-size: 14px;
+      line-height: 1.85;
+      opacity: 0.65;
+      max-width: 420px;
+    }
+
+    /* ══════════════════════════════════════
+       SECTION 3 — ARTIST
+    ══════════════════════════════════════ */
+    #section-artist {
+      background: #fff;
+      color: #000;
+      padding: 100px 80px;
+      border-bottom: 1px solid rgba(0,0,0,0.12);
+    }
+
+    .artist-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      margin-top: 64px;
+    }
+
+    .artist-number {
+      font-family: 'Notable', serif;
+      font-size: 72px;
+      line-height: 1;
+      opacity: 0.07;
+      margin-bottom: -24px;
+    }
+
+    .artist-name-display {
+      font-family: 'Noto Serif KR', serif;
+      font-weight: 900;
+      font-size: clamp(36px, 5vw, 64px);
+      line-height: 1.1;
+      margin-bottom: 12px;
+    }
+
+    .artist-name-en {
+      font-family: 'Notable', serif;
+      font-size: 13px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      opacity: 0.4;
+      margin-bottom: 32px;
+    }
+
+    .artist-bio {
+      font-family: 'Gowun Batang', serif;
+      font-size: 15px;
+      line-height: 1.85;
+      opacity: 0.7;
+      margin-bottom: 32px;
+    }
+
+    .artist-links {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 48px;
+    }
+    .artist-links a {
+      font-family: 'Notable', serif;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #000;
+      text-decoration: none;
+      opacity: 0.5;
+      transition: opacity 0.2s;
+      border-bottom: 1px solid rgba(0,0,0,0.2);
+      padding-bottom: 6px;
+    }
+    .artist-links a:hover { opacity: 1; }
+
+    /* Artist Carousel */
+    .carousel-label {
+      font-family: 'Notable', serif;
+      font-size: 10px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      opacity: 0.4;
+      margin-bottom: 16px;
+    }
+    .carousel-wrapper {
+      overflow: hidden;
+      position: relative;
+    }
+    .carousel-track {
+      display: flex;
+      gap: 16px;
+      transition: transform 0.7s ease-in-out;
+    }
+    .carousel-track img {
+      height: 400px;
+      width: auto;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+
+    /* ══════════════════════════════════════
+       SECTION 4 — WORKS
+    ══════════════════════════════════════ */
+    #section-works {
+      background: #000;
+      padding: 100px 80px;
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .work-item {
+      margin-top: 72px;
+      border-top: 1px solid rgba(255,255,255,0.18);
+      padding-top: 48px;
+    }
+
+    .work-number {
+      font-family: 'Notable', serif;
+      font-size: 64px;
+      line-height: 1;
+      opacity: 0.07;
+      margin-bottom: -12px;
+    }
+
+    .work-layout {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 60px;
+      align-items: start;
+    }
+
+    .work-title-kr {
+      font-family: 'Noto Serif KR', serif;
+      font-weight: 900;
+      font-size: clamp(20px, 2.5vw, 30px);
+      line-height: 1.25;
+      margin-bottom: 8px;
+    }
+    .work-title-en {
+      font-family: 'Notable', serif;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      opacity: 0.4;
+      margin-bottom: 16px;
+    }
+    .work-meta {
+      font-family: 'Gowun Batang', serif;
+      font-size: 12px;
+      opacity: 0.4;
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+    .work-desc {
+      font-family: 'Gowun Batang', serif;
+      font-size: 14px;
+      line-height: 1.85;
+      opacity: 0.65;
+      margin-bottom: 28px;
+    }
+    .work-links {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .work-links a {
+      font-family: 'Notable', serif;
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #fff;
+      text-decoration: none;
+      opacity: 0.4;
+      transition: opacity 0.2s;
+    }
+    .work-links a:hover { opacity: 1; }
+
+    /* Artwork image strip */
+    .artwork-strip {
+      overflow-x: auto;
+      display: flex;
+      gap: 12px;
+      background: #111;
+      padding: 0;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+    }
+    .artwork-strip::-webkit-scrollbar { height: 3px; }
+    .artwork-strip::-webkit-scrollbar-track { background: #111; }
+    .artwork-strip::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); }
+    .artwork-strip img {
+      height: 480px;
+      width: auto;
+      object-fit: contain;
+      background: #111;
+      flex-shrink: 0;
+      scroll-snap-align: start;
+    }
+
+    /* ══════════════════════════════════════
+       SECTION 5 — ARENA (Horizontal scroll)
+    ══════════════════════════════════════ */
+    #section-arena {
+      position: relative;
+    }
+
+    .arena-scroll-container {
+      width: 100%;
+      overflow-x: auto;
+      display: flex;
+      flex-direction: row;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .arena-scroll-container::-webkit-scrollbar { display: none; }
+
+    .arena-panel {
+      min-width: 100vw;
+      height: 100vh;
+      flex-shrink: 0;
+      scroll-snap-align: start;
+      display: flex;
+      align-items: center;
+      padding: 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .arena-panel--black { background: #000; color: #fff; }
+    .arena-panel--white { background: #fff; color: #000; }
+
+    .arena-panel-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .arena-panel-left {}
+    .arena-panel-right {}
+
+    .arena-panel-number {
+      font-family: 'Notable', serif;
+      font-size: 80px;
+      line-height: 1;
+      opacity: 0.07;
+      margin-bottom: -20px;
+    }
+
+    .arena-panel-label {
+      font-family: 'Notable', serif;
+      font-size: 10px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      opacity: 0.4;
+      margin-bottom: 20px;
+    }
+
+    .arena-panel-title {
+      font-family: 'Notable', serif;
+      font-size: clamp(28px, 4vw, 52px);
+      line-height: 1.1;
+      margin-bottom: 28px;
+      letter-spacing: -0.01em;
+    }
+
+    .arena-panel-title-kr {
+      font-family: 'Noto Serif KR', serif;
+      font-weight: 900;
+      font-size: clamp(22px, 3vw, 36px);
+      line-height: 1.2;
+      margin-bottom: 28px;
+    }
+
+    .arena-panel-body {
+      font-family: 'Gowun Batang', serif;
+      font-size: 14px;
+      line-height: 1.85;
+      opacity: 0.65;
+      margin-bottom: 24px;
+    }
+
+    .arena-panel-body.dark { opacity: 0.7; }
+
+    .arena-questions {
+      margin: 20px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .arena-question {
+      font-family: 'Notable', serif;
+      font-size: 13px;
+      letter-spacing: 0.04em;
+      line-height: 1.5;
+      padding-left: 16px;
+      border-left: 1px solid currentColor;
+      opacity: 0.5;
+    }
+
+    .arena-panel-link a {
+      font-family: 'Notable', serif;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: inherit;
+      opacity: 0.45;
+      transition: opacity 0.2s;
+      border-bottom: 1px solid currentColor;
+      padding-bottom: 2px;
+    }
+    .arena-panel-link a:hover { opacity: 1; }
+
+    /* Panel nav arrows */
+    .arena-nav-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: 1px solid rgba(128,128,128,0.3);
+      color: inherit;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-family: 'Notable', serif;
+      font-size: 18px;
+      opacity: 0.5;
+      transition: opacity 0.2s;
+      z-index: 10;
+    }
+    .arena-nav-btn:hover { opacity: 1; }
+    .arena-nav-prev { left: 24px; }
+    .arena-nav-next { right: 24px; }
+
+    /* Dot progress indicator */
+    .arena-dots {
+      position: absolute;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 10px;
+      z-index: 10;
+    }
+    .arena-dot {
+      width: 6px;
+      height: 6px;
+      border: 1px solid currentColor;
+      cursor: pointer;
+      opacity: 0.35;
+      transition: opacity 0.2s, background 0.2s;
+    }
+    .arena-dot.active {
+      opacity: 1;
+      background: currentColor;
+    }
+
+    /* RWA image */
+    .rwa-image {
+      max-width: 100%;
+      display: block;
+    }
+
+    /* ══════════════════════════════════════
+       SECTION 6 — EXHIBITION
+    ══════════════════════════════════════ */
+    #section-exhibition {}
+
+    .exhibition-title-area {
+      background: #fff;
+      color: #000;
+      padding: 80px 80px 60px;
+      border-bottom: 1px solid rgba(0,0,0,0.12);
+    }
+
+    .exhibition-heading-row {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-top: 40px;
+      gap: 40px;
+    }
+
+    .exhibition-title {
+      font-family: 'Notable', serif;
+      font-size: clamp(36px, 6vw, 80px);
+      line-height: 1.0;
+      letter-spacing: -0.02em;
+    }
+
+    .exhibition-meta {
+      text-align: right;
+    }
+    .exhibition-meta .venue {
+      font-family: 'Nanum Myeongjo', serif;
+      font-size: 14px;
+      opacity: 0.55;
+      line-height: 1.6;
+    }
+    .exhibition-meta a {
+      font-family: 'Notable', serif;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #000;
+      text-decoration: none;
+      opacity: 0.4;
+      transition: opacity 0.2s;
+      border-bottom: 1px solid rgba(0,0,0,0.3);
+      padding-bottom: 2px;
+    }
+    .exhibition-meta a:hover { opacity: 1; }
+
+    /* Crossfade image area */
+    .exhibition-image-wrapper {
+      position: relative;
+      width: 100%;
+      cursor: pointer;
+      overflow: hidden;
+      background: #111;
+      line-height: 0;
+    }
+    .exhibition-image-wrapper img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .exhibition-img-base {
+      position: relative;
+      z-index: 1;
+    }
+    .exhibition-img-hover {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+      opacity: 0;
+      transition: opacity 0.6s ease;
+      object-fit: cover;
+    }
+    .exhibition-image-wrapper:hover .exhibition-img-hover {
+      opacity: 1;
+    }
+
+    /* ══════════════════════════════════════
+       DOT NAVIGATION (Fixed Right)
+    ══════════════════════════════════════ */
+    #dot-nav {
+      position: fixed;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      z-index: 1000;
+      mix-blend-mode: difference;
+    }
+
+    .dot-nav-item {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      cursor: pointer;
+    }
+
+    .dot-nav-circle {
+      width: 8px;
+      height: 8px;
+      border: 1px solid #fff;
+      background: transparent;
+      flex-shrink: 0;
+      transition: background 0.25s;
+      cursor: pointer;
+    }
+
+    .dot-nav-item.active .dot-nav-circle {
+      background: #fff;
+    }
+
+    .dot-nav-tooltip {
+      position: absolute;
+      right: 18px;
+      font-family: 'Notable', serif;
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #fff;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s;
+      background: transparent;
+      padding-right: 4px;
+    }
+
+    .dot-nav-item:hover .dot-nav-tooltip {
+      opacity: 1;
+    }
+
+    /* ══════════════════════════════════════
+       FOOTER
+    ══════════════════════════════════════ */
+    footer {
+      background: #000;
+      color: #fff;
+      padding: 48px 80px;
+      border-top: 1px solid rgba(255,255,255,0.12);
+    }
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer-brand {
+      font-family: 'Notable', serif;
+      font-size: 13px;
+      letter-spacing: 0.15em;
+      opacity: 0.4;
+    }
+    .footer-copy {
+      font-family: 'Gowun Batang', serif;
+      font-size: 11px;
+      opacity: 0.25;
+    }
+
+    /* ══════════════════════════════════════
+       Utility
+    ══════════════════════════════════════ */
+    a { text-decoration: none; }
+
+    @media (max-width: 768px) {
+      #section-intro,
+      #section-partners,
+      #section-artist,
+      #section-works,
+      #section-exhibition .exhibition-title-area { padding: 60px 24px; }
+      .partners-grid,
+      .artist-layout,
+      .work-layout,
+      .arena-panel-inner { grid-template-columns: 1fr; }
+      .partner-cell:nth-child(2) { padding-left: 0; border-left: none; }
+      .arena-panel { padding: 40px 24px; }
+      .exhibition-heading-row { flex-direction: column; align-items: flex-start; }
+      #dot-nav { display: none; }
+      footer { padding: 40px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════
+     DOT NAVIGATION
+══════════════════════════════════════ -->
+<nav id="dot-nav" aria-label="Page sections">
+  <div class="dot-nav-item active" data-target="section-intro">
+    <span class="dot-nav-tooltip">Intro</span>
+    <div class="dot-nav-circle"></div>
+  </div>
+  <div class="dot-nav-item" data-target="section-partners">
+    <span class="dot-nav-tooltip">Partners</span>
+    <div class="dot-nav-circle"></div>
+  </div>
+  <div class="dot-nav-item" data-target="section-artist">
+    <span class="dot-nav-tooltip">Artist</span>
+    <div class="dot-nav-circle"></div>
+  </div>
+  <div class="dot-nav-item" data-target="section-works">
+    <span class="dot-nav-tooltip">Works</span>
+    <div class="dot-nav-circle"></div>
+  </div>
+  <div class="dot-nav-item" data-target="section-arena">
+    <span class="dot-nav-tooltip">Arena</span>
+    <div class="dot-nav-circle"></div>
+  </div>
+  <div class="dot-nav-item" data-target="section-exhibition">
+    <span class="dot-nav-tooltip">Exhibition</span>
+    <div class="dot-nav-circle"></div>
+  </div>
+</nav>
+
+
+<!-- ══════════════════════════════════════
+     SECTION 1 — HERO
+══════════════════════════════════════ -->
+<section id="section-intro">
+  <div class="hero-eyebrow">ARTUE × CONX</div>
+
+  <h1 class="hero-title">
+    Project<br />JOO JAEBUM<br />Arena
+  </h1>
+
+  <p class="hero-subtitle">
+    작품의 탄생부터 가치의 보존까지,<br />새로운 공동 창작의 미래를 질문하다.
+  </p>
+
+  <div class="hero-flow">
+    <span>커뮤니티의 상상</span>
+    <span class="arrow">→</span>
+    <span>AI를 통한 확장</span>
+    <span class="arrow">→</span>
+    <span>작가의 해석과 완성</span>
+  </div>
+
+  <p class="hero-body">
+    커뮤니티가 아이디어를 제안하는 과정에서 본인의 상상을 AI를 통해 자유롭게 표현이 가능했으며,
+    그 아이디어를 작가가 직접 현실에서 보고 만질 수 있는 작품으로 탄생시켰다.
+    더불어 작품의 권리와 가치를 다시 블록체인 디지털 인프라에 기록함으로써
+    예술 작품의 탄생과 거래 과정을 새로운 순환 구조로 엮어낸 프로젝트이다.
+  </p>
+
+  <div class="scroll-indicator">
+    <div class="scroll-arrow"></div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     SECTION 2 — PARTNERS
+══════════════════════════════════════ -->
+<section id="section-partners">
+  <div class="section-label">Partners</div>
+
+  <div class="partners-grid">
+    <!-- ARTUE -->
+    <div class="partner-cell">
+      <a href="https://artue.io/" target="_blank" rel="noopener">
+        <img
+          src="https://drive.google.com/uc?export=view&id=19xETOfmqMDNvRRUiJ0xwnnfQw4bCRJhR"
+          alt="ARTUE"
+          class="partner-logo"
+        />
+      </a>
+      <div class="partner-name">ARTUE</div>
+      <div class="partner-tagline">디지털과 현실을 연결하는 AI Art Platform</div>
+      <p class="partner-body">
+        주재범 아레나의 작품을 현실로 연결하는 가교. ARTUE(아르투)는 풍부한 작가 &amp; 작품 베이스를 기반으로
+        독자 개발 AI 기반 예술 추천 디스커버리 시스템을 제공한다.
+        이를 통해 디지털 환경에서 컬렉팅의 경험이 흩어지지 않는 새로운 예술 여정을 선사한다.
+      </p>
+    </div>
+
+    <!-- CONX -->
+    <div class="partner-cell">
+      <a href="https://conx.xyz/" target="_blank" rel="noopener">
+        <img
+          src="https://drive.google.com/uc?export=view&id=1PHB3Mog_6wsEUBgphYFsX099oJpk7qL2"
+          alt="CONX"
+          class="partner-logo"
+        />
+      </a>
+      <div class="partner-name">CONX</div>
+      <div class="partner-tagline">문화 금융 기술의 결합을 위한 신뢰 기반 Mainnet</div>
+      <p class="partner-body">
+        주재범 아레나의 작품의 가치를 기록하는 토대. CONX(콘엑스)는 CONX Origin이라는 기술을 통해
+        현실 작품을 블록체인 인프라에 기록하여 이후 권리 기록과 정산 구조를 자동화한다.
+        이를 통해 각 창작자에게 본인의 기여가 보존되고, 그 가치를 투명하게 보호받는 경험을 제공합니다.
+      </p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     SECTION 3 — ARTIST
+══════════════════════════════════════ -->
+<section id="section-artist">
+  <div class="section-label rule-dark" style="color:#000; padding-bottom:0;">Artist</div>
+
+  <div class="artist-layout">
+    <!-- Left: Info -->
+    <div>
+      <div class="artist-number">03</div>
+      <h2 class="artist-name-display">주재범</h2>
+      <div class="artist-name-en">JOO JAEBUM</div>
+
+      <p class="artist-bio">
+        주재범 작가는 픽셀이라는 가장 작은 디지털 단위를 자신만의 회화 언어로 확장해온 아티스트다.
+        그의 작업은 그리운 레트로 감성을 현대적인 감각으로 풀어내는 방식으로 이루어진다.
+        화면 위의 작은 점들은 그의 손을 거치며 기억과 도시, 감정과 시간의 풍경으로 다시 태어난다.
+        디지털 이미지에서 출발하지만, 결국 사람의 감각과 정서에 닿는 회화로 완성된다는 점에서
+        주재범의 작업은 오늘날 이미지 환경을 가장 섬세하게 비추는 방식 중 하나다.
+      </p>
+
+      <div class="artist-links">
+        <a href="https://artue.io/ko/artist/jaebum-joo" target="_blank" rel="noopener">
+          자세히 알아보기 →
+        </a>
+        <a href="https://www.instagram.com/joojaebum/" target="_blank" rel="noopener">
+          Instagram →
+        </a>
+        <a href="https://x.com/joojaebum" target="_blank" rel="noopener">
+          X →
+        </a>
+      </div>
+    </div>
+
+    <!-- Right: Carousel -->
+    <div>
+      <div class="carousel-label">작가 사진</div>
+      <div class="carousel-wrapper" id="artistCarouselWrapper">
+        <div class="carousel-track" id="artistCarouselTrack">
+          <img
+            src="https://drive.google.com/uc?export=view&id=1R9uQM3gRTTiIZGWvX0BEemW_lsFKOhxt"
+            alt="주재범 작가 사진 1"
+          />
+          <img
+            src="https://drive.google.com/uc?export=view&id=181aYUKUlhWsGJxY4e4UEX4fkrAyUnpLZ"
+            alt="주재범 작가 사진 2"
+          />
+          <!-- Duplicate for seamless loop -->
+          <img
+            src="https://drive.google.com/uc?export=view&id=1R9uQM3gRTTiIZGWvX0BEemW_lsFKOhxt"
+            alt="주재범 작가 사진 1"
+            aria-hidden="true"
+          />
+          <img
+            src="https://drive.google.com/uc?export=view&id=181aYUKUlhWsGJxY4e4UEX4fkrAyUnpLZ"
+            alt="주재범 작가 사진 2"
+            aria-hidden="true"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     SECTION 4 — WORKS
+══════════════════════════════════════ -->
+<section id="section-works">
+  <div class="section-label">Works</div>
+
+  <!-- Work 1 -->
+  <div class="work-item">
+    <div class="work-number">01</div>
+    <div class="work-layout">
+      <div>
+        <h3 class="work-title-kr">계속되는 많고 작은 움직임</h3>
+        <div class="work-title-en">A Flow of Countless Small Movements</div>
+        <p class="work-meta">
+          Acrylic on cut and Assembled Wood, Birch Wood frame<br />
+          148 × 85 cm
+        </p>
+        <p class="work-desc">
+          서울의 풍경 위로 번져 나가는 붉은 빛으로 새로운 시작을 표현하고,
+          도시의 밤을 감싸는 푸른 톤으로 우리가 지나온 기억과 감정을 조용히 붙잡아 둔다.
+        </p>
+        <div class="work-links">
+          <a href="https://arena.conx.xyz/joojaebum/submission?id=FR3WCQq-ZEN-HFO4GKProA" target="_blank" rel="noopener">아이디어 원본 →</a>
+          <a href="https://artue.io/ko/artist/jaebum-joo" target="_blank" rel="noopener">작품 상세 보기 →</a>
+        </div>
+      </div>
+      <div class="artwork-strip">
+        <img src="https://drive.google.com/uc?export=view&id=1CT9Pf35FDfBfW2W4_W0dlhiqU01oJ9q9" alt="계속되는 많고 작은 움직임 1" />
+        <img src="https://drive.google.com/uc?export=view&id=1yY4oll3y93ihhEb504J6FA-Y4IbB3c0k" alt="계속되는 많고 작은 움직임 2" />
+        <img src="https://drive.google.com/uc?export=view&id=1tZpBtfvG4FunHhdNrsrwXwqTnXi6Dtg4" alt="계속되는 많고 작은 움직임 3" />
+      </div>
+    </div>
+  </div>
+
+  <!-- Work 2 -->
+  <div class="work-item">
+    <div class="work-number">02</div>
+    <div class="work-layout">
+      <div>
+        <h3 class="work-title-kr">작고도 큰 귀여움</h3>
+        <div class="work-title-en">Small Yet Great Cuteness</div>
+        <p class="work-meta">
+          Acrylic and Velvet on Cut Wood<br />
+          56 × 47 cm
+        </p>
+        <p class="work-desc">
+          디지털 풍의 픽셀과 스웨이드 소재의 질감으로 사랑스러운 친구를 표현하며,
+          최소한의 선으로 최대한의 감각을 만들어낸 작품.
+        </p>
+        <div class="work-links">
+          <a href="https://arena.conx.xyz/joojaebum/submission?id=QNLachJ82t-Gz0Q5B987QA" target="_blank" rel="noopener">아이디어 원본 →</a>
+          <a href="https://artue.io/ko/artist/jaebum-joo" target="_blank" rel="noopener">작품 상세 보기 →</a>
+        </div>
+      </div>
+      <div class="artwork-strip">
+        <img src="https://drive.google.com/uc?export=view&id=1ajIB7nt6IExfjoTfz8t-F5_FKtQPHaal" alt="작고도 큰 귀여움 1" />
+        <img src="https://drive.google.com/uc?export=view&id=1Av9jzMiYfKCFVfPJF5tIsLhApOKDWUbG" alt="작고도 큰 귀여움 2" />
+        <img src="https://drive.google.com/uc?export=view&id=1-EDr6dnDWwJ7CJR08LyaA7bLBdbdKwMK" alt="작고도 큰 귀여움 3" />
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     SECTION 5 — ARENA (Horizontal scroll)
+══════════════════════════════════════ -->
+<section id="section-arena" style="position:relative;">
+
+  <!-- Nav arrows — rendered outside scroll container, positioned via JS -->
+  <button class="arena-nav-btn arena-nav-prev" id="arenaPrev" aria-label="Previous panel">&#8249;</button>
+  <button class="arena-nav-btn arena-nav-next" id="arenaNext" aria-label="Next panel">&#8250;</button>
+
+  <div class="arena-scroll-container" id="arenaScroll">
+
+    <!-- Panel 1 — Arena Overview — BLACK -->
+    <div class="arena-panel arena-panel--black" id="arena-panel-1">
+      <div class="arena-panel-inner">
+        <div class="arena-panel-left">
+          <div class="arena-panel-number">01</div>
+          <div class="arena-panel-label">Arena Overview</div>
+          <h2 class="arena-panel-title">JOO JAEBUM<br />Arena</h2>
+          <p class="arena-panel-body">
+            주재범 아레나는 커뮤니티가 제안한 아이디어가 작가의 손을 통해 실제 작품으로 탄생하고,
+            그 이후 작품의 권리와 가치가 다시 새로운 순환 구조 안으로 연결되는 과정을 실험한
+            공동 창작 프로젝트다.
+          </p>
+        </div>
+        <div class="arena-panel-right">
+          <p class="arena-panel-body" style="margin-top: 80px; font-size:13px; opacity:0.5;">
+            340개가 넘는 아이디어가 모인 열린 창작의 장.<br /><br />
+            참여자들은 주재범 작가가 제시한 테마를 각자의 시선으로 해석해 픽셀 아트 아이디어를 제안했고,
+            선별된 아이디어는 작가의 조형 언어를 만나 현실의 작품으로 확장되었다.
+            하나의 작품이 완성되기까지의 과정 안에 작가 개인의 표현만이 아니라,
+            커뮤니티의 상상력과 기술, 그리고 새로운 협업 방식에 대한 질문이 함께 담겼다.
+          </p>
+        </div>
+      </div>
+
+      <!-- Dots -->
+      <div class="arena-dots" id="arenaDots" style="color:#fff;">
+        <div class="arena-dot active" data-panel="0"></div>
+        <div class="arena-dot" data-panel="1"></div>
+        <div class="arena-dot" data-panel="2"></div>
+      </div>
+    </div>
+
+    <!-- Panel 2 — AI × Art — WHITE -->
+    <div class="arena-panel arena-panel--white" id="arena-panel-2">
+      <div class="arena-panel-inner">
+        <div class="arena-panel-left">
+          <div class="arena-panel-number" style="color:#000;">02</div>
+          <div class="arena-panel-label" style="color:#000;">AI × Art</div>
+          <h2 class="arena-panel-title" style="color:#000;">AI × Art<br />'JOO JAEBUM<br />Arena'</h2>
+        </div>
+        <div class="arena-panel-right" style="margin-top:80px;">
+          <p class="arena-panel-body" style="color:#000; opacity:0.65; font-size:14px;">
+            주재범 아레나에서 AI는 더 많은 사람이 창작의 문턱을 넘어설 수 있도록 돕는
+            새로운 인터페이스의 역할을 한다. 참여자들은 AI를 활용하여 이미지를 발전시키거나
+            시각적 초안을 구체화할 수 있었다. 이후 작가는 그 아이디어를 자신의 언어로 읽고,
+            선택하고, 밀도 있게 발전시켜 현실의 회화 작품으로 탄생시켰다.
+          </p>
+
+          <div class="arena-questions" style="color:#000;">
+            <div class="arena-question">Can AI and humans truly coexist?</div>
+            <div class="arena-question">What does the future that humans and AI create together look like?</div>
+            <div class="arena-question">What roles will humans and AI each play within it?</div>
+          </div>
+
+          <p class="arena-panel-body" style="color:#000; opacity:0.45; font-size:13px; margin-top:20px;">
+            마치 '인터스텔라'에서 책을 떨어뜨리면서 과거에 미래를 향한 메시지를 남긴 것처럼,
+            주재범 아레나는 새로운 형식으로 파문을 일으켜 예술 분야의 미래에 대한 의문을 던지고
+            사람들의 상상력을 자극하는 초석이 되었다.
+          </p>
+        </div>
+      </div>
+
+      <!-- Dots -->
+      <div class="arena-dots" style="color:#000;">
+        <div class="arena-dot" data-panel="0"></div>
+        <div class="arena-dot active" data-panel="1"></div>
+        <div class="arena-dot" data-panel="2"></div>
+      </div>
+    </div>
+
+    <!-- Panel 3 — RWA — BLACK -->
+    <div class="arena-panel arena-panel--black" id="arena-panel-3">
+      <div class="arena-panel-inner">
+        <div class="arena-panel-left">
+          <div class="arena-panel-number">03</div>
+          <div class="arena-panel-label">RWA</div>
+          <h2 class="arena-panel-title" style="font-size: clamp(22px, 3vw, 38px); line-height:1.15;">
+            World's First<br />Circular RWA<br />Project
+          </h2>
+          <p class="arena-panel-body" style="font-size:13px;">
+            주재범 아레나는 예술 분야에서 순환형 RWA의 가능성을 보여준 프로젝트다.
+            디지털 공간의 아이디어 → 현실의 작품 → 온체인 기록과 정산.
+            아이디어가 자산이 되어가는 과정 자체를 설계했으며,
+            가상 세계에서 출발한 것을 실물 경제로 옮겨왔다는 점에서 특별하다.
+          </p>
+          <div class="arena-panel-link" style="margin-top:24px;">
+            <a href="https://arena.conx.xyz/joojaebum" target="_blank" rel="noopener">Arena 사이트 방문 →</a>
+          </div>
+        </div>
+        <div class="arena-panel-right" style="display:flex; align-items:center;">
+          <img
+            src="https://drive.google.com/uc?export=view&id=1Dobs9l7lFefR8w_oefpfCKPAL_M8RKKN"
+            alt="순환형 RWA 다이어그램"
+            class="rwa-image"
+          />
+        </div>
+      </div>
+
+      <!-- Dots -->
+      <div class="arena-dots" style="color:#fff;">
+        <div class="arena-dot" data-panel="0"></div>
+        <div class="arena-dot" data-panel="1"></div>
+        <div class="arena-dot active" data-panel="2"></div>
+      </div>
+    </div>
+
+  </div><!-- /arena-scroll-container -->
+</section>
+
+
+<!-- ══════════════════════════════════════
+     SECTION 6 — EXHIBITION
+══════════════════════════════════════ -->
+<section id="section-exhibition">
+
+  <!-- Title area — WHITE bg -->
+  <div class="exhibition-title-area">
+    <div class="section-label" style="color:#000;">Exhibition</div>
+    <div class="exhibition-heading-row">
+      <h2 class="exhibition-title">ART OnO 2026</h2>
+      <div class="exhibition-meta">
+        <p class="venue">Gallery ARTUE, Room 308</p>
+        <a href="https://art-ono.com/" target="_blank" rel="noopener" style="display:block; margin-top:10px;">
+          art-ono.com →
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Crossfade image area -->
+  <div class="exhibition-image-wrapper">
+    <img
+      src="https://drive.google.com/uc?export=view&id=1qNctyH1riIGRxwZ6iI5VoiLz-pkE76rB"
+      alt="전시 전경 1"
+      class="exhibition-img-base"
+    />
+    <img
+      src="https://drive.google.com/uc?export=view&id=1QAjFBgErWgJdf6olPeTZS3uA6KMbxfM3"
+      alt="전시 전경 2"
+      class="exhibition-img-hover"
+    />
+  </div>
+
+</section>
+
+
+<!-- ══════════════════════════════════════
+     FOOTER
+══════════════════════════════════════ -->
+<footer>
+  <div class="footer-inner">
+    <span class="footer-brand">ARTUE × CONX — Project JOO JAEBUM Arena</span>
+    <span class="footer-copy">© 2026 ARTUE &amp; CONX. All rights reserved.</span>
+  </div>
+</footer>
+
+
+<!-- ══════════════════════════════════════
+     SCRIPTS
+══════════════════════════════════════ -->
+<script>
+  /* ──────────────────────────────────────
+     1. DOT NAVIGATION
+  ────────────────────────────────────── */
+  const sections = [
+    'section-intro',
+    'section-partners',
+    'section-artist',
+    'section-works',
+    'section-arena',
+    'section-exhibition'
+  ];
+  const dotItems = document.querySelectorAll('.dot-nav-item');
+
+  dotItems.forEach(item => {
+    item.addEventListener('click', () => {
+      const target = document.getElementById(item.dataset.target);
+      if (target) target.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+
+  function updateActiveDot() {
+    const scrollY = window.scrollY + window.innerHeight / 3;
+    let activeIdx = 0;
+    sections.forEach((id, i) => {
+      const el = document.getElementById(id);
+      if (el && el.offsetTop <= scrollY) activeIdx = i;
+    });
+    dotItems.forEach((item, i) => {
+      item.classList.toggle('active', i === activeIdx);
+    });
+  }
+
+  window.addEventListener('scroll', updateActiveDot, { passive: true });
+  updateActiveDot();
+
+
+  /* ──────────────────────────────────────
+     2. ARTIST CAROUSEL
+  ────────────────────────────────────── */
+  (function() {
+    const wrapper = document.getElementById('artistCarouselWrapper');
+    const track   = document.getElementById('artistCarouselTrack');
+    if (!wrapper || !track) return;
+
+    let currentIndex = 0;
+    let paused = false;
+    let interval;
+
+    function getImgWidth() {
+      const imgs = track.querySelectorAll('img');
+      if (imgs.length === 0) return 0;
+      return imgs[0].offsetWidth + 16; // 16 = gap
+    }
+
+    function slide() {
+      if (paused) return;
+      const imgs = track.querySelectorAll('img');
+      const realCount = Math.floor(imgs.length / 2); // clones are duplicated
+      currentIndex = (currentIndex + 1) % realCount;
+      track.style.transform = `translateX(-${currentIndex * getImgWidth()}px)`;
+    }
+
+    function startInterval() {
+      interval = setInterval(slide, 3000);
+    }
+
+    wrapper.addEventListener('mouseenter', () => { paused = true; });
+    wrapper.addEventListener('mouseleave', () => { paused = false; });
+
+    // Wait for images to load before starting
+    window.addEventListener('load', startInterval);
+    // fallback
+    setTimeout(startInterval, 1500);
+  })();
+
+
+  /* ──────────────────────────────────────
+     3. ARENA HORIZONTAL SCROLL
+  ────────────────────────────────────── */
+  (function() {
+    const container = document.getElementById('arenaScroll');
+    const prevBtn   = document.getElementById('arenaPrev');
+    const nextBtn   = document.getElementById('arenaNext');
+    if (!container || !prevBtn || !nextBtn) return;
+
+    let currentPanel = 0;
+    const totalPanels = 3;
+
+    // Position arrow buttons relative to #section-arena
+    const arenaSection = document.getElementById('section-arena');
+    // They're already in the section via CSS position: absolute (in context of positioned parent)
+    // Section needs position: relative — it's already set via style attribute
+
+    function scrollToPanel(idx) {
+      idx = Math.max(0, Math.min(idx, totalPanels - 1));
+      currentPanel = idx;
+      container.scrollTo({ left: idx * window.innerWidth, behavior: 'smooth' });
+      updateDots();
+      updateArrows();
+    }
+
+    function updateDots() {
+      document.querySelectorAll('.arena-dot').forEach(dot => {
+        dot.classList.toggle('active', parseInt(dot.dataset.panel) === currentPanel);
+      });
+    }
+
+    function updateArrows() {
+      prevBtn.style.opacity = currentPanel === 0 ? '0.15' : '0.5';
+      nextBtn.style.opacity = currentPanel === totalPanels - 1 ? '0.15' : '0.5';
+      // Color adapt
+      const isDark = currentPanel !== 1;
+      prevBtn.style.color = isDark ? '#fff' : '#000';
+      prevBtn.style.borderColor = isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)';
+      nextBtn.style.color = isDark ? '#fff' : '#000';
+      nextBtn.style.borderColor = isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)';
+    }
+
+    prevBtn.addEventListener('click', () => scrollToPanel(currentPanel - 1));
+    nextBtn.addEventListener('click', () => scrollToPanel(currentPanel + 1));
+
+    document.querySelectorAll('.arena-dot').forEach(dot => {
+      dot.addEventListener('click', () => scrollToPanel(parseInt(dot.dataset.panel)));
+    });
+
+    // Detect manual scroll to update state
+    container.addEventListener('scroll', () => {
+      const idx = Math.round(container.scrollLeft / window.innerWidth);
+      if (idx !== currentPanel) {
+        currentPanel = idx;
+        updateDots();
+        updateArrows();
+      }
+    }, { passive: true });
+
+    updateArrows();
+  })();
+</script>
+
+</body>
+</html>
