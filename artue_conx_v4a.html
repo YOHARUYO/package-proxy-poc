@@ -742,7 +742,7 @@
 
       <div class="reveal" style="margin-bottom:72px;">
         <span id="i18n-label-artworks" style="font-family:'Outfit','Pretendard',system-ui,sans-serif; font-size:0.7rem; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; color:#A3A3A3; display:block; margin-bottom:12px;">Artworks</span>
-        <h2 style="font-family:'Outfit','Pretendard',sans-serif;font-size:clamp(2.5rem,6vw,5rem);font-weight:900;line-height:0.95;letter-spacing:-0.04em;color:#1A1A1A;">작품</h2>
+        <h2 id="i18n-artworks-heading" style="font-family:'Outfit','Pretendard',sans-serif;font-size:clamp(2.5rem,6vw,5rem);font-weight:900;line-height:0.95;letter-spacing:-0.04em;color:#1A1A1A;">작품</h2>
       </div>
 
       <!-- Work 1: Bento Card -->
@@ -956,7 +956,7 @@
         </ul>
 
         <p style="font-size:clamp(0.9rem,1.5vw,1.05rem);line-height:1.85;color:#333333;margin-bottom:36px;" class="keep-all">
-          주재범 아레나는 아이디어가 자산이 되어가는 과정 자체를 설계했으며, 가상 세계에서 출발한 것을 실물 경제로 옮겨왔다는 점에서 특별하다. 본 아레나에서 제안된 '순환형 RWA'는 작품 이전의 아이디어, 작품이 완성되는 과정, 그리고 그 이후의 가치 분배까지 하나의 연결된 흐름으로 바라보는 방식을 세계 최초로 새롭게 제안한 것이다.
+          <span id="i18n-rwa-body-4">주재범 아레나는 아이디어가 자산이 되어가는 과정 자체를 설계했으며, 가상 세계에서 출발한 것을 실물 경제로 옮겨왔다는 점에서 특별하다. 본 아레나에서 제안된 '순환형 RWA'는 작품 이전의 아이디어, 작품이 완성되는 과정, 그리고 그 이후의 가치 분배까지 하나의 연결된 흐름으로 바라보는 방식을 세계 최초로 새롭게 제안한 것이다.</span>
         </p>
 
         <a href="https://arena.conx.xyz/joojaebum" target="_blank" rel="noopener" class="btn-amber">
@@ -1201,6 +1201,7 @@
         partners:`Partners`,
         artist:`Artist`,
         artworks:`Artworks`,
+        artworksHeading:`작품`,
         arena:`Arena`,
         exhibition:`Exhibition`,
         artistCta:`자세히 알아보기`,
@@ -1231,6 +1232,7 @@
         partners:`Partners`,
         artist:`Artist`,
         artworks:`Artworks`,
+        artworksHeading:`작품`,
         arena:`Arena`,
         exhibition:`Exhibition`,
         artistCta:`Learn More`,
@@ -1252,6 +1254,8 @@
         rwaList3:`The rights and value of that artwork are recorded and settled on-chain.`,
         exhibitionBody:`Works born through Project JOO JAEBUM Arena will be publicly exhibited for the first time at ART OnO 2026. Two painted works created together with the community, along with the story of the entire creative process, will unfold at SETEC 308 ARTUE.`,
         exhibitionBody2:`See for yourself how digital materiality, community and artist, AI and painting create a new artistic language at the intersection of their boundaries.`,
+        artworksHeading:`Artworks`,
+        rwaBody4:`JOO JAEBUM Arena designed the very process of ideas becoming assets, making it special for having moved something that started in the virtual world into the physical economy. The 'Circular RWA' proposed in this Arena is the world\'s first new proposal to view — as a single connected flow — the idea before the artwork, the process of the artwork being completed, and the distribution of value thereafter.`,
         arenaAIHeading:`AI × Art 'JOO JAEBUM Arena'`,
         artistHeading:`JOO JAEBUM`,
         workDesc1:`The work captures the appearance of a city formed by countless beings gathering as fragments in motion. The rhythm felt in that movement is expressed as pixel rhythm.`,
@@ -1489,6 +1493,8 @@
       if (t.rwaList3) updateText('i18n-rwa-list-3', t.rwaList3);
       if (t.exhibitionBody) update('i18n-exhib-body-1', t.exhibitionBody);
       if (t.exhibitionBody2) update('i18n-exhib-body-2', t.exhibitionBody2);
+      if (t.artworksHeading) update('i18n-artworks-heading', t.artworksHeading);
+      if (t.rwaBody4) update('i18n-rwa-body-4', t.rwaBody4);
       if (t.rwaHeading) update('i18n-rwa-heading', t.rwaHeading);
       if (t.rwaLabel) updateText('i18n-rwa-label', t.rwaLabel);
       if (t.arenaCta) updateText('i18n-arena-cta', t.arenaCta);
@@ -1511,6 +1517,8 @@
       if (t.arenaQ2) update('i18n-arena-q2', t.arenaQ2);
       if (t.arenaQ3) update('i18n-arena-q3', t.arenaQ3);
       if (t.rwaLabel) updateText('i18n-rwa-label', t.rwaLabel);
+      if (t.artworksHeading) update('i18n-artworks-heading', t.artworksHeading);
+      if (t.rwaBody4) update('i18n-rwa-body-4', t.rwaBody4);
       if (t.rwaHeading) update('i18n-rwa-heading', t.rwaHeading);
       if (t.arenaCta) updateText('i18n-arena-cta', t.arenaCta);
       if (t.exhibLabel) updateText('i18n-exhib-label', t.exhibLabel);
