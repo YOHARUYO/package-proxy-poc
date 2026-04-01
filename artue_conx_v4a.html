@@ -273,23 +273,10 @@
       position: relative;
       width: 100%;
     }
-    .artwork-strip::before,
-    .artwork-strip::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      width: 80px;
-      z-index: 10;
-      pointer-events: none;
-    }
-    .artwork-strip::before {
-      left: 0;
-      background: linear-gradient(to right, #F3F3F3 0%, transparent 100%);
-    }
-    .artwork-strip::after {
-      right: 0;
-      background: linear-gradient(to left, #F3F3F3 0%, transparent 100%);
+    /* CSS mask-image: 배경색 무관하게 양끝 자연스럽게 페이드 */
+    .artwork-strip {
+      -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+      mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
     }
     .artwork-strip-track {
       display: flex;
