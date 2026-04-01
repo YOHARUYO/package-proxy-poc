@@ -602,11 +602,11 @@
   <!-- ─────────────────────────────────────────
        SECTION 2: PARTNERS (BLACK)
   ───────────────────────────────────────── -->
-  <section id="partners" style="background:#000; color:#fff; padding: clamp(80px, 10vw, 120px) clamp(24px, 8vw, 120px); position:relative; overflow:hidden;">
+  <section id="partners" style="color:#fff; padding: clamp(80px, 10vw, 120px) clamp(24px, 8vw, 120px); position:relative; overflow:hidden;">
     <!-- Pixel grid background -->
-    <div id="pixel-grid-partners" aria-hidden="true" style="position:absolute; inset:0; display:grid; grid-template-columns: repeat(30, 1fr); gap:4px; padding:4px; pointer-events:none; z-index:0;"></div>
-    <!-- Dark overlay so content stays readable -->
-    <div style="position:absolute; inset:0; background:#000; opacity:0.7; pointer-events:none; z-index:1;"></div>
+    <div id="pixel-grid-partners" aria-hidden="true" style="position:absolute; inset:0; display:grid; grid-template-columns: repeat(40, 1fr); gap:3px; padding:3px; pointer-events:none; z-index:0;"></div>
+    <!-- Dark overlay -->
+    <div style="position:absolute; inset:0; background:rgba(0,0,0,0.7); pointer-events:none; z-index:1;"></div>
     <div style="max-width: 1200px; margin: 0 auto; position:relative; z-index:2;">
 
       <div class="fade-in" style="margin-bottom: 64px;">
@@ -1142,7 +1142,7 @@
     })();
 
     // ── Pixel grid partners background ──────────
-    buildPixelGrid('pixel-grid-partners', 30, 40);
+    buildPixelGrid('pixel-grid-partners', 40, 50);
 
     // ── Artist slideshow ────────────────────────
     (function() {
