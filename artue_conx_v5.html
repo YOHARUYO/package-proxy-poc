@@ -172,7 +172,7 @@
       font-size: 0.9rem;
       font-weight: 700;
       letter-spacing: 0.15em;
-      color: #aaa;
+      color: rgba(255,255,255,0.5);
       margin-bottom: 4px;
       text-transform: uppercase;
     }
@@ -624,8 +624,10 @@
   <!-- ─────────────────────────────────────────
        SECTION 1: HERO (SPLIT LAYOUT)
   ───────────────────────────────────────── -->
-  <section id="hero" style="background-image:url('back_1.png'); background-position:50% 50%; background-repeat:no-repeat; background-size:cover; color:#000; padding: clamp(120px, 15vw, 180px) clamp(24px, 8vw, 120px) clamp(80px, 10vw, 120px); min-height: 100dvh; display:flex; align-items:center;">
-    <div style="max-width: 1200px; margin: 0 auto; width:100%;">
+  <section id="hero" style="background-image:url('back_1.png'); background-position:50% 50%; background-repeat:no-repeat; background-size:cover; color:#fff; padding: clamp(120px, 15vw, 180px) clamp(24px, 8vw, 120px) clamp(80px, 10vw, 120px); min-height: 100dvh; display:flex; align-items:center; position:relative; overflow:hidden;">
+    <!-- Dim overlay -->
+    <div style="position:absolute; inset:0; background:rgba(0,0,0,0.7); pointer-events:none; z-index:0;"></div>
+    <div style="max-width: 1200px; margin: 0 auto; width:100%; position:relative; z-index:2;">
       <div class="hero-split">
 
         <!-- LEFT: Text content -->
@@ -641,7 +643,7 @@
           </div>
 
           <div class="fade-in fade-in-delay-2" style="max-width: 540px; margin-bottom: 56px;">
-            <p style="font-size: clamp(1rem, 2vw, 1.3rem); font-weight: 500; line-height: 1.65; color: #333; margin: 0; word-break: keep-all;">
+            <p style="font-size: clamp(1rem, 2vw, 1.3rem); font-weight: 500; line-height: 1.65; color: rgba(255,255,255,0.9); margin: 0; word-break: keep-all;">
               작품의 탄생부터 가치의 보존까지,<br />새로운 공동 창작의 미래를 질문하다.
             </p>
           </div>
@@ -668,7 +670,7 @@
 
           <!-- Body Text -->
           <div class="fade-in fade-in-delay-4" style="max-width: 600px;">
-            <p class="body-text" style="color: #444; margin: 0;">
+            <p class="body-text" style="color: rgba(255,255,255,0.75); margin: 0;">
               커뮤니티가 아이디어를 제안하는 과정에서 본인의 상상을 AI를 통해 자유롭게 표현이 가능했으며, 그 아이디어를 작가가 직접 현실에서 보고 만질 수 있는 작품으로 탄생시켰다. 더불어 작품의 권리와 가치를 다시 블록체인 디지털 인프라에 기록함으로써 예술 작품의 탄생과 거래 과정을 새로운 순환 구조로 엮어낸 프로젝트이다.
             </p>
           </div>
