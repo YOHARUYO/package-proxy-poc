@@ -602,6 +602,104 @@
     .font-display {
       font-family: 'Outfit', 'Pretendard', system-ui, sans-serif;
     }
+
+    /* ── 전체 반응형 패치 ─────────────────────── */
+    @media (max-width: 768px) {
+
+      /* Nav: 플로팅 pill → 상단 고정 바 */
+      nav {
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        transform: none !important;
+        border-radius: 0 !important;
+        padding: 12px 20px !important;
+        gap: 16px !important;
+        justify-content: space-between !important;
+        animation: none !important;
+        width: 100% !important;
+      }
+      .nav-link { display: none; }
+
+      /* Hero 타이포 축소 */
+      .hero-headline {
+        font-size: clamp(2rem, 10vw, 3.5rem) !important;
+      }
+      .hero-label {
+        font-size: 1rem !important;
+        letter-spacing: 0.15em !important;
+      }
+      /* Project span */
+      #hero .hero-headline span {
+        font-size: 2rem !important;
+      }
+
+      /* Works: 이미지 위 / 텍스트 아래 (column-reverse) */
+      #works .fade-in[style*="grid-template-columns"] {
+        grid-template-columns: 1fr !important;
+        gap: 24px !important;
+      }
+      #works .fade-in[style*="grid-template-columns"] > div:last-child {
+        order: -1;
+      }
+      #works .art-slider {
+        height: 280px !important;
+      }
+
+      /* Arena flow: 세로 방향 */
+      .arena-flow-container {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 8px !important;
+        max-width: 100% !important;
+      }
+      .arena-flow-connector {
+        transform: rotate(90deg) !important;
+        margin: 4px 0 4px 20px !important;
+        padding: 0 !important;
+      }
+      .arena-step-circle {
+        width: 44px !important;
+        height: 44px !important;
+        font-size: 0.85rem !important;
+      }
+      .arena-step-label {
+        font-size: 0.9rem !important;
+      }
+
+      /* Artist 섹션: 세로 */
+      #artist .fade-in[style*="grid-template-columns"] {
+        grid-template-columns: 1fr !important;
+      }
+
+      /* Partner cards: 세로 */
+      #partners > div > div[style*="grid"] {
+        grid-template-columns: 1fr !important;
+      }
+
+      /* Art slider 화살표 위치 */
+      .art-slider-controls {
+        bottom: -44px !important;
+      }
+
+      /* Section heading 크기 */
+      .section-heading {
+        font-size: clamp(1.6rem, 6vw, 2.5rem) !important;
+      }
+      .section-heading-sm {
+        font-size: clamp(1.2rem, 5vw, 1.8rem) !important;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero-headline {
+        font-size: clamp(1.8rem, 9vw, 2.8rem) !important;
+      }
+      #hero .hero-headline span {
+        font-size: 1.6rem !important;
+      }
+      .art-slider { height: 220px !important; }
+    }
   </style>
 </head>
 <body>
@@ -676,10 +774,7 @@
           </div>
         </div>
 
-        <!-- RIGHT: Animated pixel grid visual -->
-        <div class="hero-right fade-in fade-in-delay-2" style="display:flex; align-items:center; justify-content:center; padding: 20px;">
-          <div class="pixel-grid" id="pixel-grid-hero" aria-hidden="true"></div>
-        </div>
+        <!-- RIGHT: removed pixel grid (moved to arena section) -->
 
       </div>
     </div>
@@ -931,8 +1026,12 @@
   <!-- ─────────────────────────────────────────
        SECTION 5: ARENA (WHITE)
   ───────────────────────────────────────── -->
-  <section id="arena" style="background:#F4F3F2; color:#000; padding: clamp(80px, 10vw, 120px) clamp(24px, 8vw, 120px);">
-    <div style="max-width: 1200px; margin: 0 auto;">
+  <section id="arena" style="background:#F4F3F2; color:#000; padding: clamp(80px, 10vw, 120px) clamp(24px, 8vw, 120px); position:relative; overflow:hidden;">
+    <!-- Pixel grid decoration (moved from hero) -->
+    <div style="position:absolute; top:0; right:0; width:340px; height:340px; pointer-events:none; opacity:0.18; z-index:0;">
+      <div class="pixel-grid" id="pixel-grid-hero" aria-hidden="true" style="width:100%; aspect-ratio:1;"></div>
+    </div>
+    <div style="max-width: 1200px; margin: 0 auto; position:relative; z-index:1;">
 
       <!-- 5a. Overview -->
       <div class="fade-in" style="margin-bottom: 80px;">
