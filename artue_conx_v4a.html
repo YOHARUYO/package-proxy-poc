@@ -267,27 +267,28 @@
     }
 
     /* ── Artwork scroll strip ── */
+    /* Artwork auto-scroll container */
     .artwork-strip {
+      overflow: hidden;
+      position: relative;
+      width: 100%;
+    }
+    .artwork-strip-track {
       display: flex;
       gap: 10px;
-      overflow-x: hidden;
-      padding-bottom: 6px;
-      -webkit-overflow-scrolling: touch;
-      scroll-snap-type: x mandatory;
-      position: relative;
-    }
-    .artwork-strip img {
-      scroll-snap-align: start;
-      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease;
-      cursor: pointer;
       will-change: transform;
     }
-    .artwork-strip img:hover,
-    .artwork-strip img.touch-active {
+    .artwork-strip-track img {
+      flex-shrink: 0;
+      height: 420px;
+      width: auto;
+      object-fit: cover;
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      cursor: pointer;
+    }
+    .artwork-strip-track img:hover,
+    .artwork-strip-track img.touch-active {
       transform: scale(1.04);
-      box-shadow: 0 12px 40px rgba(0,0,0,0.18);
-      position: relative;
-      z-index: 2;
     }
 
     /* ── RWA flow list ── */
@@ -785,9 +786,11 @@
             <!-- Right: image strip (65%) -->
             <div>
               <div class="artwork-strip" id="strip-1">
-                <img src="art1_1.jpg" alt="계속되는 많고 작은 움직임 1" loading="lazy" decoding="async" style="height:420px;width:auto;object-fit:cover;flex-shrink:0;" />
-                <img src="art1_2.jpg" alt="계속되는 많고 작은 움직임 2" loading="lazy" decoding="async" style="height:420px;width:auto;object-fit:cover;flex-shrink:0;" />
-                <img src="art1_3.jpg" alt="계속되는 많고 작은 움직임 3" loading="lazy" decoding="async" style="height:420px;width:auto;object-fit:cover;flex-shrink:0;" />
+                <div class="artwork-strip-track" id="track-1">
+                  <img src="art1_1.jpg" alt="계속되는 많고 작은 움직임 1" loading="lazy" decoding="async" />
+                  <img src="art1_2.jpg" alt="계속되는 많고 작은 움직임 2" loading="lazy" decoding="async" />
+                  <img src="art1_3.jpg" alt="계속되는 많고 작은 움직임 3" loading="lazy" decoding="async" />
+                </div>
               </div>
             </div>
 
@@ -824,9 +827,11 @@
 
             <!-- Right: image strip (65%) -->
             <div class="artwork-strip" id="strip-2">
-              <img src="art2_1.jpg" alt="작고도 큰 귀여움 1" loading="lazy" decoding="async" style="height:420px;width:auto;object-fit:cover;border-radius:12px;flex-shrink:0;" />
-              <img src="art2_2.jpg" alt="작고도 큰 귀여움 2" loading="lazy" decoding="async" style="height:420px;width:auto;object-fit:cover;border-radius:12px;flex-shrink:0;" />
-              <img src="art2_3.jpg" alt="작고도 큰 귀여움 3" loading="lazy" decoding="async" style="height:420px;width:auto;object-fit:cover;border-radius:12px;flex-shrink:0;" />
+              <div class="artwork-strip-track" id="track-2">
+                <img src="art2_1.jpg" alt="작고도 큰 귀여움 1" loading="lazy" decoding="async" />
+                <img src="art2_2.jpg" alt="작고도 큰 귀여움 2" loading="lazy" decoding="async" />
+                <img src="art2_3.jpg" alt="작고도 큰 귀여움 3" loading="lazy" decoding="async" />
+              </div>
             </div>
 
           </div>
@@ -1585,73 +1590,69 @@
 
     // ── Artwork strip auto-scroll ──
     (function () {
-      function initStrip(stripId) {
+      function initStrip(stripId, trackId) {
         const strip = document.getElementById(stripId);
-        if (!strip) return;
+        const track = document.getElementById(trackId);
+        if (!strip || !track) return;
 
-        const imgs = strip.querySelectorAll('img');
-        const totalImgs = imgs.length;
-        if (totalImgs < 2) return;
+        const imgs = Array.from(track.querySelectorAll('img'));
+        if (imgs.length < 1) return;
 
-        // clone images for seamless loop
+        // Clone all images for seamless loop
         imgs.forEach(img => {
           const clone = img.cloneNode(true);
-          clone.setAttribute('loading', 'eager');
           clone.setAttribute('aria-hidden', 'true');
-          strip.appendChild(clone);
+          track.appendChild(clone);
         });
 
         let pos = 0;
         let paused = false;
-        const speed = 0.6; // px per frame
+        const speed = 0.5;
 
         function tick() {
           if (!paused) {
             pos += speed;
-            // reset when first set of images scrolled
-            const firstImgWidth = strip.querySelector('img').offsetWidth + 10; // +gap
-            if (pos >= firstImgWidth * totalImgs) {
-              pos = 0;
-            }
-            strip.style.transform = 'translateX(-' + pos + 'px)';
+            // total width of original set
+            const totalW = imgs.reduce((sum, img) => sum + img.offsetWidth + 10, 0);
+            if (totalW > 0 && pos >= totalW) pos = 0;
+            track.style.transform = 'translateX(-' + pos + 'px)';
           }
           requestAnimationFrame(tick);
         }
 
-        // Hover pause (desktop)
+        // Hover pause + touch pause (on the STRIP container)
         strip.addEventListener('mouseenter', () => { paused = true; });
         strip.addEventListener('mouseleave', () => { paused = false; });
-
-        // Touch pause (mobile)
         strip.addEventListener('touchstart', () => { paused = true; }, { passive: true });
         strip.addEventListener('touchend', () => {
-          setTimeout(() => { paused = false; }, 1200);
+          setTimeout(() => { paused = false; }, 1500);
         }, { passive: true });
 
-        // Touch active class for scale effect
-        strip.querySelectorAll('img').forEach(img => {
+        // Touch scale class
+        track.querySelectorAll('img').forEach(img => {
           img.addEventListener('touchstart', function() {
             this.classList.add('touch-active');
           }, { passive: true });
           img.addEventListener('touchend', function() {
             const self = this;
-            setTimeout(() => self.classList.remove('touch-active'), 400);
+            setTimeout(() => self.classList.remove('touch-active'), 500);
           }, { passive: true });
         });
 
         requestAnimationFrame(tick);
       }
 
-      // Init after images likely loaded
-      window.addEventListener('load', () => {
-        initStrip('strip-1');
-        initStrip('strip-2');
-      });
-      // fallback
-      setTimeout(() => {
-        initStrip('strip-1');
-        initStrip('strip-2');
-      }, 1000);
+      function startStrips() {
+        initStrip('strip-1', 'track-1');
+        initStrip('strip-2', 'track-2');
+      }
+
+      if (document.readyState === 'complete') {
+        startStrips();
+      } else {
+        window.addEventListener('load', startStrips);
+        setTimeout(startStrips, 1500);
+      }
     })();
   </script>
 
