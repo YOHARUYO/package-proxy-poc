@@ -646,42 +646,39 @@
         height: 280px !important;
       }
 
-      /* Arena flow: 가로 유지, 크기 축소 */
+      /* Arena flow: 모바일에서 2열 그리드로 자연스럽게 */
       .arena-flow-container {
-        flex-direction: row !important;
-        flex-wrap: nowrap !important;
-        overflow-x: auto !important;
-        gap: 0 !important;
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 20px 8px !important;
+        overflow-x: unset !important;
         max-width: 100% !important;
-        -webkit-overflow-scrolling: touch;
+        align-items: start !important;
       }
+      /* 커넥터 화살표 숨김 (그리드에서 불필요) */
       .arena-flow-connector {
-        transform: none !important;
-        margin: 0 !important;
-        padding: 0 6px !important;
-      }
-      .arena-flow-connector svg {
-        width: 36px !important;
+        display: none !important;
       }
       .arena-step-circle {
-        width: 36px !important;
-        height: 36px !important;
-        font-size: 0.7rem !important;
+        width: 38px !important;
+        height: 38px !important;
+        font-size: 0.75rem !important;
       }
       .arena-step-label {
-        font-size: 0.72rem !important;
-        white-space: nowrap !important;
+        font-size: 0.75rem !important;
+        white-space: normal !important;
+        text-align: center !important;
       }
       .arena-flow-step {
         gap: 8px !important;
       }
 
-      /* Arena overview 좌우 → 단일 컬럼 */
+      /* Arena overview 좌우 → 단일 컬럼, pixel-grid 숨김 */
       #arena .fade-in[style*="grid-template-columns"] {
         grid-template-columns: 1fr !important;
       }
       #arena .fade-in[style*="grid-template-columns"] > div:last-child {
-        display: none;
+        display: none !important;
       }
 
       /* Artist 섹션: 세로 */
@@ -1159,7 +1156,7 @@
   <!-- 5c. 순환형 RWA -->
   <section style="background-image:url('back_4.png'); background-position:50% 50%; background-repeat:no-repeat; background-size:cover; color:#000; padding: clamp(80px, 10vw, 120px) clamp(24px, 8vw, 120px);">
     <div style="max-width: 1200px; margin: 0 auto;">
-      <div class="fade-in" style="display:grid; grid-template-columns: 55fr 45fr; gap: clamp(32px, 6vw, 80px); align-items:center;">
+      <div class="fade-in">
 
         <!-- LEFT: 텍스트 -->
         <div>
