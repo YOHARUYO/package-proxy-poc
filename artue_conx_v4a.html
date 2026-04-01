@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ARTUE × CONX — Project JOO JAEBUM Arena</title>
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Pretendard -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.min.css" />
+
+  <!-- Outfit (English display) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <!-- Iconify Solar -->
+  <script src="https://code.iconify.design/iconify-icon/2.3.0/iconify-icon.min.js"></script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #FFFFFF;
+      color: #1A1A1A;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Typography ── */
+    .font-display { font-family: 'Outfit', sans-serif; }
+    .keep-all { word-break: keep-all; line-height: 1.4; }
+
+    /* ── Scroll reveal ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(2rem);
+      filter: blur(4px);
+      transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                  filter 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal.revealed {
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0);
+    }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+    .reveal-delay-5 { transition-delay: 0.5s; }
+
+    /* ── Background orbs ── */
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      filter: blur(120px);
+      opacity: 0.18;
+      animation: float 12s ease-in-out infinite;
+    }
+    .orb-2 { animation-duration: 16s; animation-delay: -4s; }
+    .orb-3 { animation-duration: 20s; animation-delay: -8s; }
+    @keyframes float {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-40px) scale(1.05); }
+    }
+
+    /* ── Nav ── */
+    #main-nav {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 200;
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(24px) saturate(150%);
+      -webkit-backdrop-filter: blur(24px) saturate(150%);
+      border: 1px solid #E8E8E8;
+      border-radius: 9999px;
+      padding: 10px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 32px;
+      white-space: nowrap;
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    #main-nav.nav-dark {
+      background: rgba(26,26,26,0.88) !important;
+      border-color: rgba(255,255,255,0.08) !important;
+    }
+    #main-nav.nav-dark .nav-brand { color: #FFFFFF !important; }
+    #main-nav.nav-dark .nav-project { color: rgba(255,255,255,0.5) !important; }
+    .nav-brand {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 0.9rem;
+      letter-spacing: 0.12em;
+      color: #1A1A1A;
+      text-transform: uppercase;
+    }
+    .nav-project {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      color: #666666;
+      text-transform: uppercase;
+    }
+
+    /* ── Amber accent ── */
+    .text-amber { color: #E63E2A; }
+    .border-amber { border-color: #E63E2A; }
+    .bg-amber { background: #E63E2A; }
+
+    /* ── Double-bezel card ── */
+    .card-outer {
+      background: #FFFFFF;
+      border: 1px solid #E8E8E8;
+      padding: 6px;
+      border-radius: 2rem;
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .card-outer:hover {
+      background: #FAFAFA;
+      border-color: rgba(230,62,42,0.15);
+      box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+    }
+    .card-inner {
+      background: #FFFFFF;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+      border-radius: calc(2rem - 6px);
+      overflow: hidden;
+    }
+
+    /* ── CTA Buttons ── */
+    .btn-amber {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: #1A1A1A;
+      color: #FFFFFF;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 0.85rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 14px 28px;
+      border-radius: 9999px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .btn-amber:hover {
+      transform: scale(1.02);
+      box-shadow: 0 0 30px rgba(26,26,26,0.15);
+    }
+    .btn-amber:active { transform: scale(0.98); }
+
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: transparent;
+      color: #333333;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 600;
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 12px 24px;
+      border-radius: 9999px;
+      border: 1px solid rgba(26,26,26,0.18);
+      cursor: pointer;
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .btn-ghost:hover {
+      color: #E63E2A;
+      border-color: rgba(230,62,42,0.3);
+      transform: scale(1.02);
+      box-shadow: 0 0 20px rgba(230,62,42,0.08);
+    }
+    .btn-ghost:active { transform: scale(0.98); }
+
+    .btn-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      border-radius: 9999px;
+      border: 1px solid rgba(26,26,26,0.18);
+      color: #666666;
+      text-decoration: none;
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .btn-icon:hover {
+      border-color: rgba(230,62,42,0.3);
+      color: #E63E2A;
+      background: rgba(230,62,42,0.06);
+    }
+
+    /* ── Arrow circle ── */
+    .arrow-circle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(26,26,26,0.08);
+      flex-shrink: 0;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .btn-amber:hover .arrow-circle { transform: translateX(4px); }
+    .btn-ghost:hover .arrow-circle { transform: translateX(4px); }
+
+    /* ── Label pill ── */
+    .section-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(230,62,42,0.08);
+      border: 1px solid rgba(230,62,42,0.2);
+      color: #E63E2A;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border-radius: 9999px;
+    }
+
+    /* ── Artist slideshow ── */
+    #artist-slides {
+      display: flex;
+      height: 100%;
+      transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .slide-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(26,26,26,0.2);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .slide-dot.active {
+      background: #E63E2A;
+      width: 18px;
+      border-radius: 3px;
+    }
+
+    /* ── Artwork scroll strip ── */
+    .artwork-strip {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding-bottom: 6px;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(230,62,42,0.25) transparent;
+    }
+    .artwork-strip::-webkit-scrollbar { height: 2px; }
+    .artwork-strip::-webkit-scrollbar-track { background: transparent; }
+    .artwork-strip::-webkit-scrollbar-thumb { background: rgba(230,62,42,0.25); border-radius: 2px; }
+
+    /* ── RWA flow list ── */
+    .rwa-list {
+      list-style: none;
+      border-left: 1px solid rgba(230,62,42,0.3);
+      padding-left: 28px;
+    }
+    .rwa-list li {
+      position: relative;
+      padding: 10px 0;
+      font-size: clamp(0.9rem, 1.4vw, 1.05rem);
+      color: #333333;
+      line-height: 1.65;
+    }
+    .rwa-list li::before {
+      content: '';
+      position: absolute;
+      left: -34px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #E63E2A;
+    }
+
+    /* ── AI questions ── */
+    .ai-q {
+      border-left: 2px solid rgba(230,62,42,0.3);
+      padding-left: 24px;
+      margin: 32px 0;
+    }
+    .ai-q p {
+      font-size: clamp(0.95rem, 1.6vw, 1.1rem);
+      font-weight: 500;
+      line-height: 1.7;
+      color: #333333;
+      margin: 6px 0;
+    }
+
+    /* ── Exhibition crossfade ── */
+    #exhib-img2 {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    #exhib-wrapper:hover #exhib-img2 { opacity: 1; }
+
+    /* ── Grid helpers ── */
+    .grid-asym-left {
+      display: grid;
+      grid-template-columns: 40% 1fr;
+      gap: clamp(32px, 5vw, 80px);
+      align-items: start;
+    }
+    @media (max-width: 768px) {
+      .grid-asym-left { grid-template-columns: 1fr; }
+    }
+
+    /* ── Hero display text ── */
+    .hero-display {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(3.5rem, 10vw, 9rem);
+      font-weight: 900;
+      line-height: 0.92;
+      letter-spacing: -0.04em;
+      color: #1A1A1A;
+    }
+
+    /* ── Flow diagram ── */
+    .flow-row {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+    }
+    @media (max-width: 640px) {
+      .flow-row { flex-direction: column; align-items: flex-start; }
+      .flow-row-arrow { transform: rotate(90deg); margin: 4px 0 4px 16px; }
+    }
+
+    /* ── Partner logo panel ── */
+    .partner-panel {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 1.5rem;
+      padding: clamp(32px, 5vw, 56px);
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .partner-panel:hover {
+      background: rgba(230,62,42,0.04);
+      border-color: rgba(230,62,42,0.15);
+    }
+
+    /* ── Scroll indicator ── */
+    @keyframes scrollBounce {
+      0%, 100% { transform: translateY(0); opacity: 1; }
+      60% { transform: translateY(8px); opacity: 0.4; }
+    }
+    .scroll-indicator { animation: scrollBounce 2s ease-in-out infinite; }
+
+    /* ── Horizontal rule ── */
+    .hr-amber {
+      height: 1px;
+      background: linear-gradient(90deg, rgba(230,62,42,0.3), transparent);
+      border: none;
+      margin: 48px 0;
+    }
+
+    /* ── Mobile nav ── */
+    @media (max-width: 480px) {
+      #main-nav { padding: 9px 18px; gap: 16px; }
+      .nav-project { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════
+       FLOATING GLASS NAV
+  ══════════════════════════════════════ -->
+  <nav id="main-nav">
+    <span class="nav-brand">ARTUE × CONX</span>
+    <span class="nav-project">Project JOO JAEBUM Arena</span>
+  </nav>
+
+  <!-- ══════════════════════════════════════
+       SECTION 1 — HERO
+  ══════════════════════════════════════ -->
+  <section style="position:relative; min-height:100dvh; display:flex; flex-direction:column; justify-content:flex-end; padding: 0 clamp(24px, 8vw, 96px) clamp(64px, 8vw, 100px); overflow:hidden; background:#1A1A1A;">
+
+    <!-- Background orbs -->
+    <div class="orb" style="width:600px;height:600px;background:#EEEEEE;top:-10%;right:-5%;"></div>
+    <div class="orb orb-2" style="width:400px;height:400px;background:#E8E8E8;bottom:5%;left:10%;"></div>
+    <div class="orb orb-3" style="width:300px;height:300px;background:#EEEEEE;top:40%;left:30%;opacity:0.08;"></div>
+
+    <!-- Subtle grid texture -->
+    <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(230,62,42,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(230,62,42,0.03) 1px,transparent 1px);background-size:80px 80px;pointer-events:none;"></div>
+
+    <div style="max-width:1280px; margin:0 auto; width:100%; padding-top: 140px;">
+
+      <!-- Project label -->
+      <div class="reveal" style="margin-bottom:24px;">
+        <span class="section-pill">
+          <iconify-icon icon="solar:star-bold" width="12"></iconify-icon>
+          Project
+        </span>
+      </div>
+
+      <!-- Main headline -->
+      <div class="reveal reveal-delay-1" style="margin-bottom:40px;">
+        <h1 class="hero-display">
+          JOO<br />JAEBUM<br /><span style="color:#E63E2A;">ARENA</span>
+        </h1>
+      </div>
+
+      <!-- Subtitle -->
+      <div class="reveal reveal-delay-2" style="max-width:560px; margin-bottom:56px;">
+        <p style="font-size:clamp(1rem,2vw,1.2rem); font-weight:400; line-height:1.75; color:#666666;" class="keep-all">
+          작품의 탄생부터 가치의 보존까지,<br />새로운 공동 창작의 미래를 질문하다.
+        </p>
+      </div>
+
+      <!-- Flow diagram -->
+      <div class="reveal reveal-delay-3" style="margin-bottom:64px;">
+        <div class="flow-row" style="gap:0;">
+          <div style="display:flex;flex-direction:column;gap:4px;">
+            <span style="font-size:0.6rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:rgba(230,62,42,0.7);">Step 01</span>
+            <span style="font-family:'Outfit',sans-serif;font-size:clamp(0.85rem,1.5vw,1rem);font-weight:700;color:#FFFFFF;white-space:nowrap;border-bottom:1px solid rgba(255,255,255,0.3);padding-bottom:3px;">커뮤니티의 상상</span>
+          </div>
+          <div class="flow-row-arrow" style="padding:0 20px;color:rgba(255,255,255,0.3);font-size:1.2rem;margin-top:14px;flex-shrink:0;">
+            <iconify-icon icon="solar:arrow-right-linear" width="22"></iconify-icon>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:4px;">
+            <span style="font-size:0.6rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:rgba(230,62,42,0.7);">Step 02</span>
+            <span style="font-family:'Outfit',sans-serif;font-size:clamp(0.85rem,1.5vw,1rem);font-weight:700;color:#FFFFFF;white-space:nowrap;border-bottom:1px solid rgba(255,255,255,0.3);padding-bottom:3px;">AI를 통한 확장</span>
+          </div>
+          <div class="flow-row-arrow" style="padding:0 20px;color:rgba(255,255,255,0.3);font-size:1.2rem;margin-top:14px;flex-shrink:0;">
+            <iconify-icon icon="solar:arrow-right-linear" width="22"></iconify-icon>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:4px;">
+            <span style="font-size:0.6rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:rgba(230,62,42,0.7);">Step 03</span>
+            <span style="font-family:'Outfit',sans-serif;font-size:clamp(0.85rem,1.5vw,1rem);font-weight:700;color:#FFFFFF;white-space:nowrap;border-bottom:1px solid rgba(255,255,255,0.3);padding-bottom:3px;">작가의 해석과 완성</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Body text -->
+      <div class="reveal reveal-delay-4" style="max-width:680px; margin-bottom:72px;">
+        <p style="font-size:clamp(0.9rem,1.5vw,1.05rem);line-height:1.85;color:#666666;" class="keep-all">
+          커뮤니티가 아이디어를 제안하는 과정에서 본인의 상상을 AI를 통해 자유롭게 표현이 가능했으며, 그 아이디어를 작가가 직접 현실에서 보고 만질 수 있는 작품으로 탄생시켰다. 더불어 작품의 권리와 가치를 다시 블록체인 디지털 인프라에 기록함으로써 예술 작품의 탄생과 거래 과정을 새로운 순환 구조로 엮어낸 프로젝트이다.
+        </p>
+      </div>
+
+      <!-- Scroll indicator -->
+      <div class="reveal reveal-delay-5" style="display:flex;align-items:center;gap:12px;">
+        <div class="scroll-indicator" style="color:rgba(230,62,42,0.5);">
+          <iconify-icon icon="solar:arrow-down-linear" width="20"></iconify-icon>
+        </div>
+        <span style="font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.35);">Scroll to explore</span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       SECTION 2 — PARTNERS
+  ══════════════════════════════════════ -->
+  <section style="position:relative; padding: clamp(80px,10vw,130px) clamp(24px,8vw,96px); overflow:hidden;">
+
+    <div style="position:absolute;inset:0;background:#1A1A1A;"></div>
+    <div class="orb" style="width:500px;height:500px;background:#EEEEEE;bottom:-20%;left:-10%;opacity:0.1;"></div>
+
+    <div style="max-width:1280px; margin:0 auto; position:relative; z-index:1;">
+
+      <!-- Asymmetric header -->
+      <div style="display:grid; grid-template-columns: 1fr 2fr; gap:clamp(32px,5vw,80px); align-items:end; margin-bottom:72px;">
+        <div class="reveal">
+          <span class="section-pill" style="margin-bottom:20px; display:inline-flex;">
+            <iconify-icon icon="solar:users-group-rounded-bold" width="12"></iconify-icon>
+            Partners
+          </span>
+          <h2 style="font-family:'Outfit',sans-serif;font-size:clamp(2.5rem,6vw,5rem);font-weight:900;line-height:0.95;letter-spacing:-0.04em;color:#FFFFFF;">
+            두 플랫폼,<br /><span style="color:#E63E2A;">하나의</span><br />비전
+          </h2>
+        </div>
+        <div class="reveal reveal-delay-2" style="padding-bottom:8px;">
+          <p style="font-size:clamp(0.95rem,1.5vw,1.1rem);line-height:1.8;color:#EDE5D5;max-width:440px;" class="keep-all">
+            ARTUE와 CONX는 예술과 기술의 경계를 허무는 두 플랫폼으로, 이번 프로젝트에서 작품의 발견과 가치 기록이라는 각자의 역할로 협력한다.
+          </p>
+        </div>
+      </div>
+
+      <!-- Two partner panels -->
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px;">
+
+        <!-- ARTUE -->
+        <div class="card-outer reveal reveal-delay-1">
+          <div class="card-inner" style="padding:clamp(28px,4vw,48px);">
+            <div style="margin-bottom:32px;">
+              <a href="https://artue.io/" target="_blank" rel="noopener" style="display:inline-block;">
+                <img src="ARTUE_white.png" alt="ARTUE" loading="lazy" decoding="async" style="height:40px;width:auto;display:block;" />
+              </a>
+            </div>
+            <div style="margin-bottom:24px;">
+              <p style="font-size:0.7rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#E63E2A;margin-bottom:12px;">감성을 학습하는 AI 큐레이터</p>
+              <p style="font-size:clamp(0.85rem,1.4vw,1rem);line-height:1.8;color:#333333;" class="keep-all">
+                주재범 아레나의 작품을 컬렉터와 연결하는 플랫폼. ARTUE(아르투)는 사용자와의 대화를 통해 감성을 학습하는 AI 큐레이터다. 풍부한 작가·작품 데이터베이스를 기반으로 사용자의 취향을 이해하고, 그에 맞는 작품을 발견·소장하는 경험을 제공한다. 이번 주재범 아레나 프로젝트에서는 커뮤니티와 함께 탄생한 작품의 온라인 전시와 판매 채널을 담당한다.
+              </p>
+            </div>
+            <a href="https://artue.io/" target="_blank" rel="noopener" class="btn-ghost" style="color:#1A1A1A;border-color:rgba(26,26,26,0.2);">
+              artue.io
+              <span class="arrow-circle"><iconify-icon icon="solar:arrow-right-linear" width="14"></iconify-icon></span>
+            </a>
+          </div>
+        </div>
+
+        <!-- CONX -->
+        <div class="card-outer reveal reveal-delay-2">
+          <div class="card-inner" style="padding:clamp(28px,4vw,48px);">
+            <div style="margin-bottom:32px;">
+              <a href="https://conx.xyz/" target="_blank" rel="noopener" style="display:inline-block;">
+                <img src="ConX_logo_white.png" alt="CONX" loading="lazy" decoding="async" style="height:40px;width:auto;display:block;" />
+              </a>
+            </div>
+            <div style="margin-bottom:24px;">
+              <p style="font-size:0.7rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#E63E2A;margin-bottom:12px;">문화 금융 기술의 결합을 위한 신뢰 기반 메인넷</p>
+              <p style="font-size:clamp(0.85rem,1.4vw,1rem);line-height:1.8;color:#333333;" class="keep-all">
+                주재범 아레나의 작품의 가치를 기록하는 토대. CONX(콘엑스)는 CONX Origin이라는 기술을 통해 현실 작품을 블록체인 인프라에 기록하여 이후 권리 기록과 정산 구조를 자동화한다. 이를 통해 각 창작자에게 본인의 기여가 보존되고, 그 가치를 투명하게 보호받는 경험을 제공한다.
+              </p>
+            </div>
+            <a href="https://conx.xyz/" target="_blank" rel="noopener" class="btn-ghost" style="color:#1A1A1A;border-color:rgba(26,26,26,0.2);">
+              conx.xyz
+              <span class="arrow-circle"><iconify-icon icon="solar:arrow-right-linear" width="14"></iconify-icon></span>
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       SECTION 3 — ARTIST
+  ══════════════════════════════════════ -->
+  <section style="position:relative; padding: clamp(80px,10vw,130px) clamp(24px,8vw,96px); overflow:hidden; background:#FFFFFF;">
+
+    <div class="orb" style="width:400px;height:400px;background:#EEEEEE;top:-5%;right:5%;opacity:0.07;"></div>
+
+    <div style="max-width:1280px; margin:0 auto; position:relative; z-index:1;">
+
+      <div class="reveal" style="margin-bottom:56px;">
+        <span class="section-pill" style="margin-bottom:20px; display:inline-flex;">
+          <iconify-icon icon="solar:user-bold" width="12"></iconify-icon>
+          Artist
+        </span>
+        <h2 style="font-family:'Outfit',sans-serif;font-size:clamp(2.5rem,6vw,5.5rem);font-weight:900;line-height:0.95;letter-spacing:-0.04em;color:#1A1A1A;">주재범</h2>
+      </div>
+
+      <!-- Split layout: 40/60 -->
+      <div class="grid-asym-left">
+
+        <!-- Left: Slideshow -->
+        <div class="reveal reveal-delay-1">
+          <!-- Mobile credit (above) -->
+          <p style="font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:#999999;margin-bottom:8px;display:none;" id="credit-top">Photo by HypebeastKR</p>
+
+          <div style="position:relative;border-radius:1.5rem;overflow:hidden;aspect-ratio:3/4;background:#E8E8E8;">
+            <div id="artist-slides" style="display:flex;height:100%;">
+              <img src="artist_joojaebum_1.png" alt="주재범 작가 사진 1" style="width:100%;flex-shrink:0;height:100%;object-fit:cover;display:block;" decoding="async" />
+              <img src="artist_joojaebum_2.jpg" alt="주재범 작가 사진 2" loading="lazy" decoding="async" style="width:100%;flex-shrink:0;height:100%;object-fit:cover;display:block;" />
+            </div>
+            <!-- Dots -->
+            <div style="position:absolute;bottom:16px;left:16px;display:flex;gap:6px;z-index:10;">
+              <div class="slide-dot active" data-idx="0"></div>
+              <div class="slide-dot" data-idx="1"></div>
+            </div>
+            <!-- Credit overlay -->
+            <div style="position:absolute;bottom:16px;right:16px;z-index:10;pointer-events:none;">
+              <span style="font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.5);">Photo by HypebeastKR</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Bio -->
+        <div class="reveal reveal-delay-2" style="display:flex;flex-direction:column;gap:28px;padding-top:12px;">
+
+          <div style="height:1px;background:linear-gradient(90deg,rgba(230,62,42,0.4),transparent);width:80px;"></div>
+
+          <p style="font-size:clamp(0.9rem,1.5vw,1.05rem);line-height:1.85;color:#333333;" class="keep-all">
+            주재범 작가는 픽셀이라는 가장 작은 디지털 단위를 자신만의 회화 언어로 확장해온 아티스트다. 그의 작업은 그리운 레트로 감성을 현대적인 감각으로 풀어내는 방식으로 이루어진다. 화면 위의 작은 점들은 그의 손을 거치며 기억과 도시, 감정과 시간의 풍경으로 다시 태어난다. 디지털 이미지에서 출발하지만, 결국 사람의 감각과 정서에 닿는 회화로 완성된다는 점에서 주재범의 작업은 오늘날 이미지 환경을 가장 섬세하게 비추는 방식 중 하나다.
+          </p>
+
+          <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+            <a href="https://artue.io/ko/artist/jaebum-joo" target="_blank" rel="noopener" class="btn-amber">
+              자세히 알아보기
+              <span class="arrow-circle"><iconify-icon icon="solar:arrow-right-bold" width="14"></iconify-icon></span>
+            </a>
+            <a href="https://www.instagram.com/joojaebum/" target="_blank" rel="noopener" class="btn-icon" aria-label="Instagram">
+              <iconify-icon icon="solar:instagram-linear" width="20"></iconify-icon>
+            </a>
+            <a href="https://x.com/joojaebum" target="_blank" rel="noopener" class="btn-icon" aria-label="X (Twitter)">
+              <iconify-icon icon="solar:twitter-linear" width="18"></iconify-icon>
+            </a>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       SECTION 4 — WORKS
+  ══════════════════════════════════════ -->
+  <section style="position:relative; padding: clamp(80px,10vw,130px) clamp(24px,8vw,96px); overflow:hidden; background:#F3F3F3;">
+
+    <div class="orb" style="width:500px;height:500px;background:#EEEEEE;bottom:-15%;right:-5%;opacity:0.08;"></div>
+
+    <div style="max-width:1280px; margin:0 auto; position:relative; z-index:1;">
+
+      <div class="reveal" style="margin-bottom:72px;">
+        <span class="section-pill" style="margin-bottom:20px; display:inline-flex;">
+          <iconify-icon icon="solar:gallery-bold" width="12"></iconify-icon>
+          Works
+        </span>
+        <h2 style="font-family:'Outfit',sans-serif;font-size:clamp(2.5rem,6vw,5rem);font-weight:900;line-height:0.95;letter-spacing:-0.04em;color:#1A1A1A;">작품</h2>
+      </div>
+
+      <!-- Work 1: Bento Card -->
+      <div class="card-outer reveal" style="margin-bottom:24px;">
+        <div class="card-inner" style="padding:clamp(24px,4vw,48px);">
+          <div style="display:grid; grid-template-columns: auto 1fr; gap:clamp(24px,4vw,56px); align-items:start;">
+
+            <!-- Work meta -->
+            <div style="min-width:180px; max-width:240px;">
+              <span style="font-family:'Outfit',sans-serif;font-size:0.65rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#E63E2A;">No. 01</span>
+              <h3 style="font-size:clamp(1.1rem,2.2vw,1.6rem);font-weight:800;line-height:1.2;color:#1A1A1A;margin:12px 0 6px;" class="keep-all">계속되는 많고 작은 움직임</h3>
+              <p style="font-size:0.85rem;font-style:italic;color:#999999;margin:0 0 10px;font-weight:300;">A Flow of Countless Small Movements</p>
+              <p style="font-size:0.75rem;letter-spacing:0.04em;color:#E63E2A;margin:0 0 6px;font-weight:600;">주재범 JOO JAEBUM × KDS</p>
+              <p style="font-size:0.7rem;letter-spacing:0.03em;color:#999999;line-height:1.6;">Acrylic on cut and Assembled Wood, Birch Wood frame<br />148 × 85 cm</p>
+            </div>
+
+            <!-- Right: images + description + links -->
+            <div>
+              <!-- Horizontal image strip -->
+              <div class="artwork-strip" style="margin-bottom:24px;">
+                <img src="art1_1.jpg" alt="계속되는 많고 작은 움직임 1" loading="lazy" decoding="async" style="height:280px;width:auto;object-fit:cover;border-radius:12px;flex-shrink:0;" />
+                <img src="art1_2.jpg" alt="계속되는 많고 작은 움직임 2" loading="lazy" decoding="async" style="height:280px;width:auto;object-fit:cover;border-radius:12px;flex-shrink:0;" />
+                <img src="art1_3.jpg" alt="계속되는 많고 작은 움직임 3" loading="lazy" decoding="async" style="height:280px;width:auto;object-fit:cover;border-radius:12px;flex-shrink:0;" />
+              </div>
+              <p style="font-size:clamp(0.88rem,1.4vw,1rem);line-height:1.8;color:#333333;margin-bottom:28px;max-width:540px;" class="keep-all">
+                수 많은 존재들이 조각들로 한데 모여 움직임을 이루는 도시의 모습을 담고 있다. 그 움직임에서 느껴지는 운율을 픽셀 리듬으로 표현한다.
+              </p>
+              <div style="display:flex;gap:12px;flex-wrap:wrap;">
+                <a href="https://arena.conx.xyz/joojaebum/submission?id=FR3WCQq-ZEN-HFO4GKProA" target="_blank" rel="noopener" class="btn-ghost" style="font-size:0.75rem;padding:10px 20px;">
+                  <iconify-icon icon="solar:link-minimalistic-2-linear" width="14"></iconify-icon>
+                  아이디어 원본
+                </a>
+                <a href="https://artue.io/work/jaebum-joo-39" target="_blank" rel="noopener" class="btn-amber" style="font-size:0.75rem;padding:10px 20px;">
+                  작품 상세 보기
+                  <span class="arrow-circle" style="width:24px;height:24px;"><iconify-icon icon="solar:arrow-right-bold" width="12"></iconify-icon></span>
+                </a>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Work 2: Bento Card — mirrored layout -->
+      <div class="card-outer reveal reveal-delay-2">
+        <div class="card-inner" style="padding:clamp(24px,4vw,48px);">
+          <div style="display:grid; grid-template-columns: 1fr auto; gap:clamp(24px,4vw,56px); align-items:start;">
+
+            <!-- Left: images + description + links -->
+            <div>
+              <div class="artwork-strip" style="margin-bottom:24px;">
+                <img src="art2_1.jpg" alt="작고도 큰 귀여움 1" loading="lazy" decoding="async" style="height:280px;width:auto;object-fit:cover;border-radius:12px;flex-shrink:0;" />
+                <img src="art2_2.jpg" alt="작고도 큰 귀여움 2" loading="lazy" decoding="async" style="height:280px;width:auto;object-fit:cover;border-radius:12px;flex-shrink:0;" />
+                <img src="art2_3.jpg" alt="작고도 큰 귀여움 3" loading="lazy" decoding="async" style="height:280px;width:auto;object-fit:cover;border-radius:12px;flex-shrink:0;" />
+              </div>
+              <p style="font-size:clamp(0.88rem,1.4vw,1rem);line-height:1.8;color:#333333;margin-bottom:28px;max-width:540px;" class="keep-all">
+                일상 가장 가까이에서 바라보고 지켜보게 되는 작은 친구. 주고받는 시선 속에 어느새 묵직해진 존재감을 가진 귀여운 생명체.
+              </p>
+              <div style="display:flex;gap:12px;flex-wrap:wrap;">
+                <a href="https://arena.conx.xyz/joojaebum/submission?id=QNLachJ82t-Gz0Q5B987QA" target="_blank" rel="noopener" class="btn-ghost" style="font-size:0.75rem;padding:10px 20px;">
+                  <iconify-icon icon="solar:link-minimalistic-2-linear" width="14"></iconify-icon>
+                  아이디어 원본
+                </a>
+                <a href="https://artue.io/work/jaebum-joo-40" target="_blank" rel="noopener" class="btn-amber" style="font-size:0.75rem;padding:10px 20px;">
+                  작품 상세 보기
+                  <span class="arrow-circle" style="width:24px;height:24px;"><iconify-icon icon="solar:arrow-right-bold" width="12"></iconify-icon></span>
+                </a>
+              </div>
+            </div>
+
+            <!-- Work meta -->
+            <div style="min-width:180px; max-width:240px;">
+              <span style="font-family:'Outfit',sans-serif;font-size:0.65rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#E63E2A;">No. 02</span>
+              <h3 style="font-size:clamp(1.1rem,2.2vw,1.6rem);font-weight:800;line-height:1.2;color:#1A1A1A;margin:12px 0 6px;" class="keep-all">작고도 큰 귀여움</h3>
+              <p style="font-size:0.85rem;font-style:italic;color:#999999;margin:0 0 10px;font-weight:300;">Small Yet Great Cuteness</p>
+              <p style="font-size:0.75rem;letter-spacing:0.04em;color:#E63E2A;margin:0 0 6px;font-weight:600;">주재범 JOO JAEBUM × AzacielXD</p>
+              <p style="font-size:0.7rem;letter-spacing:0.03em;color:#999999;line-height:1.6;">Acrylic and Velvet on Cut Wood<br />56 × 47 cm</p>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       SECTION 5a — ARENA OVERVIEW
+  ══════════════════════════════════════ -->
+  <section style="position:relative; padding: clamp(80px,10vw,130px) clamp(24px,8vw,96px); overflow:hidden; background:#FFFFFF;">
+
+    <div class="orb" style="width:600px;height:600px;background:#EEEEEE;top:-20%;left:-10%;opacity:0.06;"></div>
+
+    <div style="max-width:1280px; margin:0 auto; position:relative; z-index:1;">
+
+      <!-- Large asymmetric layout -->
+      <div style="display:grid; grid-template-columns: 1fr 1.4fr; gap:clamp(40px,8vw,120px); align-items:center;">
+
+        <div class="reveal">
+          <span class="section-pill" style="margin-bottom:20px;display:inline-flex;">
+            <iconify-icon icon="solar:widget-bold" width="12"></iconify-icon>
+            Arena Overview
+          </span>
+          <h2 style="font-family:'Outfit',sans-serif;font-size:clamp(2.5rem,5.5vw,5rem);font-weight:900;line-height:0.95;letter-spacing:-0.04em;color:#1A1A1A;">
+            JOO<br />JAEBUM<br /><span style="color:#E63E2A;">Arena</span>
+          </h2>
+          <div style="margin-top:32px; display:flex; align-items:center; gap:20px;">
+            <div style="text-align:center;">
+              <span style="font-family:'Outfit',sans-serif;font-size:2.5rem;font-weight:900;color:#E63E2A;line-height:1;">340+</span>
+              <p style="font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:#999999;margin-top:4px;">아이디어</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="reveal reveal-delay-2">
+          <div style="height:1px;background:linear-gradient(90deg,#DDDDDD,transparent);margin-bottom:32px;"></div>
+          <p style="font-size:clamp(0.9rem,1.5vw,1.05rem);line-height:1.85;color:#333333;" class="keep-all">
+            주재범 아레나는 커뮤니티가 제안한 아이디어가 작가의 손을 통해 실제 작품으로 탄생하고, 그 이후 작품의 권리와 가치가 다시 새로운 순환 구조 안으로 연결되는 과정을 실험한 공동 창작 프로젝트다. 주재범 아레나는 340개가 넘는 아이디어가 모인 열린 창작의 장이었다. 참여자들은 주재범 작가가 제시한 테마를 각자의 시선으로 해석해 픽셀 아트 아이디어를 제안했고, 그 가운데 선별된 아이디어는 다시 작가의 조형 언어를 만나 현실의 작품으로 확장되었다. 하나의 작품이 완성되기까지의 과정 안에 작가 개인의 표현만이 아니라, 커뮤니티의 상상력과 기술, 그리고 새로운 협업 방식에 대한 질문이 함께 담겼다.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       SECTION 5b — AI × ART
+  ══════════════════════════════════════ -->
+  <section style="position:relative; padding: clamp(80px,10vw,130px) clamp(24px,8vw,96px); overflow:hidden; background:#F3F3F3;">
+
+    <div class="orb" style="width:500px;height:500px;background:#EEEEEE;top:10%;right:-8%;opacity:0.09;"></div>
+    <!-- Diagonal accent line -->
+    <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(230,62,42,0.12),transparent);"></div>
+
+    <div style="max-width:1280px; margin:0 auto; position:relative; z-index:1;">
+
+      <div class="reveal" style="margin-bottom:56px;">
+        <span class="section-pill" style="margin-bottom:20px; display:inline-flex;">
+          <iconify-icon icon="solar:cpu-bolt-bold" width="12"></iconify-icon>
+          AI × Art
+        </span>
+        <h2 style="font-family:'Outfit',sans-serif;font-size:clamp(2.5rem,6vw,5rem);font-weight:900;line-height:0.95;letter-spacing:-0.04em;color:#1A1A1A;">
+          AI × Art<br /><span style="color:#E63E2A;">'주재범 아레나'</span>
+        </h2>
+      </div>
+
+      <!-- Full width with left offset text -->
+      <div style="display:grid; grid-template-columns: 80px 1fr; gap:32px; max-width:800px;">
+        <div style="padding-top:4px;">
+          <div style="width:1px;height:100%;background:linear-gradient(to bottom,rgba(230,62,42,0.25),transparent);margin:0 auto;"></div>
+        </div>
+        <div class="reveal reveal-delay-1">
+          <p style="font-size:clamp(0.9rem,1.5vw,1.05rem);line-height:1.85;color:#333333;margin-bottom:24px;" class="keep-all">
+            주재범 아레나에서 AI는 더 많은 사람이 창작의 문턱을 넘어설 수 있도록 돕는 새로운 인터페이스의 역할을 한다. 참여자들은 주재범 아레나의 테마를 바탕으로 자신만의 장면과 감각을 상상하는 과정에서 AI를 활용하여 이미지를 발전시키거나 시각적 초안을 구체화할 수 있었다. 이후 작가는 그 아이디어를 다시 자신의 언어로 읽고, 선택하고, 밀도 있게 발전시켜 현실의 회화 작품으로 탄생시켰다.
+          </p>
+
+          <div class="ai-q">
+            <p>과연 AI와 인간은 공존할 수 있을까?</p>
+            <p>인간이 AI와 만들어가는 미래는 어떤 모습일까?</p>
+            <p>그 안에서 인간과 AI는 각각 어떤 역할을 하게 될까?</p>
+          </div>
+
+          <p style="font-size:clamp(0.9rem,1.5vw,1.05rem);line-height:1.85;color:#333333;" class="keep-all">
+            마치 '인터스텔라'에서 책을 떨어뜨리면서 과거에 미래를 향한 메시지를 남긴 것처럼, 주재범 아레나는 새로운 형식으로 파문을 일으켜 머지 않은 예술 분야의 미래에 대한 의문을 던지고 사람들의 상상력을 자극하는 초석이 되었다.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       SECTION 5c — 순환형 RWA
+  ══════════════════════════════════════ -->
+  <section style="position:relative; padding: clamp(80px,10vw,130px) clamp(24px,8vw,96px); overflow:hidden; background:#1A1A1A;">
+
+    <div class="orb" style="width:600px;height:600px;background:#333333;bottom:-20%;left:-5%;opacity:0.4;"></div>
+
+    <div style="max-width:1280px; margin:0 auto; position:relative; z-index:1;">
+
+      <!-- Header row — asymmetric -->
+      <div style="display:grid; grid-template-columns: 1fr 1.2fr; gap:clamp(32px,5vw,80px); align-items:start; margin-bottom:72px;">
+
+        <div class="reveal">
+          <span class="section-pill" style="margin-bottom:20px; display:inline-flex;">
+            <iconify-icon icon="solar:global-bold" width="12"></iconify-icon>
+            세계 최초
+          </span>
+          <h2 style="font-family:'Outfit',sans-serif;font-size:clamp(2.5rem,5.5vw,5rem);font-weight:900;line-height:0.95;letter-spacing:-0.04em;color:#FFFFFF;">
+            순환형<br /><span style="color:#E63E2A;">RWA</span><br />프로젝트
+          </h2>
+        </div>
+
+        <div class="reveal reveal-delay-2">
+          <p style="font-size:clamp(0.9rem,1.5vw,1.05rem);line-height:1.85;color:#EDE5D5;margin-bottom:24px;" class="keep-all">
+            주재범 아레나는 예술 분야에서 순환형 RWA의 가능성을 보여준 프로젝트로 제안되었다. RWA(Real World Asset)는 말 그대로 현실 세계의 자산, 혹은 그 자산에서 발생하는 권리와 가치를 디지털 인프라 상에 기록하여 그 위에서 다룰 수 있도록 하는 개념이다.
+          </p>
+          <p style="font-size:clamp(0.9rem,1.5vw,1.05rem);line-height:1.85;color:#EDE5D5;margin-bottom:24px;" class="keep-all">
+            하지만 예술의 문맥에서 RWA는 단순히 "작품을 토큰화한다"는 말만으로는 충분하지 않다. 예술은 사물 하나만으로 완성되지 않고, 창작의 맥락과 기여, 권리와 해석이 함께 얽혀 있기 때문이다.
+          </p>
+          <p style="font-size:clamp(0.9rem,1.5vw,1.05rem);line-height:1.85;color:#EDE5D5;" class="keep-all">
+            이렇게 블록체인 위로 실물 자산을 옮기는 일에 초점을 두어 한계를 갖고 있던 기존 RWA의 통념 상 정의를 뒤집어, 이 프로젝트는 한 걸음 더 나아간 그 가능성을 확인한다.
+          </p>
+        </div>
+
+      </div>
+
+      <!-- RWA flow + chart in bento grid -->
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px; margin-bottom:48px;">
+
+        <!-- Flow list card -->
+        <div class="card-outer reveal reveal-delay-1">
+          <div class="card-inner" style="padding:clamp(28px,4vw,48px);">
+            <p style="font-size:0.7rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#E63E2A;margin-bottom:28px;">순환 구조</p>
+            <ul class="rwa-list">
+              <li class="keep-all">하나의 아이디어가 인터넷 상의 커뮤니티에서 발의되고,</li>
+              <li class="keep-all">그 아이디어가 작가의 해석을 통해 현실의 작품이 되며,</li>
+              <li class="keep-all">그 작품의 권리와 가치가 다시 온체인 위에서 기록되고 정산되는 구조.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Chart card -->
+        <div class="card-outer reveal reveal-delay-2">
+          <div class="card-inner" style="padding:clamp(24px,3vw,40px);display:flex;flex-direction:column;gap:16px;">
+            <p style="font-size:0.7rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#E63E2A;">RWA Diagram</p>
+            <img src="chart_1.png" alt="순환형 RWA 다이어그램" loading="lazy" decoding="async" style="width:100%;border-radius:12px;display:block;" />
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Closing text + CTA -->
+      <div class="reveal" style="max-width:760px;">
+        <p style="font-size:clamp(0.9rem,1.5vw,1.05rem);line-height:1.85;color:#EDE5D5;margin-bottom:36px;" class="keep-all">
+          주재범 아레나는 아이디어가 자산이 되어가는 과정 자체를 설계했으며, 가상 세계에서 출발한 것을 실물 경제로 옮겨왔다는 점에서 특별하다. 본 아레나에서 제안된 '순환형 RWA'는 작품 이전의 아이디어, 작품이 완성되는 과정, 그리고 그 이후의 가치 분배까지 하나의 연결된 흐름으로 바라보는 방식을 세계 최초로 새롭게 제안한 것이다.
+        </p>
+        <a href="https://arena.conx.xyz/joojaebum" target="_blank" rel="noopener" class="btn-amber" style="background:#FFFFFF;color:#1A1A1A;">
+          Arena 사이트 방문
+          <span class="arrow-circle"><iconify-icon icon="solar:arrow-right-bold" width="14"></iconify-icon></span>
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       SECTION 6 — EXHIBITION
+  ══════════════════════════════════════ -->
+  <section style="position:relative; padding: clamp(80px,10vw,130px) clamp(24px,8vw,96px); overflow:hidden; background:#FFFFFF;">
+
+    <div class="orb" style="width:400px;height:400px;background:#EEEEEE;top:5%;left:5%;opacity:0.08;"></div>
+
+    <div style="max-width:1280px; margin:0 auto; position:relative; z-index:1;">
+
+      <!-- Header -->
+      <div style="display:grid; grid-template-columns: 1.6fr 1fr; gap:clamp(32px,5vw,80px); align-items:end; margin-bottom:56px;">
+        <div class="reveal">
+          <span class="section-pill" style="margin-bottom:20px; display:inline-flex;">
+            <iconify-icon icon="solar:bookmark-bold" width="12"></iconify-icon>
+            Exhibition
+          </span>
+          <h2 style="font-family:'Outfit',sans-serif;font-size:clamp(2.5rem,6vw,5.5rem);font-weight:900;line-height:0.95;letter-spacing:-0.04em;color:#1A1A1A;">
+            ART OnO<br /><span style="color:#E63E2A;">2026</span>
+          </h2>
+        </div>
+        <div class="reveal reveal-delay-2" style="padding-bottom:8px;">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:28px;">
+            <div>
+              <p style="font-size:0.65rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#E63E2A;margin-bottom:8px;">전시명</p>
+              <p style="font-size:1rem;font-weight:700;color:#1A1A1A;letter-spacing:-0.01em;">ART OnO 2026</p>
+            </div>
+            <div>
+              <p style="font-size:0.65rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#E63E2A;margin-bottom:8px;">전시장소</p>
+              <p style="font-size:1rem;font-weight:700;color:#1A1A1A;letter-spacing:-0.01em;">308 ARTUE</p>
+            </div>
+          </div>
+          <div style="margin-top:24px;">
+            <p style="font-size:0.65rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#E63E2A;margin-bottom:10px;">관련 링크</p>
+            <a href="https://art-ono.com/" target="_blank" rel="noopener" class="btn-ghost" style="font-size:0.75rem; padding:10px 20px;">
+              art-ono.com
+              <span class="arrow-circle" style="width:24px;height:24px;"><iconify-icon icon="solar:arrow-right-bold" width="12"></iconify-icon></span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Exhibition image with crossfade -->
+      <div class="card-outer reveal">
+        <div class="card-inner" style="padding:0;overflow:hidden;border-radius:calc(2rem - 6px);">
+          <div id="exhib-wrapper" style="position:relative;cursor:pointer;line-height:0;border-radius:calc(2rem - 6px);overflow:hidden;">
+            <img src="artono_Image_1.png" alt="ART OnO 2026 전경 1" style="width:100%;display:block;max-width:100%;" decoding="async" />
+            <img id="exhib-img2" src="artono_Image_2.png" alt="ART OnO 2026 전경 2" loading="lazy" decoding="async" />
+            <!-- Photo credit -->
+            <div style="position:absolute;bottom:16px;left:20px;z-index:10;pointer-events:none;background:rgba(5,5,5,0.6);backdrop-filter:blur(8px);padding:6px 12px;border-radius:9999px;border:1px solid rgba(255,255,255,0.08);">
+              <span style="font-size:0.55rem;letter-spacing:0.14em;text-transform:uppercase;color:#666666;">Photo by ART OnO</span>
+            </div>
+            <!-- Hover hint -->
+            <div style="position:absolute;bottom:16px;right:20px;z-index:10;pointer-events:none;background:rgba(230,62,42,0.15);backdrop-filter:blur(8px);padding:6px 12px;border-radius:9999px;border:1px solid rgba(230,62,42,0.20);">
+              <span style="font-size:0.55rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(230,62,42,0.70);">
+                <iconify-icon icon="solar:cursor-bold" width="10" style="vertical-align:middle;"></iconify-icon>
+                Hover to reveal
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       FOOTER
+  ══════════════════════════════════════ -->
+  <footer style="background:#F3F3F3; border-top:1px solid #DDDDDD; padding: 36px clamp(24px,8vw,96px);">
+    <div style="max-width:1280px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px;">
+
+      <span style="font-family:'Outfit',sans-serif;font-size:0.85rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#1A1A1A;">ARTUE × CONX</span>
+
+      <div style="display:flex; gap:8px;">
+        <a href="https://artue.io/" target="_blank" rel="noopener" class="btn-ghost" style="font-size:0.7rem;padding:8px 18px;">ARTUE</a>
+        <a href="https://conx.xyz/" target="_blank" rel="noopener" class="btn-ghost" style="font-size:0.7rem;padding:8px 18px;">CONX</a>
+        <a href="https://arena.conx.xyz/joojaebum" target="_blank" rel="noopener" class="btn-ghost" style="font-size:0.7rem;padding:8px 18px;">Arena</a>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- ══════════════════════════════════════
+       SCRIPTS
+  ══════════════════════════════════════ -->
+  <script>
+    // ── IntersectionObserver scroll reveals ──
+    const revealEls = document.querySelectorAll('.reveal');
+    const revealObs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+          revealObs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    revealEls.forEach(el => revealObs.observe(el));
+
+    // Trigger elements already in viewport on load
+    window.addEventListener('load', () => {
+      revealEls.forEach(el => {
+        const r = el.getBoundingClientRect();
+        if (r.top < window.innerHeight) el.classList.add('revealed');
+      });
+    });
+
+    // ── Artist slideshow (auto every 4s) ──
+    (function () {
+      const slides = document.getElementById('artist-slides');
+      if (!slides) return;
+      const dots = document.querySelectorAll('.slide-dot');
+      let cur = 0;
+      const total = slides.children.length;
+
+      function go(idx) {
+        cur = idx;
+        slides.style.transform = 'translateX(-' + (idx * 100) + '%)';
+        dots.forEach((d, i) => {
+          d.classList.toggle('active', i === idx);
+        });
+      }
+
+      let timer = setInterval(() => go((cur + 1) % total), 4000);
+
+      dots.forEach(d => {
+        d.addEventListener('click', () => {
+          clearInterval(timer);
+          go(parseInt(d.dataset.idx));
+          timer = setInterval(() => go((cur + 1) % total), 4000);
+        });
+      });
+    })();
+
+    // ── Exhibition crossfade ──
+    (function () {
+      const wrapper = document.getElementById('exhib-wrapper');
+      if (!wrapper) return;
+      const img2 = document.getElementById('exhib-img2');
+      if (!img2) return;
+      wrapper.addEventListener('mouseenter', () => img2.style.opacity = '1');
+      wrapper.addEventListener('mouseleave', () => img2.style.opacity = '0');
+    })();
+
+    // ── Nav shrink on scroll + dark mode over hero ──
+    (function () {
+      const nav = document.getElementById('main-nav');
+      if (!nav) return;
+      // Hero section is the first <section>
+      const heroSection = document.querySelector('section');
+      let ticking = false;
+      function updateNav() {
+        const scrollY = window.scrollY;
+        if (scrollY > 80) {
+          nav.style.padding = '8px 20px';
+        } else {
+          nav.style.padding = '10px 24px';
+        }
+        // Dark nav when over hero (dark section)
+        if (heroSection) {
+          const heroBottom = heroSection.offsetTop + heroSection.offsetHeight;
+          if (scrollY < heroBottom - 60) {
+            nav.classList.add('nav-dark');
+          } else {
+            nav.classList.remove('nav-dark');
+          }
+        }
+        ticking = false;
+      }
+      window.addEventListener('scroll', () => {
+        if (!ticking) {
+          requestAnimationFrame(updateNav);
+          ticking = true;
+        }
+      });
+      updateNav(); // initial state
+    })();
+
+    // ── Mobile: show/hide credit-top ──
+    (function () {
+      const ct = document.getElementById('credit-top');
+      if (!ct) return;
+      function check() { ct.style.display = window.innerWidth < 769 ? 'block' : 'none'; }
+      check();
+      window.addEventListener('resize', check);
+    })();
+
+    // ── Responsive: works bento collapse on mobile ──
+    (function () {
+      const bentoGrids = document.querySelectorAll('[data-bento]');
+      // handled via CSS grid — single column fallback via @media
+    })();
+  </script>
+
+  <!-- Responsive overrides -->
+  <style>
+    @media (max-width: 768px) {
+      /* Partner panels stack */
+      section > div > div[style*="grid-template-columns: 1fr 1fr"] {
+        grid-template-columns: 1fr !important;
+      }
+      /* Arena header stacks */
+      section > div > div[style*="grid-template-columns: 1fr 1.4fr"],
+      section > div > div[style*="grid-template-columns: 1fr 1.2fr"],
+      section > div > div[style*="grid-template-columns: 1.6fr 1fr"],
+      section > div > div[style*="grid-template-columns: 1fr 2fr"] {
+        grid-template-columns: 1fr !important;
+      }
+      /* Works cards inner grid */
+      .card-inner > div[style*="grid-template-columns: auto 1fr"],
+      .card-inner > div[style*="grid-template-columns: 1fr auto"] {
+        grid-template-columns: 1fr !important;
+      }
+      /* RWA bento */
+      section > div > div[style*="grid-template-columns: 1fr 1fr"] {
+        grid-template-columns: 1fr !important;
+      }
+    }
+    @media (max-width: 480px) {
+      .hero-display {
+        font-size: clamp(3rem, 18vw, 5rem) !important;
+      }
+    }
+  </style>
+
+</body>
+</html>
