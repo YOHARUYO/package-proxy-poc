@@ -331,14 +331,13 @@
     }
 
 
-    @media (max-width: 768px) {
-      #artist-credit-bar {
-        bottom: auto;
-        top: 0;
-        padding: 10px 12px 28px;
-        background: linear-gradient(to bottom, rgba(0,0,0,0.45) 0%, transparent 100%);
-        align-items: flex-start;
-      }
+
+    /* Artist photo credit position */
+    #artist-credit-v1 { display: block; } /* 모바일: 이미지 위 */
+    #artist-credit-v1-bottom { display: none !important; }
+    @media (min-width: 769px) {
+      #artist-credit-v1 { display: none !important; }
+      #artist-credit-v1-bottom { display: block !important; }
     }
   </style>
 </head>
@@ -472,19 +471,22 @@
 
         <!-- Photo Placeholder -->
         <div class="fade-in fade-in-delay-1">
-          <div id="artist-slideshow-v1" style="position:relative; width:100%; overflow:hidden; aspect-ratio:3/4; background:#111;">
-            <div id="artist-slides-v1" style="display:flex; height:100%; transition: transform 0.7s cubic-bezier(0.16,1,0.3,1);">
-              <img src="artist_joojaebum_1.png" alt="주재범 작가 사진 1" style="width:100%; flex-shrink:0; height:100%; object-fit:cover; display:block;" />
-              <img src="artist_joojaebum_2.jpg" alt="주재범 작가 사진 2" style="width:100%; flex-shrink:0; height:100%; object-fit:cover; display:block;" />
-            </div>
-            <!-- Photo credit -->
-            <div id="artist-credit-bar" style="position:absolute; bottom:0; left:0; right:0; padding:28px 12px 10px; background:linear-gradient(to top, rgba(0,0,0,0.45) 0%, transparent 100%); display:flex; justify-content:space-between; align-items:flex-end; z-index:10;">
-              <span style="font-size:0.6rem; letter-spacing:0.12em; text-transform:uppercase; color:rgba(255,255,255,0.55); font-family:inherit;">Photo by HypebeastKR</span>
-              <div style="display:flex; gap:8px;">
+          <div style="position:relative; width:100%;">
+            <!-- Credit: 데스크탑은 하단, 모바일은 상단 (외부 배치로 overflow 제약 없음) -->
+            <p id="artist-credit-v1" style="margin:0 0 4px 0; font-size:0.6rem; letter-spacing:0.12em; text-transform:uppercase; color:#999; font-family:inherit;">Photo by HypebeastKR</p>
+            <div id="artist-slideshow-v1" style="position:relative; width:100%; overflow:hidden; aspect-ratio:3/4; background:#111;">
+              <div id="artist-slides-v1" style="display:flex; height:100%; transition: transform 0.7s cubic-bezier(0.16,1,0.3,1);">
+                <img src="artist_joojaebum_1.png" alt="주재범 작가 사진 1" style="width:100%; flex-shrink:0; height:100%; object-fit:cover; display:block;" />
+                <img src="artist_joojaebum_2.jpg" alt="주재범 작가 사진 2" style="width:100%; flex-shrink:0; height:100%; object-fit:cover; display:block;" />
+              </div>
+              <!-- Slide dots -->
+              <div style="position:absolute; bottom:10px; right:10px; display:flex; gap:6px; z-index:10;">
                 <div class="v1-slide-dot" data-idx="0" style="width:5px; height:5px; background:#fff; cursor:pointer; transition:opacity 0.2s;"></div>
                 <div class="v1-slide-dot" data-idx="1" style="width:5px; height:5px; background:#fff; opacity:0.4; cursor:pointer; transition:opacity 0.2s;"></div>
               </div>
             </div>
+            <!-- 데스크탑: 크레딧 하단 표시용 -->
+            <p id="artist-credit-v1-bottom" style="margin:4px 0 0 0; font-size:0.6rem; letter-spacing:0.12em; text-transform:uppercase; color:#999; font-family:inherit; display:none;">Photo by HypebeastKR</p>
           </div>
         </div>
 
