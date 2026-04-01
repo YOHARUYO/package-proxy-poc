@@ -464,10 +464,19 @@
     <a href="#artworks" style="font-family:'Outfit','Pretendard',system-ui,sans-serif; font-size:0.8rem; color:#666; text-decoration:none; transition: color 0.2s;">Artworks</a>
     <a href="#arena" style="font-family:'Outfit','Pretendard',system-ui,sans-serif; font-size:0.8rem; color:#666; text-decoration:none; transition: color 0.2s;">Arena</a>
     <a href="#exhibition" style="font-family:'Outfit','Pretendard',system-ui,sans-serif; font-size:0.8rem; color:#666; text-decoration:none; transition: color 0.2s;">Exhibition</a>
-    <!-- Lang toggle -->
-    <div style="display:flex;align-items:center;gap:0;border:1px solid rgba(0,0,0,0.12);border-radius:9999px;overflow:hidden;margin-left:8px;">
-      <button id="lang-ko" onclick="setLang('ko')" style="font-family:'Pretendard',system-ui,sans-serif;font-size:0.7rem;font-weight:700;padding:5px 12px;border:none;cursor:pointer;background:#1A1A1A;color:#fff;transition:all 0.2s;letter-spacing:0.05em;">KO</button>
-      <button id="lang-en" onclick="setLang('en')" style="font-family:'Outfit',system-ui,sans-serif;font-size:0.7rem;font-weight:600;padding:5px 12px;border:none;cursor:pointer;background:transparent;color:#999;transition:all 0.2s;letter-spacing:0.05em;">EN</button>
+    <div style="margin-left:8px;">
+      <select id="lang-select" onchange="setLang(this.value)" style="font-family:'Outfit','Pretendard',system-ui,sans-serif;font-size:0.7rem;font-weight:600;color:#1A1A1A;background:transparent;border:1px solid rgba(0,0,0,0.15);border-radius:9999px;padding:5px 10px;cursor:pointer;outline:none;appearance:none;-webkit-appearance:none;min-width:52px;text-align:center;">
+        <option value="ko">🇰🇷 KO</option>
+        <option value="en">🇺🇸 EN</option>
+        <option value="ja">🇯🇵 JA</option>
+        <option value="zh">🇨🇳 ZH</option>
+        <option value="fr">🇫🇷 FR</option>
+        <option value="de">🇩🇪 DE</option>
+        <option value="es">🇪🇸 ES</option>
+        <option value="it">🇮🇹 IT</option>
+        <option value="pt">🇵🇹 PT</option>
+        <option value="ru">🇷🇺 RU</option>
+      </select>
     </div>
   </nav>
 
@@ -488,15 +497,18 @@
       <div class="hero-bg-slide" style="position:absolute;inset:0;background:url('back_1.png') center center / cover no-repeat;opacity:1;transition:opacity 1.5s ease;"></div>
       <div class="hero-bg-slide" style="position:absolute;inset:0;background:url('back_2.png') center center / cover no-repeat;opacity:0;transition:opacity 1.5s ease;"></div>
       <div class="hero-bg-slide" style="position:absolute;inset:0;background:url('back_3.png') center center / cover no-repeat;opacity:0;transition:opacity 1.5s ease;"></div>
-      <!-- Dark overlay for text readability -->
-      <div style="position:absolute;inset:0;background:linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.55) 50%, rgba(0,0,0,0.35) 100%);z-index:1;"></div>
+      <!-- Glassmorphism overlay for readability -->
+      <!-- Layer 1: subtle blur only on upper half (for text area) -->
+      <div style="position:absolute;top:0;left:0;right:0;height:60%;backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);z-index:1;pointer-events:none;"></div>
+      <!-- Layer 2: gradient darkening for bottom (where less text is) -->
+      <div style="position:absolute;inset:0;background:linear-gradient(to top, rgba(0,0,0,0.80) 0%, rgba(0,0,0,0.40) 40%, rgba(0,0,0,0.25) 100%);z-index:1;"></div>
     </div>
 
     <div style="max-width:1280px; margin:0 auto; width:100%; padding-top: 140px;">
 
       <!-- Project label -->
       <div class="reveal" style="margin-bottom:24px;">
-        <span style="font-family:'Outfit','Pretendard',system-ui,sans-serif; font-size:0.7rem; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; color:rgba(255,255,255,0.65); display:block; margin-bottom:12px;">Project</span>
+        <span id="i18n-hero-label" style="font-family:'Outfit','Pretendard',system-ui,sans-serif; font-size:0.7rem; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; color:rgba(255,255,255,0.65); display:block; margin-bottom:12px;">Project</span>
       </div>
 
       <!-- Main headline -->
@@ -539,7 +551,7 @@
 
       <!-- Body text -->
       <div class="reveal reveal-delay-4" style="max-width:680px; margin-bottom:72px;">
-        <p style="font-size:clamp(0.9rem,1.5vw,1.05rem);line-height:1.85;color:rgba(255,255,255,0.6);" class="keep-all">
+        <p id="i18n-hero-body" style="font-size:clamp(0.9rem,1.5vw,1.05rem);line-height:1.85;color:rgba(255,255,255,0.6);" class="keep-all">
           커뮤니티가 아이디어를 제안하는 과정에서 본인의 상상을 AI를 통해 자유롭게 표현이 가능했으며, 그 아이디어를 작가가 직접 현실에서 보고 만질 수 있는 작품으로 탄생시켰다. 더불어 작품의 권리와 가치를 다시 블록체인 디지털 인프라에 기록함으로써 예술 작품의 탄생과 거래 과정을 새로운 순환 구조로 엮어낸 프로젝트이다.
         </p>
       </div>
@@ -549,7 +561,7 @@
         <div class="scroll-indicator" style="color:rgba(255,255,255,0.7);">
           <iconify-icon icon="solar:arrow-down-linear" width="20"></iconify-icon>
         </div>
-        <span style="font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.65);">Scroll to explore</span>
+        <span id="i18n-scroll-text" style="font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.65);">Scroll to explore</span>
       </div>
 
     </div>
@@ -568,7 +580,7 @@
       <!-- Asymmetric header -->
       <div style="display:grid; grid-template-columns: 1fr 2fr; gap:clamp(32px,5vw,80px); align-items:end; margin-bottom:72px;">
         <div class="reveal">
-          <span style="font-family:'Outfit','Pretendard',system-ui,sans-serif; font-size:0.7rem; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; color:rgba(255,255,255,0.5); display:block; margin-bottom:12px;">Partners</span>
+          <span id="i18n-label-partners" style="font-family:'Outfit','Pretendard',system-ui,sans-serif; font-size:0.7rem; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; color:rgba(255,255,255,0.5); display:block; margin-bottom:12px;">Partners</span>
           <h2 style="font-family:'Outfit','Pretendard',sans-serif;font-size:clamp(2.5rem,6vw,5rem);font-weight:900;line-height:0.95;letter-spacing:-0.04em;color:#FFFFFF;">
             두 플랫폼,<br /><span style="color:#6B7280;">하나의</span><br />비전
           </h2>
@@ -639,7 +651,7 @@
     <div style="max-width:1280px; margin:0 auto; position:relative; z-index:1;">
 
       <div class="reveal" style="margin-bottom:56px;">
-        <span style="font-family:'Outfit','Pretendard',system-ui,sans-serif; font-size:0.7rem; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; color:#6B7280; display:block; margin-bottom:12px;">Artist</span>
+        <span id="i18n-label-artist" style="font-family:'Outfit','Pretendard',system-ui,sans-serif; font-size:0.7rem; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; color:#6B7280; display:block; margin-bottom:12px;">Artist</span>
         <h2 style="font-family:'Outfit','Pretendard',sans-serif;font-size:clamp(2.5rem,6vw,5.5rem);font-weight:900;line-height:0.95;letter-spacing:-0.04em;color:#1A1A1A;">주재범</h2>
       </div>
 
@@ -678,7 +690,7 @@
           </p>
 
           <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
-            <a href="https://artue.io/ko/artist/jaebum-joo" target="_blank" rel="noopener" class="btn-amber">
+            <a id="i18n-artist-cta" href="https://artue.io/ko/artist/jaebum-joo" target="_blank" rel="noopener" class="btn-amber">
               자세히 알아보기
               <span class="arrow-circle"><iconify-icon icon="solar:arrow-right-bold" width="14"></iconify-icon></span>
             </a>
@@ -705,7 +717,7 @@
     <div style="max-width:1280px; margin:0 auto; position:relative; z-index:1;">
 
       <div class="reveal" style="margin-bottom:72px;">
-        <span style="font-family:'Outfit','Pretendard',system-ui,sans-serif; font-size:0.7rem; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; color:#6B7280; display:block; margin-bottom:12px;">Artworks</span>
+        <span id="i18n-label-artworks" style="font-family:'Outfit','Pretendard',system-ui,sans-serif; font-size:0.7rem; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; color:#6B7280; display:block; margin-bottom:12px;">Artworks</span>
         <h2 style="font-family:'Outfit','Pretendard',sans-serif;font-size:clamp(2.5rem,6vw,5rem);font-weight:900;line-height:0.95;letter-spacing:-0.04em;color:#1A1A1A;">작품</h2>
       </div>
 
@@ -725,11 +737,11 @@
                 수 많은 존재들이 조각들로 한데 모여 움직임을 이루는 도시의 모습을 담고 있다. 그 움직임에서 느껴지는 운율을 픽셀 리듬으로 표현한다.
               </p>
               <div style="display:flex;gap:12px;flex-wrap:wrap;">
-                <a href="https://arena.conx.xyz/joojaebum/submission?id=FR3WCQq-ZEN-HFO4GKProA" target="_blank" rel="noopener" class="btn-ghost" style="font-size:0.75rem;padding:10px 20px;">
+                <a id="i18n-idea-1" href="https://arena.conx.xyz/joojaebum/submission?id=FR3WCQq-ZEN-HFO4GKProA" target="_blank" rel="noopener" class="btn-ghost" style="font-size:0.75rem;padding:10px 20px;">
                   <iconify-icon icon="solar:link-minimalistic-2-linear" width="14"></iconify-icon>
                   아이디어 원본
                 </a>
-                <a href="https://artue.io/work/jaebum-joo-39" target="_blank" rel="noopener" class="btn-amber" style="font-size:0.75rem;padding:10px 20px;">
+                <a id="i18n-work-detail-1" href="https://artue.io/work/jaebum-joo-39" target="_blank" rel="noopener" class="btn-amber" style="font-size:0.75rem;padding:10px 20px;">
                   작품 상세 보기
                   <span class="arrow-circle" style="width:24px;height:24px;"><iconify-icon icon="solar:arrow-right-bold" width="12"></iconify-icon></span>
                 </a>
@@ -765,11 +777,11 @@
                 일상 가장 가까이에서 바라보고 지켜보게 되는 작은 친구. 주고받는 시선 속에 어느새 묵직해진 존재감을 가진 귀여운 생명체.
               </p>
               <div style="display:flex;gap:12px;flex-wrap:wrap;">
-                <a href="https://arena.conx.xyz/joojaebum/submission?id=QNLachJ82t-Gz0Q5B987QA" target="_blank" rel="noopener" class="btn-ghost" style="font-size:0.75rem;padding:10px 20px;">
+                <a id="i18n-idea-2" href="https://arena.conx.xyz/joojaebum/submission?id=QNLachJ82t-Gz0Q5B987QA" target="_blank" rel="noopener" class="btn-ghost" style="font-size:0.75rem;padding:10px 20px;">
                   <iconify-icon icon="solar:link-minimalistic-2-linear" width="14"></iconify-icon>
                   아이디어 원본
                 </a>
-                <a href="https://artue.io/work/jaebum-joo-40" target="_blank" rel="noopener" class="btn-amber" style="font-size:0.75rem;padding:10px 20px;">
+                <a id="i18n-work-detail-2" href="https://artue.io/work/jaebum-joo-40" target="_blank" rel="noopener" class="btn-amber" style="font-size:0.75rem;padding:10px 20px;">
                   작품 상세 보기
                   <span class="arrow-circle" style="width:24px;height:24px;"><iconify-icon icon="solar:arrow-right-bold" width="12"></iconify-icon></span>
                 </a>
@@ -800,7 +812,7 @@
     <div style="max-width:1280px; margin:0 auto; position:relative; z-index:1;">
 
       <div class="reveal">
-        <span style="font-family:'Outfit','Pretendard',system-ui,sans-serif; font-size:0.7rem; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; color:#6B7280; display:block; margin-bottom:12px;">Arena Overview</span>
+        <span id="i18n-label-arena" style="font-family:'Outfit','Pretendard',system-ui,sans-serif; font-size:0.7rem; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; color:#6B7280; display:block; margin-bottom:12px;">Arena Overview</span>
         <h2 style="font-family:'Outfit','Pretendard',sans-serif;font-size:clamp(2.5rem,5.5vw,5rem);font-weight:900;line-height:0.95;letter-spacing:-0.04em;color:#1A1A1A;">
           JOO JAEBUM Arena
         </h2>
@@ -944,7 +956,7 @@
       <!-- Header -->
       <div style="display:grid; grid-template-columns: 1.6fr 1fr; gap:clamp(32px,5vw,80px); align-items:end; margin-bottom:56px;">
         <div class="reveal">
-          <span style="font-family:'Outfit','Pretendard',system-ui,sans-serif; font-size:0.7rem; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; color:#6B7280; display:block; margin-bottom:12px;">Exhibition</span>
+          <span id="i18n-label-exhibition" style="font-family:'Outfit','Pretendard',system-ui,sans-serif; font-size:0.7rem; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; color:#6B7280; display:block; margin-bottom:12px;">Exhibition</span>
           <h2 style="font-family:'Outfit','Pretendard',sans-serif;font-size:clamp(2.5rem,6vw,5.5rem);font-weight:900;line-height:0.95;letter-spacing:-0.04em;color:#1A1A1A;">
             ART OnO<br /><span style="color:#6B7280;">2026</span>
           </h2>
@@ -979,7 +991,7 @@
           </div>
         </div>
         <!-- Photo credit: card 바깥 + overflow에 영향 안받는 위치 -->
-        <div style="margin-top:10px; display:flex; align-items:center; gap:6px; padding:0 6px;">
+        <div style="margin-top:10px; display:flex; align-items:center; gap:6px; padding:0 16px;">
           <span style="font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:#999;font-family:'Outfit','Pretendard',system-ui,sans-serif;">Photo by ART OnO</span>
         </div>
       </div>
@@ -1145,46 +1157,189 @@
       // handled via CSS grid — single column fallback via @media
     })();
 
-    // ── Language toggle ──
-    const langData = {
+    // ── Language toggle (10 languages) ──
+    const i18n = {
       ko: {
-        'nav-partners': 'Partners',
-        'nav-artist': 'Artist',
-        'nav-artworks': 'Artworks',
-        'nav-arena': 'Arena',
-        'nav-exhibition': 'Exhibition',
-        'hero-label': 'Project',
-        'hero-subtitle': '작품의 탄생부터 가치의 보존까지,\n새로운 공동 창작의 미래를 질문하다.',
-        'scroll-text': 'Scroll to explore',
+        heroLabel: 'Project',
+        heroSubtitle: '작품의 탄생부터 가치의 보존까지,<br />새로운 공동 창작의 미래를 질문하다.',
+        heroBody: '커뮤니티가 아이디어를 제안하는 과정에서 본인의 상상을 AI를 통해 자유롭게 표현이 가능했으며, 그 아이디어를 작가가 직접 현실에서 보고 만질 수 있는 작품으로 탄생시켰다. 더불어 작품의 권리와 가치를 다시 블록체인 디지털 인프라에 기록함으로써 예술 작품의 탄생과 거래 과정을 새로운 순환 구조로 엮어낸 프로젝트이다.',
+        scrollText: 'Scroll to explore',
+        partners: 'Partners',
+        artist: 'Artist',
+        artworks: 'Artworks',
+        arena: 'Arena',
+        exhibition: 'Exhibition',
+        artistCta: '자세히 알아보기',
+        ideaOrigin: '아이디어 원본',
+        workDetail: '작품 상세 보기',
       },
       en: {
-        'nav-partners': 'Partners',
-        'nav-artist': 'Artist',
-        'nav-artworks': 'Artworks',
-        'nav-arena': 'Arena',
-        'nav-exhibition': 'Exhibition',
-        'hero-label': 'Project',
-        'hero-subtitle': 'From the birth of a work to the preservation of its value,\nquestioning the future of new co-creation.',
-        'scroll-text': 'Scroll to explore',
-      }
+        heroLabel: 'Project',
+        heroSubtitle: 'From the birth of a work to the preservation of its value,<br />questioning the future of new co-creation.',
+        heroBody: 'In the process of the community proposing ideas, participants were able to freely express their imagination through AI. Those ideas were then brought to life as tangible works by the artist. Additionally, the rights and value of the works were recorded on blockchain digital infrastructure, weaving the creation and transaction of artworks into a new circular structure.',
+        scrollText: 'Scroll to explore',
+        partners: 'Partners',
+        artist: 'Artist',
+        artworks: 'Artworks',
+        arena: 'Arena',
+        exhibition: 'Exhibition',
+        artistCta: 'Learn More',
+        ideaOrigin: 'View Original Idea',
+        workDetail: 'View Artwork',
+      },
+      ja: {
+        heroLabel: 'プロジェクト',
+        heroSubtitle: '作品の誕生から価値の保存まで、<br />新しい共同創作の未来を問う。',
+        heroBody: 'コミュニティがアイデアを提案する過程で、AIを通じて自由に想像を表現できました。そのアイデアをアーティストが現実の作品として生み出し、さらに作品の権利と価値をブロックチェーンインフラに記録することで、芸術作品の誕生から取引までを新たな循環構造で結んだプロジェクトです。',
+        scrollText: 'スクロールして探索',
+        partners: 'パートナー',
+        artist: 'アーティスト',
+        artworks: '作品',
+        arena: 'アリーナ',
+        exhibition: '展示',
+        artistCta: '詳しく見る',
+        ideaOrigin: 'オリジナルアイデア',
+        workDetail: '作品詳細',
+      },
+      zh: {
+        heroLabel: '项目',
+        heroSubtitle: '从作品的诞生到价值的守护，<br />探索共同创作的未来。',
+        heroBody: '在社区提出创意的过程中，参与者可以通过AI自由表达自己的想象。艺术家将这些创意转化为现实中可触摸的作品，并将作品的权利和价值记录在区块链数字基础设施上，将艺术作品的诞生与交易过程编织成全新的循环结构。',
+        scrollText: '向下滚动探索',
+        partners: '合作伙伴',
+        artist: '艺术家',
+        artworks: '作品',
+        arena: '竞技场',
+        exhibition: '展览',
+        artistCta: '了解更多',
+        ideaOrigin: '查看原始创意',
+        workDetail: '查看作品',
+      },
+      fr: {
+        heroLabel: 'Projet',
+        heroSubtitle: 'De la naissance d\'une œuvre à la préservation de sa valeur,<br />questionner l\'avenir de la co-création.',
+        heroBody: 'Dans le processus de proposition d\'idées par la communauté, les participants pouvaient exprimer librement leur imagination à travers l\'IA. Ces idées ont été concrétisées en œuvres tangibles par l\'artiste, et les droits et valeurs des œuvres ont été enregistrés sur une infrastructure numérique blockchain.',
+        scrollText: 'Défiler pour explorer',
+        partners: 'Partenaires',
+        artist: 'Artiste',
+        artworks: 'Œuvres',
+        arena: 'Arène',
+        exhibition: 'Exposition',
+        artistCta: 'En savoir plus',
+        ideaOrigin: 'Voir l\'idée originale',
+        workDetail: 'Voir l\'œuvre',
+      },
+      de: {
+        heroLabel: 'Projekt',
+        heroSubtitle: 'Von der Entstehung eines Werks bis zur Bewahrung seines Werts,<br />die Zukunft der gemeinsamen Schöpfung hinterfragen.',
+        heroBody: 'Im Prozess der Ideeneinreichung durch die Community konnten Teilnehmer ihre Vorstellungen durch KI frei ausdrücken. Der Künstler verwandelte diese Ideen in greifbare Werke, und die Rechte und Werte der Werke wurden auf einer Blockchain-Infrastruktur aufgezeichnet.',
+        scrollText: 'Scrollen zum Erkunden',
+        partners: 'Partner',
+        artist: 'Künstler',
+        artworks: 'Werke',
+        arena: 'Arena',
+        exhibition: 'Ausstellung',
+        artistCta: 'Mehr erfahren',
+        ideaOrigin: 'Originalidee ansehen',
+        workDetail: 'Werk ansehen',
+      },
+      es: {
+        heroLabel: 'Proyecto',
+        heroSubtitle: 'Desde el nacimiento de una obra hasta la preservación de su valor,<br />cuestionando el futuro de la co-creación.',
+        heroBody: 'En el proceso de propuesta de ideas por parte de la comunidad, los participantes pudieron expresar libremente su imaginación a través de la IA. El artista transformó estas ideas en obras tangibles, y los derechos y valores de las obras fueron registrados en una infraestructura digital blockchain.',
+        scrollText: 'Desplázate para explorar',
+        partners: 'Socios',
+        artist: 'Artista',
+        artworks: 'Obras',
+        arena: 'Arena',
+        exhibition: 'Exposición',
+        artistCta: 'Saber más',
+        ideaOrigin: 'Ver idea original',
+        workDetail: 'Ver obra',
+      },
+      it: {
+        heroLabel: 'Progetto',
+        heroSubtitle: 'Dalla nascita di un\'opera alla conservazione del suo valore,<br />interrogarsi sul futuro della co-creazione.',
+        heroBody: 'Nel processo di proposta di idee da parte della community, i partecipanti potevano esprimere liberamente la loro immaginazione attraverso l\'IA. L\'artista ha trasformato queste idee in opere tangibili, e i diritti e i valori delle opere sono stati registrati su un\'infrastruttura digitale blockchain.',
+        scrollText: 'Scorri per esplorare',
+        partners: 'Partner',
+        artist: 'Artista',
+        artworks: 'Opere',
+        arena: 'Arena',
+        exhibition: 'Mostra',
+        artistCta: 'Scopri di più',
+        ideaOrigin: 'Vedi idea originale',
+        workDetail: 'Vedi opera',
+      },
+      pt: {
+        heroLabel: 'Projeto',
+        heroSubtitle: 'Do nascimento de uma obra à preservação do seu valor,<br />questionando o futuro da co-criação.',
+        heroBody: 'No processo de proposição de ideias pela comunidade, os participantes podiam expressar livremente sua imaginação através da IA. O artista transformou essas ideias em obras tangíveis, e os direitos e valores das obras foram registrados em uma infraestrutura digital blockchain.',
+        scrollText: 'Role para explorar',
+        partners: 'Parceiros',
+        artist: 'Artista',
+        artworks: 'Obras',
+        arena: 'Arena',
+        exhibition: 'Exposição',
+        artistCta: 'Saiba mais',
+        ideaOrigin: 'Ver ideia original',
+        workDetail: 'Ver obra',
+      },
+      ru: {
+        heroLabel: 'Проект',
+        heroSubtitle: 'От рождения произведения до сохранения его ценности,<br />исследуя будущее совместного творчества.',
+        heroBody: 'В процессе предложения идей сообществом участники могли свободно выражать свои мысли с помощью ИИ. Художник воплотил эти идеи в осязаемые произведения, а права и ценности работ были записаны в блокчейн-инфраструктуре.',
+        scrollText: 'Прокрутите для изучения',
+        partners: 'Партнёры',
+        artist: 'Художник',
+        artworks: 'Работы',
+        arena: 'Арена',
+        exhibition: 'Выставка',
+        artistCta: 'Узнать больше',
+        ideaOrigin: 'Оригинальная идея',
+        workDetail: 'Просмотр работы',
+      },
     };
 
-    let currentLang = 'ko';
     function setLang(lang) {
-      currentLang = lang;
+      if (!i18n[lang]) return;
+      const t = i18n[lang];
       document.documentElement.lang = lang;
-      document.getElementById('lang-ko').style.background = lang === 'ko' ? '#1A1A1A' : 'transparent';
-      document.getElementById('lang-ko').style.color = lang === 'ko' ? '#fff' : '#999';
-      document.getElementById('lang-en').style.background = lang === 'en' ? '#1A1A1A' : 'transparent';
-      document.getElementById('lang-en').style.color = lang === 'en' ? '#fff' : '#999';
 
-      // hero subtitle
-      const heroSub = document.getElementById('hero-subtitle-text');
-      if (heroSub) {
-        heroSub.innerHTML = lang === 'en'
-          ? 'From the birth of a work to the preservation of its value,<br />questioning the future of new co-creation.'
-          : '작품의 탄생부터 가치의 보존까지,<br />새로운 공동 창작의 미래를 질문하다.';
+      const sel = document.getElementById('lang-select');
+      if (sel) sel.value = lang;
+
+      const update = (id, html) => { const el = document.getElementById(id); if (el) el.innerHTML = html; };
+      const updateText = (id, text) => { const el = document.getElementById(id); if (el) el.textContent = text; };
+
+      update('hero-subtitle-text', t.heroSubtitle);
+      update('i18n-hero-body', t.heroBody);
+      updateText('i18n-hero-label', t.heroLabel);
+      updateText('i18n-scroll-text', t.scrollText);
+      updateText('i18n-label-partners', t.partners);
+      updateText('i18n-label-artist', t.artist);
+      updateText('i18n-label-artworks', t.artworks);
+      updateText('i18n-label-arena', t.arena);
+      updateText('i18n-label-exhibition', t.exhibition);
+
+      // Buttons: keep icon structure, update text
+      const artistCta = document.getElementById('i18n-artist-cta');
+      if (artistCta) {
+        const arrowSpan = artistCta.querySelector('.arrow-circle');
+        artistCta.textContent = t.artistCta + ' ';
+        if (arrowSpan) artistCta.appendChild(arrowSpan);
       }
+      const updateBtnText = (id, text) => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        const icon = el.querySelector('iconify-icon');
+        el.textContent = text;
+        if (icon) el.prepend(icon);
+      };
+      updateBtnText('i18n-idea-1', t.ideaOrigin);
+      updateBtnText('i18n-idea-2', t.ideaOrigin);
+      updateBtnText('i18n-work-detail-1', t.workDetail);
+      updateBtnText('i18n-work-detail-2', t.workDetail);
     }
   </script>
 
