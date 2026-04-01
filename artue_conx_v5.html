@@ -602,8 +602,12 @@
   <!-- ─────────────────────────────────────────
        SECTION 2: PARTNERS (BLACK)
   ───────────────────────────────────────── -->
-  <section id="partners" style="background:#000; color:#fff; padding: clamp(80px, 10vw, 120px) clamp(24px, 8vw, 120px);">
-    <div style="max-width: 1200px; margin: 0 auto;">
+  <section id="partners" style="background:#000; color:#fff; padding: clamp(80px, 10vw, 120px) clamp(24px, 8vw, 120px); position:relative; overflow:hidden;">
+    <!-- Pixel grid background -->
+    <div id="pixel-grid-partners" aria-hidden="true" style="position:absolute; inset:0; display:grid; grid-template-columns: repeat(30, 1fr); gap:4px; padding:4px; pointer-events:none; z-index:0;"></div>
+    <!-- Dark overlay so content stays readable -->
+    <div style="position:absolute; inset:0; background:#000; opacity:0.7; pointer-events:none; z-index:1;"></div>
+    <div style="max-width: 1200px; margin: 0 auto; position:relative; z-index:2;">
 
       <div class="fade-in" style="margin-bottom: 64px;">
         <span class="section-label" style="color: rgba(255,255,255,0.4);">Partners</span>
@@ -1102,6 +1106,23 @@
       });
     });
 
+    // ── Pixel grid (reusable) ──────────────────────
+    function buildPixelGrid(id, cols, rows) {
+      var grid = document.getElementById(id);
+      if (!grid) return;
+      var frag = document.createDocumentFragment();
+      for (var i = 0; i < cols * rows; i++) {
+        var cell = document.createElement('div');
+        cell.className = 'pixel-cell';
+        var dur = (1.5 + Math.random() * 3).toFixed(2) + 's';
+        var delay = (Math.random() * 4).toFixed(2) + 's';
+        cell.style.setProperty('--dur', dur);
+        cell.style.setProperty('--delay', delay);
+        frag.appendChild(cell);
+      }
+      grid.appendChild(frag);
+    }
+
     // ── Pixel grid hero (CSS-only pixel art grid) ──
     (function() {
       var grid = document.getElementById('pixel-grid-hero');
@@ -1119,6 +1140,9 @@
       }
       grid.appendChild(frag);
     })();
+
+    // ── Pixel grid partners background ──────────
+    buildPixelGrid('pixel-grid-partners', 30, 40);
 
     // ── Artist slideshow ────────────────────────
     (function() {
