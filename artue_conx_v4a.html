@@ -610,7 +610,7 @@
           </h2>
         </div>
         <div class="reveal reveal-delay-2" style="padding-bottom:8px;">
-          <p style="font-size:clamp(0.95rem,1.5vw,1.1rem);line-height:1.8;color:#EDE5D5;max-width:440px;" class="keep-all">
+          <p style="font-size:clamp(0.95rem,1.5vw,1.1rem);line-height:1.8;color:#CCCCCC;max-width:440px;" class="keep-all">
             <span id="i18n-partners-intro">ARTUE와 CONX는 예술과 기술의 경계를 허무는 두 플랫폼으로, 이번 프로젝트에서 작품의 발견과 가치 기록이라는 각자의 역할로 협력한다.</span>
           </p>
         </div>
@@ -988,16 +988,16 @@
         <div class="reveal reveal-delay-2" style="padding-bottom:8px;">
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:28px;">
             <div>
-              <p style="font-size:0.65rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#A3A3A3;margin-bottom:8px;">전시명</p>
+              <p id="i18n-exhib-label-name" style="font-size:0.65rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#A3A3A3;margin-bottom:8px;">전시명</p>
               <p style="font-size:1rem;font-weight:700;color:#1A1A1A;letter-spacing:-0.01em;">ART OnO 2026</p>
             </div>
             <div>
-              <p style="font-size:0.65rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#A3A3A3;margin-bottom:8px;">전시장소</p>
+              <p id="i18n-exhib-label-venue" style="font-size:0.65rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#A3A3A3;margin-bottom:8px;">전시장소</p>
               <p style="font-size:1rem;font-weight:700;color:#1A1A1A;letter-spacing:-0.01em;">308 ARTUE</p>
             </div>
           </div>
           <div style="margin-top:24px;">
-            <p style="font-size:0.65rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#A3A3A3;margin-bottom:10px;">관련 링크</p>
+            <p id="i18n-exhib-label-link" style="font-size:0.65rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#A3A3A3;margin-bottom:10px;">관련 링크</p>
             <a href="https://art-ono.com/" target="_blank" rel="noopener" class="btn-ghost" style="font-size:0.75rem; padding:10px 20px;">
               <span id="i18n-exhib-link">art-ono.com</span>
               <span class="arrow-circle" style="width:24px;height:24px;"><iconify-icon icon="solar:arrow-right-bold" width="12"></iconify-icon></span>
@@ -1248,6 +1248,9 @@
         exhibName:`ART OnO 2026`,
         exhibVenue:`SETEC 308 ARTUE`,
         exhibLink:`art-ono.com`,
+        exhibLabelName:`전시명`,
+        exhibLabelVenue:`전시장소`,
+        exhibLabelLink:`관련 링크`,
       },
       en: {
         heroLabel:`Project`,
@@ -1305,6 +1308,9 @@
         exhibName:`ART OnO 2026`,
         exhibVenue:`SETEC 308 ARTUE`,
         exhibLink:`art-ono.com`,
+        exhibLabelName:`Exhibition Name`,
+        exhibLabelVenue:`Venue`,
+        exhibLabelLink:`Related Links`,
       },
       ja: {
         heroLabel:`プロジェクト`,
@@ -1550,6 +1556,9 @@
       if (t.exhibName) updateText('i18n-exhib-name', t.exhibName);
       if (t.exhibVenue) updateText('i18n-exhib-venue', t.exhibVenue);
       if (t.exhibLink) updateText('i18n-exhib-link', t.exhibLink);
+      if (t.exhibLabelName) updateText('i18n-exhib-label-name', t.exhibLabelName);
+      if (t.exhibLabelVenue) updateText('i18n-exhib-label-venue', t.exhibLabelVenue);
+      if (t.exhibLabelLink) updateText('i18n-exhib-label-link', t.exhibLabelLink);
     }
   </script>
 
