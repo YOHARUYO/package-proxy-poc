@@ -464,37 +464,45 @@
       height: 100%;
       border-radius: 16px;
       overflow: hidden;
-      transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      /* transform/opacity만 애니메이션 — GPU 가속 */
+      transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+                  opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: transform, opacity;
       cursor: pointer;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
     }
     .art-slider-card img {
       width: 100%;
       height: 100%;
       object-fit: cover;
       display: block;
+      /* 이미지 렌더링 최적화 */
+      image-rendering: auto;
+      will-change: auto;
     }
     /* 앞 카드 */
     .art-card-active {
-      transform: translateX(-50%) scale(1);
+      transform: translate3d(-50%, 0, 0) scale(1);
       z-index: 3;
-      filter: none;
-      box-shadow: 0 24px 60px rgba(0,0,0,0.6);
+      opacity: 1;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
     }
     /* 두 번째 카드 */
     .art-card-next {
-      transform: translateX(-20%) scale(0.88);
+      transform: translate3d(-20%, 0, 0) scale(0.88);
       z-index: 2;
-      filter: brightness(0.5);
+      opacity: 0.45;
     }
-    /* 세 번째 카드 (숨김) */
+    /* 세 번째 카드 */
     .art-card-hidden {
-      transform: translateX(-10%) scale(0.78);
+      transform: translate3d(-10%, 0, 0) scale(0.78);
       z-index: 1;
-      filter: brightness(0.3);
+      opacity: 0.2;
     }
     .art-slider-controls {
       position: absolute;
-      bottom: -48px;
+      bottom: -58px;
       left: 50%;
       transform: translateX(-50%);
       display: flex;
@@ -1271,12 +1279,11 @@
       var paused = false;
 
       function updateCards() {
-        cards.forEach(function(card, i) {
-          card.className = 'art-slider-card';
-          var pos = (i - current + total) % total;
-          if (pos === 0) card.classList.add('art-card-active');
-          else if (pos === 1) card.classList.add('art-card-next');
-          else card.classList.add('art-card-hidden');
+        requestAnimationFrame(function() {
+          cards.forEach(function(card, i) {
+            var pos = (i - current + total) % total;
+            card.className = 'art-slider-card ' + (pos === 0 ? 'art-card-active' : pos === 1 ? 'art-card-next' : 'art-card-hidden');
+          });
         });
       }
 
