@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ARTUE x CONX — Project JOO JAEBUM Arena</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #fff;
+      color: #000;
+      overflow-x: hidden;
+    }
+
+    /* Fade-in animation */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .fade-in-delay-1 { transition-delay: 0.1s; }
+    .fade-in-delay-2 { transition-delay: 0.2s; }
+    .fade-in-delay-3 { transition-delay: 0.3s; }
+    .fade-in-delay-4 { transition-delay: 0.4s; }
+    .fade-in-delay-5 { transition-delay: 0.5s; }
+
+    /* Hero section */
+    .hero-label {
+      font-size: clamp(0.75rem, 1.5vw, 0.9rem);
+      font-weight: 600;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+    }
+    .hero-headline {
+      font-size: clamp(2.5rem, 7vw, 6rem);
+      font-weight: 900;
+      line-height: 1.0;
+      letter-spacing: -0.03em;
+    }
+    .hero-subtitle {
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      font-weight: 400;
+      line-height: 1.6;
+      color: #555;
+    }
+
+    /* Flow diagram */
+    .flow-container {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+    }
+    @media (max-width: 640px) {
+      .flow-container {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0;
+      }
+      .flow-arrow {
+        transform: rotate(90deg);
+        margin: 4px 0 4px 20px;
+      }
+    }
+    .flow-item {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .flow-step-num {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      color: #aaa;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+    }
+    .flow-step-text {
+      font-size: clamp(0.85rem, 1.5vw, 1rem);
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      white-space: nowrap;
+      border-bottom: 2px solid #000;
+      padding-bottom: 2px;
+    }
+    .flow-arrow {
+      font-size: 1.5rem;
+      color: #aaa;
+      padding: 0 20px;
+      margin-top: 14px;
+      flex-shrink: 0;
+    }
+
+    /* Section headings */
+    .section-heading {
+      font-size: clamp(2rem, 5vw, 4rem);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+    }
+    .section-heading-sm {
+      font-size: clamp(1.5rem, 3vw, 2.5rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+    }
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      opacity: 0.5;
+    }
+    .body-text {
+      font-size: clamp(0.9rem, 1.5vw, 1.05rem);
+      line-height: 1.85;
+      font-weight: 400;
+    }
+
+    /* Partner logos */
+    .logo-box {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(255,255,255,0.25);
+      padding: 12px 28px;
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      color: #fff;
+      text-decoration: none;
+      transition: background 0.25s ease, border-color 0.25s ease;
+      cursor: pointer;
+    }
+    .logo-box:hover {
+      background: rgba(255,255,255,0.1);
+      border-color: rgba(255,255,255,0.6);
+    }
+
+    /* Artist photo placeholder */
+    .photo-placeholder {
+      width: 100%;
+      aspect-ratio: 3 / 4;
+      background: #d4d4d4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Artwork image placeholders */
+    .artwork-img-placeholder {
+      aspect-ratio: 2 / 3;
+      background: #2a2a2a;
+      flex-shrink: 0;
+      width: 180px;
+    }
+    @media (max-width: 640px) {
+      .artwork-img-placeholder { width: 140px; }
+    }
+    .artwork-scroll-wrapper {
+      display: flex;
+      gap: 12px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+      -webkit-overflow-scrolling: touch;
+    }
+    .artwork-scroll-wrapper::-webkit-scrollbar { height: 2px; }
+    .artwork-scroll-wrapper::-webkit-scrollbar-track { background: #222; }
+    .artwork-scroll-wrapper::-webkit-scrollbar-thumb { background: #555; }
+
+    /* Buttons */
+    .btn-outline-white {
+      display: inline-block;
+      border: 1px solid #fff;
+      color: #fff;
+      padding: 10px 22px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+    .btn-outline-white:hover {
+      background: #fff;
+      color: #000;
+    }
+    .btn-outline-black {
+      display: inline-block;
+      border: 1.5px solid #000;
+      color: #000;
+      padding: 10px 22px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+    .btn-outline-black:hover {
+      background: #000;
+      color: #fff;
+    }
+
+    /* Social icon buttons */
+    .social-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border: 1.5px solid #000;
+      color: #000;
+      text-decoration: none;
+      transition: background 0.2s, color 0.2s;
+      border-radius: 50%;
+    }
+    .social-btn:hover {
+      background: #000;
+      color: #fff;
+    }
+    .social-btn svg {
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
+    }
+
+    /* Exhibition section */
+    .exhibition-img-wrapper {
+      position: relative;
+      display: inline-block;
+      width: 100%;
+    }
+    .exhibition-img-wrapper img {
+      width: 100%;
+      display: block;
+    }
+
+
+    /* Divider line */
+    .divider {
+      width: 40px;
+      height: 2px;
+      background: currentColor;
+      display: block;
+      margin-bottom: 24px;
+    }
+
+    /* RWA flow list */
+    .rwa-flow-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      border-left: 2px solid #000;
+      padding-left: 24px;
+    }
+    .rwa-flow-list li {
+      font-size: clamp(0.9rem, 1.4vw, 1rem);
+      font-weight: 500;
+      line-height: 1.6;
+      padding: 6px 0;
+      position: relative;
+    }
+    .rwa-flow-list li::before {
+      content: '';
+      position: absolute;
+      left: -29px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 8px;
+      height: 8px;
+      background: #000;
+      border-radius: 50%;
+    }
+
+    /* Nav */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      mix-blend-mode: difference;
+    }
+    .nav-brand {
+      font-size: 0.8rem;
+      font-weight: 800;
+      letter-spacing: 0.2em;
+      color: #fff;
+      text-transform: uppercase;
+    }
+
+    /* Artwork title divider */
+    .artwork-num {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #888;
+    }
+
+    /* AI questions */
+    .ai-questions {
+      border-left: 2px solid rgba(255,255,255,0.3);
+      padding-left: 24px;
+      margin: 28px 0;
+    }
+    .ai-questions p {
+      font-size: clamp(0.95rem, 1.6vw, 1.1rem);
+      font-weight: 500;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.8);
+      margin: 6px 0;
+    }
+
+
+
+
+    .artist-credit-top  { display: none; }
+    .artist-credit-bottom { display: block; }
+    @media (max-width: 768px) {
+      .artist-credit-top  { display: block; }
+      .artist-credit-bottom { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Nav (mix-blend-mode: difference for auto contrast) -->
+  <nav>
+    <span class="nav-brand">ARTUE × CONX</span>
+  </nav>
+
+  <!-- ─────────────────────────────────────────
+       SECTION 1: HERO
+  ───────────────────────────────────────── -->
+  <section style="background:#fff; color:#000; padding: clamp(120px, 15vw, 180px) clamp(24px, 8vw, 120px) clamp(80px, 10vw, 120px);">
+    <div style="max-width: 1200px; margin: 0 auto;">
+
+      <div class="fade-in">
+        <p class="hero-label" style="margin-bottom: 24px;">ARTUE × CONX</p>
+      </div>
+
+      <div class="fade-in fade-in-delay-1">
+        <h1 class="hero-headline" style="margin: 0 0 32px;">
+          <span style="font-size:clamp(1.2rem,3.5vw,2.8rem); font-weight:300; letter-spacing:0.08em; opacity:0.65; display:block;">Project</span>JOO JAEBUM<br />Arena
+        </h1>
+      </div>
+
+      <div class="fade-in fade-in-delay-2" style="max-width: 640px; margin-bottom: 64px;">
+        <p style="font-size: clamp(1rem, 2vw, 1.3rem); font-weight: 500; line-height: 1.65; color: #333; margin: 0;">
+          작품의 탄생부터 가치의 보존까지,<br />새로운 공동 창작의 미래를 질문하다.
+        </p>
+      </div>
+
+      <!-- Flow Diagram -->
+      <div class="fade-in fade-in-delay-3" style="margin-bottom: 64px;">
+        <div class="flow-container">
+          <div class="flow-item">
+            <span class="flow-step-num">Step 01</span>
+            <span class="flow-step-text">커뮤니티의 상상</span>
+          </div>
+          <span class="flow-arrow">→</span>
+          <div class="flow-item">
+            <span class="flow-step-num">Step 02</span>
+            <span class="flow-step-text">AI를 통한 확장</span>
+          </div>
+          <span class="flow-arrow">→</span>
+          <div class="flow-item">
+            <span class="flow-step-num">Step 03</span>
+            <span class="flow-step-text">작가의 해석과 완성</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Body Text -->
+      <div class="fade-in fade-in-delay-4" style="max-width: 720px;">
+        <span class="divider"></span>
+        <p class="body-text" style="color: #444; margin: 0;">
+          커뮤니티가 아이디어를 제안하는 과정에서 본인의 상상을 AI를 통해 자유롭게 표현이 가능했으며, 그 아이디어를 작가가 직접 현실에서 보고 만질 수 있는 작품으로 탄생시켰다. 더불어 작품의 권리와 가치를 다시 블록체인 디지털 인프라에 기록함으로써 예술 작품의 탄생과 거래 과정을 새로운 순환 구조로 엮어낸 프로젝트이다.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────────
+       SECTION 2: PARTNERS (BLACK)
+  ───────────────────────────────────────── -->
+  <section style="background:#000; color:#fff; padding: clamp(80px, 10vw, 120px) clamp(24px, 8vw, 120px);">
+    <div style="max-width: 1200px; margin: 0 auto;">
+
+      <div class="fade-in" style="margin-bottom: 64px;">
+        <span class="section-label" style="color: rgba(255,255,255,0.4);">Partners</span>
+        <h2 class="section-heading" style="color: #fff; margin: 16px 0 0;">
+          두 플랫폼,<br />하나의 비전
+        </h2>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2px;">
+
+        <!-- ARTUE -->
+        <div class="fade-in fade-in-delay-1" style="background: #111; padding: clamp(32px, 5vw, 56px); display: flex; flex-direction: column; gap: 32px;">
+          <a href="https://artue.io/" target="_blank" rel="noopener" style="align-self: flex-start; display:inline-block;">
+            <img src="ARTUE_white.png" alt="ARTUE" style="height:44px; width:auto; display:block;" />
+          </a>
+          <div>
+            <p style="font-size: 0.75rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.45); margin: 0 0 12px;">
+              감성을 학습하는 AI 큐레이터
+            </p>
+            <p class="body-text" style="color: rgba(255,255,255,0.7); margin: 0;">
+              주재범 아레나의 작품을 컬렉터와 연결하는 플랫폼. ARTUE(아르투)는 사용자와의 대화를 통해 감성을 학습하는 AI 큐레이터다. 풍부한 작가·작품 데이터베이스를 기반으로 사용자의 취향을 이해하고, 그에 맞는 작품을 발견·소장하는 경험을 제공한다. 이번 주재범 아레나 프로젝트에서는 커뮤니티와 함께 탄생한 작품의 온라인 전시와 판매 채널을 담당한다.
+            </p>
+          </div>
+          <a href="https://artue.io/" target="_blank" rel="noopener" class="btn-outline-white" style="align-self: flex-start;">
+            artue.io →
+          </a>
+        </div>
+
+        <!-- CONX -->
+        <div class="fade-in fade-in-delay-2" style="background: #111; padding: clamp(32px, 5vw, 56px); display: flex; flex-direction: column; gap: 32px;">
+          <a href="https://conx.xyz/" target="_blank" rel="noopener" style="align-self: flex-start; display:inline-block;">
+            <img src="ConX_logo_white.png" alt="CONX" style="height:44px; width:auto; display:block;" />
+          </a>
+          <div>
+            <p style="font-size: 0.75rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.45); margin: 0 0 12px;">
+              문화 금융 기술의 결합을 위한 신뢰 기반 메인넷
+            </p>
+            <p class="body-text" style="color: rgba(255,255,255,0.7); margin: 0;">
+              주재범 아레나의 작품의 가치를 기록하는 토대. CONX(콘엑스)는 CONX Origin이라는 기술을 통해 현실 작품을 블록체인 인프라에 기록하여 이후 권리 기록과 정산 구조를 자동화한다. 이를 통해 각 창작자에게 본인의 기여가 보존되고, 그 가치를 투명하게 보호받는 경험을 제공한다.
+            </p>
+          </div>
+          <a href="https://conx.xyz/" target="_blank" rel="noopener" class="btn-outline-white" style="align-self: flex-start;">
+            conx.xyz →
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────────
+       SECTION 3: ARTIST (WHITE)
+  ───────────────────────────────────────── -->
+  <section style="background:#fff; color:#000; padding: clamp(80px, 10vw, 120px) clamp(24px, 8vw, 120px);">
+    <div style="max-width: 1200px; margin: 0 auto;">
+
+      <div class="fade-in" style="margin-bottom: 56px;">
+        <span class="section-label">Artist</span>
+        <h2 class="section-heading" style="margin: 16px 0 0;">주재범</h2>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1.6fr; gap: clamp(32px, 6vw, 80px); align-items: start;">
+
+        <!-- Photo Placeholder -->
+        <div class="fade-in fade-in-delay-1">
+          <div style="position:relative; width:100%;">
+            <!-- Photo credit: always above image on mobile, below on desktop -->
+            <p class="artist-credit-top" style="margin:0 0 4px 0; font-size:0.6rem; letter-spacing:0.12em; text-transform:uppercase; color:#999; font-family:inherit;">Photo by HypebeastKR</p>
+            <div id="artist-slideshow-v1" style="position:relative; width:100%; overflow:hidden; aspect-ratio:3/4; background:#111;">
+              <div id="artist-slides-v1" style="display:flex; height:100%; transition: transform 0.7s cubic-bezier(0.16,1,0.3,1);">
+                <img src="artist_joojaebum_1.png" alt="주재범 작가 사진 1" style="width:100%; flex-shrink:0; height:100%; object-fit:cover; display:block;" />
+                <img src="artist_joojaebum_2.jpg" alt="주재범 작가 사진 2" style="width:100%; flex-shrink:0; height:100%; object-fit:cover; display:block;" />
+              </div>
+              <!-- Slide dots -->
+              <div style="position:absolute; bottom:10px; right:10px; display:flex; gap:6px; z-index:10;">
+                <div class="v1-slide-dot" data-idx="0" style="width:5px; height:5px; background:#fff; cursor:pointer; transition:opacity 0.2s;"></div>
+                <div class="v1-slide-dot" data-idx="1" style="width:5px; height:5px; background:#fff; opacity:0.4; cursor:pointer; transition:opacity 0.2s;"></div>
+              </div>
+            </div>
+            <p class="artist-credit-bottom" style="margin:4px 0 0 0; font-size:0.6rem; letter-spacing:0.12em; text-transform:uppercase; color:#999; font-family:inherit;">Photo by HypebeastKR</p>
+          </div>
+        </div>
+
+        <!-- Artist Info -->
+        <div class="fade-in fade-in-delay-2" style="display: flex; flex-direction: column; gap: 28px; padding-top: 8px;">
+          <div>
+            <span class="divider"></span>
+            <p class="body-text" style="color: #444; margin: 0;">
+              주재범 작가는 픽셀이라는 가장 작은 디지털 단위를 자신만의 회화 언어로 확장해온 아티스트다. 그의 작업은 그리운 레트로 감성을 현대적인 감각으로 풀어내는 방식으로 이루어진다. 화면 위의 작은 점들은 그의 손을 거치며 기억과 도시, 감정과 시간의 풍경으로 다시 태어난다. 디지털 이미지에서 출발하지만, 결국 사람의 감각과 정서에 닿는 회화로 완성된다는 점에서 주재범의 작업은 오늘날 이미지 환경을 가장 섬세하게 비추는 방식 중 하나다.
+            </p>
+          </div>
+
+          <!-- Buttons row -->
+          <div style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap;">
+            <a href="https://artue.io/ko/artist/jaebum-joo" target="_blank" rel="noopener" class="btn-outline-black">
+              자세히 알아보기
+            </a>
+            <!-- Instagram -->
+            <a href="https://www.instagram.com/joojaebum/" target="_blank" rel="noopener" class="social-btn" aria-label="Instagram">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+              </svg>
+            </a>
+            <!-- X / Twitter -->
+            <a href="https://x.com/joojaebum" target="_blank" rel="noopener" class="social-btn" aria-label="X (Twitter)">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.745l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────────
+       SECTION 4: ARTWORK SHOWCASE (BLACK)
+  ───────────────────────────────────────── -->
+  <section style="background:#000; color:#fff; padding: clamp(80px, 10vw, 120px) clamp(24px, 8vw, 120px);">
+    <div style="max-width: 1200px; margin: 0 auto;">
+
+      <div class="fade-in" style="margin-bottom: 64px;">
+        <span class="section-label" style="color: rgba(255,255,255,0.4);">Works</span>
+        <h2 class="section-heading" style="color: #fff; margin: 16px 0 0;">
+          작품
+        </h2>
+      </div>
+
+      <!-- Artwork 1 -->
+      <div class="fade-in" style="margin-bottom: 80px;">
+        <div style="margin-bottom: 28px;">
+          <span class="artwork-num">No. 01</span>
+          <h3 class="section-heading-sm" style="color: #fff; margin: 12px 0 4px;">
+            계속되는 많고 작은 움직임
+          </h3>
+          <p style="font-size: 0.9rem; font-style: italic; color: rgba(255,255,255,0.5); margin: 0 0 8px; font-weight: 400;">
+            A Flow of Countless Small Movements
+          </p>
+          <p style="font-size: 0.8rem; letter-spacing: 0.04em; color: rgba(255,255,255,0.55); margin: 0 0 6px; font-weight: 500;">
+            주재범 JOO JAEBUM x KDS
+          </p>
+          <p style="font-size: 0.75rem; letter-spacing: 0.05em; color: rgba(255,255,255,0.4); margin: 0; font-weight: 500;">
+            Acrylic on cut and Assembled Wood, Birch Wood frame / 148 × 85 cm
+          </p>
+        </div>
+
+        <!-- Horizontal scrolling images -->
+        <div class="artwork-scroll-wrapper" style="margin-bottom: 24px;">
+          <img src="art1_1.jpg" alt="계속되는 많고 작은 움직임 1" style="height:320px; width:auto; object-fit:cover; flex-shrink:0;" />
+          <img src="art1_2.jpg" alt="계속되는 많고 작은 움직임 2" style="height:320px; width:auto; object-fit:cover; flex-shrink:0;" />
+          <img src="art1_3.jpg" alt="계속되는 많고 작은 움직임 3" style="height:320px; width:auto; object-fit:cover; flex-shrink:0;" />
+        </div>
+
+        <p class="body-text" style="color: rgba(255,255,255,0.65); max-width: 640px; margin: 0 0 28px;">
+          수 많은 존재들이 조각들로 한데 모여 움직임을 이루는 도시의 모습을 담고 있다. 그 움직임에서 느껴지는 운율을 픽셀 리듬으로 표현한다.
+        </p>
+
+        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+          <a href="https://arena.conx.xyz/joojaebum/submission?id=FR3WCQq-ZEN-HFO4GKProA" target="_blank" rel="noopener" class="btn-outline-white">
+            아이디어 원본
+          </a>
+          <a href="https://artue.io/work/jaebum-joo-39" target="_blank" rel="noopener" class="btn-outline-white">
+            작품 상세 보기
+          </a>
+        </div>
+      </div>
+
+      <!-- Divider between artworks -->
+      <div style="height: 1px; background: rgba(255,255,255,0.1); margin-bottom: 80px;"></div>
+
+      <!-- Artwork 2 -->
+      <div class="fade-in">
+        <div style="margin-bottom: 28px;">
+          <span class="artwork-num">No. 02</span>
+          <h3 class="section-heading-sm" style="color: #fff; margin: 12px 0 4px;">
+            작고도 큰 귀여움
+          </h3>
+          <p style="font-size: 0.9rem; font-style: italic; color: rgba(255,255,255,0.5); margin: 0 0 8px; font-weight: 400;">
+            Small Yet Great Cuteness
+          </p>
+          <p style="font-size: 0.8rem; letter-spacing: 0.04em; color: rgba(255,255,255,0.55); margin: 0 0 6px; font-weight: 500;">
+            주재범 JOO JAEBUM x AzacielXD
+          </p>
+          <p style="font-size: 0.75rem; letter-spacing: 0.05em; color: rgba(255,255,255,0.4); margin: 0; font-weight: 500;">
+            Acrylic and Velvet on Cut Wood / 56 × 47 cm
+          </p>
+        </div>
+
+        <div class="artwork-scroll-wrapper" style="margin-bottom: 24px;">
+          <img src="art2_1.jpg" alt="작고도 큰 귀여움 1" style="height:320px; width:auto; object-fit:cover; flex-shrink:0;" />
+          <img src="art2_2.jpg" alt="작고도 큰 귀여움 2" style="height:320px; width:auto; object-fit:cover; flex-shrink:0;" />
+          <img src="art2_3.jpg" alt="작고도 큰 귀여움 3" style="height:320px; width:auto; object-fit:cover; flex-shrink:0;" />
+        </div>
+
+        <p class="body-text" style="color: rgba(255,255,255,0.65); max-width: 640px; margin: 0 0 28px;">
+          일상 가장 가까이에서 바라보고 지켜보게 되는 작은 친구. 주고받는 시선 속에 어느새 묵직해진 존재감을 가진 귀여운 생명체.
+        </p>
+
+        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+          <a href="https://arena.conx.xyz/joojaebum/submission?id=QNLachJ82t-Gz0Q5B987QA" target="_blank" rel="noopener" class="btn-outline-white">
+            아이디어 원본
+          </a>
+          <a href="https://artue.io/work/jaebum-joo-40" target="_blank" rel="noopener" class="btn-outline-white">
+            작품 상세 보기
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────────
+       SECTION 5: ARENA DEEP DIVE (WHITE)
+  ───────────────────────────────────────── -->
+  <section style="background:#fff; color:#000; padding: clamp(80px, 10vw, 120px) clamp(24px, 8vw, 120px);">
+    <div style="max-width: 1200px; margin: 0 auto;">
+
+      <!-- 5a. Overview -->
+      <div class="fade-in" style="margin-bottom: 80px;">
+        <span class="section-label">Arena Overview</span>
+        <h2 class="section-heading" style="margin: 16px 0 32px;">JOO JAEBUM<br />Arena</h2>
+        <div style="max-width: 760px;">
+          <span class="divider"></span>
+          <p class="body-text" style="color: #444; margin: 0;">
+            주재범 아레나는 커뮤니티가 제안한 아이디어가 작가의 손을 통해 실제 작품으로 탄생하고, 그 이후 작품의 권리와 가치가 다시 새로운 순환 구조 안으로 연결되는 과정을 실험한 공동 창작 프로젝트다. 주재범 아레나는 340개가 넘는 아이디어가 모인 열린 창작의 장이었다. 참여자들은 주재범 작가가 제시한 테마를 각자의 시선으로 해석해 픽셀 아트 아이디어를 제안했고, 그 가운데 선별된 아이디어는 다시 작가의 조형 언어를 만나 현실의 작품으로 확장되었다. 하나의 작품이 완성되기까지의 과정 안에 작가 개인의 표현만이 아니라, 커뮤니티의 상상력과 기술, 그리고 새로운 협업 방식에 대한 질문이 함께 담겼다.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 5b. AI x Art (BLACK sub-section) -->
+  <section style="background:#000; color:#fff; padding: clamp(80px, 10vw, 120px) clamp(24px, 8vw, 120px);">
+    <div style="max-width: 1200px; margin: 0 auto;">
+
+      <div class="fade-in">
+        <span class="section-label" style="color: rgba(255,255,255,0.4);">AI × Art</span>
+        <h2 class="section-heading" style="color: #fff; margin: 16px 0 32px;">
+          AI x Art<br />'주재범 아레나'
+        </h2>
+        <div style="max-width: 760px;">
+          <span class="divider" style="background: #fff;"></span>
+          <p class="body-text" style="color: rgba(255,255,255,0.7); margin: 0 0 28px;">
+            주재범 아레나에서 AI는 더 많은 사람이 창작의 문턱을 넘어설 수 있도록 돕는 새로운 인터페이스의 역할을 한다. 참여자들은 주재범 아레나의 테마를 바탕으로 자신만의 장면과 감각을 상상하는 과정에서 AI를 활용하여 이미지를 발전시키거나 시각적 초안을 구체화할 수 있었다. 이후 작가는 그 아이디어를 다시 자신의 언어로 읽고, 선택하고, 밀도 있게 발전시켜 현실의 회화 작품으로 탄생시켰다.
+          </p>
+
+          <div class="ai-questions">
+            <p>과연 AI와 인간은 공존할 수 있을까?</p>
+            <p>인간이 AI와 만들어가는 미래는 어떤 모습일까?</p>
+            <p>그 안에서 인간과 AI는 각각 어떤 역할을 하게 될까?</p>
+          </div>
+
+          <p class="body-text" style="color: rgba(255,255,255,0.7); margin: 0;">
+            마치 '인터스텔라'에서 책을 떨어뜨리면서 과거에 미래를 향한 메시지를 남긴 것처럼, 주재범 아레나는 새로운 형식으로 파문을 일으켜 머지 않은 예술 분야의 미래에 대한 의문을 던지고 사람들의 상상력을 자극하는 초석이 되었다.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 5c. 순환형 RWA (WHITE) -->
+  <section style="background:#fff; color:#000; padding: clamp(80px, 10vw, 120px) clamp(24px, 8vw, 120px);">
+    <div style="max-width: 1200px; margin: 0 auto;">
+
+      <div class="fade-in">
+        <span class="section-label">세계 최초</span>
+        <h2 class="section-heading" style="margin: 16px 0 32px;">
+          순환형 RWA<br />프로젝트
+        </h2>
+        <div style="max-width: 760px;">
+          <span class="divider"></span>
+
+          <p class="body-text" style="color: #444; margin: 0 0 24px;">
+            주재범 아레나는 예술 분야에서 순환형 RWA의 가능성을 보여준 프로젝트로 제안되었다. RWA(Real World Asset)는 말 그대로 현실 세계의 자산, 혹은 그 자산에서 발생하는 권리와 가치를 디지털 인프라 상에 기록하여 그 위에서 다룰 수 있도록 하는 개념이다.
+          </p>
+
+          <p class="body-text" style="color: #444; margin: 0 0 24px;">
+            하지만 예술의 문맥에서 RWA는 단순히 "작품을 토큰화한다"는 말만으로는 충분하지 않다. 예술은 사물 하나만으로 완성되지 않고, 창작의 맥락과 기여, 권리와 해석이 함께 얽혀 있기 때문이다.
+          </p>
+
+          <p class="body-text" style="color: #444; margin: 0 0 40px;">
+            이렇게 블록체인 위로 실물 자산을 옮기는 일에 초점을 두어 한계를 갖고 있던 기존 RWA의 통념 상 정의를 뒤집어, 이 프로젝트는 한 걸음 더 나아간 그 가능성을 확인한다.
+          </p>
+
+          <!-- Circular flow -->
+          <ul class="rwa-flow-list" style="margin-bottom: 40px;">
+            <li>하나의 아이디어가 인터넷 상의 커뮤니티에서 발의되고,</li>
+            <li>그 아이디어가 작가의 해석을 통해 현실의 작품이 되며,</li>
+            <li>그 작품의 권리와 가치가 다시 온체인 위에서 기록되고 정산되는 구조.</li>
+          </ul>
+
+          <p class="body-text" style="color: #444; margin: 0 0 40px;">
+            주재범 아레나는 아이디어가 자산이 되어가는 과정 자체를 설계했으며, 가상 세계에서 출발한 것을 실물 경제로 옮겨왔다는 점에서 특별하다. 본 아레나에서 제안된 '순환형 RWA'는 작품 이전의 아이디어, 작품이 완성되는 과정, 그리고 그 이후의 가치 분배까지 하나의 연결된 흐름으로 바라보는 방식을 세계 최초로 새롭게 제안한 것이다.
+          </p>
+
+          <a href="https://arena.conx.xyz/joojaebum" target="_blank" rel="noopener" class="btn-outline-black">
+            Arena 사이트 방문 →
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────────
+       SECTION 6: EXHIBITION INFO (BLACK)
+  ───────────────────────────────────────── -->
+  <section style="background:#000; color:#fff; padding: clamp(80px, 10vw, 120px) clamp(24px, 8vw, 120px);">
+    <div style="max-width: 1200px; margin: 0 auto;">
+
+      <div class="fade-in" style="margin-bottom: 48px;">
+        <span class="section-label" style="color: rgba(255,255,255,0.4);">Exhibition</span>
+        <h2 class="section-heading" style="color: #fff; margin: 16px 0 0;">
+          ART OnO 2026
+        </h2>
+      </div>
+
+      <!-- Exhibition image with 308 ARTUE hover highlight -->
+      <div class="fade-in" style="margin-bottom: 48px;">
+        <div class="exhibition-img-wrapper" id="exhib-wrapper-v1" style="position:relative; cursor:pointer; line-height:0;">
+          <img
+            src="artono_Image_1.png"
+            alt="ART OnO 2026 전경 1"
+            style="width:100%; display:block; max-width:100%; position:relative; z-index:1;"
+          />
+          <img
+            src="artono_Image_2.png"
+            alt="ART OnO 2026 전경 2"
+            style="width:100%; display:block; max-width:100%; position:absolute; top:0; left:0; z-index:2; opacity:0; object-fit:cover; height:100%; transition: opacity 0.6s ease;"
+          />
+          <div style="position:absolute; bottom:8px; left:12px; z-index:3; pointer-events:none;">
+            <span style="font-size:0.6rem; letter-spacing:0.1em; text-transform:uppercase; color:rgba(80,80,80,0.85); font-family:inherit;">Photo by ART OnO</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Exhibition Details -->
+      <div class="fade-in" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 32px; max-width: 800px;">
+
+        <div>
+          <p style="font-size: 0.7rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin: 0 0 8px;">전시명</p>
+          <p style="font-size: 1.1rem; font-weight: 700; color: #fff; margin: 0; letter-spacing: -0.01em;">ART OnO 2026</p>
+        </div>
+
+        <div>
+          <p style="font-size: 0.7rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin: 0 0 8px;">전시장소</p>
+          <p style="font-size: 1.1rem; font-weight: 700; color: #fff; margin: 0; letter-spacing: -0.01em;">308 ARTUE</p>
+        </div>
+
+        <div>
+          <p style="font-size: 0.7rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin: 0 0 8px;">관련 링크</p>
+          <a href="https://art-ono.com/" target="_blank" rel="noopener" style="font-size: 1rem; font-weight: 600; color: #fff; text-decoration: underline; text-underline-offset: 4px; letter-spacing: -0.01em; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.6'" onmouseout="this.style.opacity='1'">
+            art-ono.com →
+          </a>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────────
+       FOOTER
+  ───────────────────────────────────────── -->
+  <footer style="background:#000; color:rgba(255,255,255,0.35); border-top: 1px solid rgba(255,255,255,0.08); padding: 32px clamp(24px, 8vw, 120px);">
+    <div style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+      <span style="font-size: 0.75rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.5);">
+        ARTUE × CONX
+      </span>
+      <div style="display: flex; gap: 24px; font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase;">
+        <a href="https://artue.io/" target="_blank" rel="noopener" style="color: rgba(255,255,255,0.35); text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='rgba(255,255,255,0.8)'" onmouseout="this.style.color='rgba(255,255,255,0.35)'">ARTUE</a>
+        <a href="https://conx.xyz/" target="_blank" rel="noopener" style="color: rgba(255,255,255,0.35); text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='rgba(255,255,255,0.8)'" onmouseout="this.style.color='rgba(255,255,255,0.35)'">CONX</a>
+        <a href="https://arena.conx.xyz/joojaebum" target="_blank" rel="noopener" style="color: rgba(255,255,255,0.35); text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='rgba(255,255,255,0.8)'" onmouseout="this.style.color='rgba(255,255,255,0.35)'">Arena</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ─────────────────────────────────────────
+       INTERSECTION OBSERVER SCRIPT
+  ───────────────────────────────────────── -->
+  <script>
+    // Fade-in on scroll
+    const fadeEls = document.querySelectorAll('.fade-in');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.12,
+      rootMargin: '0px 0px -40px 0px'
+    });
+
+    fadeEls.forEach(el => observer.observe(el));
+
+    // Also trigger elements already in view on load
+    window.addEventListener('load', () => {
+      fadeEls.forEach(el => {
+        const rect = el.getBoundingClientRect();
+        if (rect.top < window.innerHeight) {
+          el.classList.add('visible');
+        }
+      });
+    });
+
+    // V1 Artist slideshow
+    (function() {
+      var slidesEl = document.getElementById('artist-slides-v1');
+      var dots = document.querySelectorAll('.v1-slide-dot');
+      if (!slidesEl) return;
+      var cur = 0;
+      var total = slidesEl.children.length;
+      var timer = setInterval(function() { go((cur + 1) % total); }, 4000);
+      function go(idx) {
+        cur = idx;
+        slidesEl.style.transform = 'translateX(-' + (idx * 100) + '%)';
+        dots.forEach(function(d, i) { d.style.opacity = i === idx ? '1' : '0.4'; });
+      }
+      dots.forEach(function(d) {
+        d.addEventListener('click', function() {
+          clearInterval(timer);
+          go(parseInt(d.dataset.idx));
+          timer = setInterval(function() { go((cur + 1) % total); }, 4000);
+        });
+      });
+    })();
+
+    // V1 Exhibition crossfade
+    (function() {
+      var wrapper = document.getElementById('exhib-wrapper-v1');
+      if (!wrapper) return;
+      var imgs = wrapper.querySelectorAll('img');
+      if (imgs.length < 2) return;
+      var img2 = imgs[1];
+      wrapper.addEventListener('mouseenter', function() { img2.style.opacity = '1'; });
+      wrapper.addEventListener('mouseleave', function() { img2.style.opacity = '0'; });
+    })();
+  </script>
+
+</body>
+</html>
