@@ -118,9 +118,9 @@
     }
 
     /* ── Amber accent ── */
-    .text-amber { color: #1E2D5A; }
-    .border-amber { border-color: #1E2D5A; }
-    .bg-amber { background: #1E2D5A; }
+    .text-amber { color: #6B7280; }
+    .border-amber { border-color: #6B7280; }
+    .bg-amber { background: #6B7280; }
 
     /* ── Double-bezel card ── */
     .card-outer {
@@ -132,7 +132,7 @@
     }
     .card-outer:hover {
       background: #FAFAFA;
-      border-color: rgba(30,45,90,0.12);
+      border-color: rgba(107,114,128,0.12);
       box-shadow: 0 4px 24px rgba(0,0,0,0.06);
     }
     .card-inner {
@@ -186,7 +186,7 @@
       transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .btn-ghost:hover {
-      color: #1E2D5A;
+      color: #6B7280;
       border-color: rgba(30,45,90,0.22);
       transform: scale(1.02);
       box-shadow: 0 0 20px rgba(30,45,90,0.06);
@@ -234,7 +234,7 @@
       font-weight: 600;
       letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: #1E2D5A;
+      color: #6B7280;
       margin-bottom: 12px;
       background: none;
       border: none;
@@ -257,7 +257,7 @@
       transition: all 0.3s ease;
     }
     .slide-dot.active {
-      background: #1E2D5A;
+      background: #6B7280;
       width: 18px;
       border-radius: 3px;
     }
@@ -298,7 +298,7 @@
       width: 8px;
       height: 8px;
       border-radius: 50%;
-      background: #1E2D5A;
+      background: #6B7280;
     }
 
     /* ── AI questions ── */
@@ -374,7 +374,7 @@
     }
     .partner-panel:hover {
       background: rgba(30,45,90,0.03);
-      border-color: rgba(30,45,90,0.12);
+      border-color: rgba(107,114,128,0.12);
     }
 
     /* ── Scroll indicator ── */
@@ -427,7 +427,7 @@
     .rwa-flow-list li::before {
       content: counter(rwa-counter, decimal-leading-zero);
       font-family: 'Outfit', system-ui, sans-serif; font-size: 0.7rem;
-      font-weight: 700; color: #1E2D5A; min-width: 28px; padding-top: 2px;
+      font-weight: 700; color: #6B7280; min-width: 28px; padding-top: 2px;
       flex-shrink: 0;
     }
   </style>
@@ -437,7 +437,16 @@
   <!-- ══════════════════════════════════════
        FLOATING GLASS NAV
   ══════════════════════════════════════ -->
-  <nav style="position:fixed; top:20px; left:50%; transform:translateX(-50%); z-index:100; background:rgba(255,255,255,0.85); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); border:1px solid rgba(0,0,0,0.1); border-radius:100px; padding:12px 28px; display:flex; align-items:center; gap:32px; box-shadow: 0 2px 20px rgba(0,0,0,0.08); white-space:nowrap;">
+  <style>
+  .nav-pill-desktop { display:flex; }
+  .nav-pill-mobile { display:none; }
+  @media (max-width: 768px) {
+    .nav-pill-desktop { display:none; }
+    .nav-pill-mobile { display:flex; }
+  }
+</style>
+<!-- Desktop nav -->
+<nav class="nav-pill-desktop" style="position:fixed; top:20px; left:50%; transform:translateX(-50%); z-index:100; background:rgba(255,255,255,0.85); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); border:1px solid rgba(0,0,0,0.1); border-radius:100px; padding:12px 28px; align-items:center; gap:32px; box-shadow: 0 2px 20px rgba(0,0,0,0.08); white-space:nowrap;">
     <a href="#hero" style="font-family:'Outfit','Pretendard',system-ui,sans-serif; font-size:0.85rem; font-weight:700; letter-spacing:0.1em; color:#1A1A1A; text-decoration:none;">ARTUE × CONX</a>
     <a href="#partners" style="font-family:'Outfit','Pretendard',system-ui,sans-serif; font-size:0.8rem; color:#666; text-decoration:none; transition: color 0.2s;">Partners</a>
     <a href="#artist" style="font-family:'Outfit','Pretendard',system-ui,sans-serif; font-size:0.8rem; color:#666; text-decoration:none; transition: color 0.2s;">Artist</a>
@@ -445,6 +454,13 @@
     <a href="#arena" style="font-family:'Outfit','Pretendard',system-ui,sans-serif; font-size:0.8rem; color:#666; text-decoration:none; transition: color 0.2s;">Arena</a>
     <a href="#exhibition" style="font-family:'Outfit','Pretendard',system-ui,sans-serif; font-size:0.8rem; color:#666; text-decoration:none; transition: color 0.2s;">Exhibition</a>
   </nav>
+
+<!-- Mobile nav (compact) -->
+<nav class="nav-pill-mobile" style="position:fixed; top:12px; left:50%; transform:translateX(-50%); z-index:100; background:rgba(255,255,255,0.92); backdrop-filter:blur(20px); border:1px solid rgba(0,0,0,0.1); border-radius:100px; padding:10px 20px; align-items:center; gap:16px; box-shadow: 0 2px 16px rgba(0,0,0,0.08); white-space:nowrap;">
+  <a href="#hero" style="font-family:'Outfit','Pretendard',system-ui,sans-serif; font-size:0.8rem; font-weight:700; color:#1A1A1A; text-decoration:none; letter-spacing:0.05em;">ARTUE × CONX</a>
+  <a href="#artworks" style="font-family:'Outfit',system-ui,sans-serif; font-size:0.75rem; color:#666; text-decoration:none;">Artworks</a>
+  <a href="#arena" style="font-family:'Outfit',system-ui,sans-serif; font-size:0.75rem; color:#666; text-decoration:none;">Arena</a>
+</nav>
 
   <!-- ══════════════════════════════════════
        SECTION 1 — HERO
@@ -469,7 +485,7 @@
       <!-- Main headline -->
       <div class="reveal reveal-delay-1" style="margin-bottom:40px;">
         <h1 class="hero-display">
-          JOO<br />JAEBUM<br /><span style="color:#1E2D5A;">ARENA</span>
+          JOO<br />JAEBUM<br /><span style="color:#6B7280;">ARENA</span>
         </h1>
       </div>
 
@@ -537,7 +553,7 @@
         <div class="reveal">
           <span style="font-family:'Outfit','Pretendard',system-ui,sans-serif; font-size:0.7rem; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; color:rgba(255,255,255,0.5); display:block; margin-bottom:12px;">Partners</span>
           <h2 style="font-family:'Outfit','Pretendard',sans-serif;font-size:clamp(2.5rem,6vw,5rem);font-weight:900;line-height:0.95;letter-spacing:-0.04em;color:#FFFFFF;">
-            두 플랫폼,<br /><span style="color:#1E2D5A;">하나의</span><br />비전
+            두 플랫폼,<br /><span style="color:#6B7280;">하나의</span><br />비전
           </h2>
         </div>
         <div class="reveal reveal-delay-2" style="padding-bottom:8px;">
@@ -555,11 +571,11 @@
           <div class="card-inner" style="padding:clamp(28px,4vw,48px);">
             <div style="margin-bottom:32px;">
               <a href="https://artue.io/" target="_blank" rel="noopener" style="display:inline-block;">
-                <img src="ARTUE_white.png" alt="ARTUE" loading="lazy" decoding="async" style="height:40px;width:auto;display:block;" />
+                <img src="ARTUE.png" alt="ARTUE" loading="lazy" decoding="async" style="height:40px;width:auto;display:block;" />
               </a>
             </div>
             <div style="margin-bottom:24px;">
-              <p style="font-size:0.7rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#1E2D5A;margin-bottom:12px;">감성을 학습하는 AI 큐레이터</p>
+              <p style="font-size:0.7rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#6B7280;margin-bottom:12px;">감성을 학습하는 AI 큐레이터</p>
               <p style="font-size:clamp(0.85rem,1.4vw,1rem);line-height:1.8;color:#333333;" class="keep-all">
                 주재범 아레나의 작품을 컬렉터와 연결하는 플랫폼. ARTUE(아르투)는 사용자와의 대화를 통해 감성을 학습하는 AI 큐레이터다. 풍부한 작가·작품 데이터베이스를 기반으로 사용자의 취향을 이해하고, 그에 맞는 작품을 발견·소장하는 경험을 제공한다. 이번 주재범 아레나 프로젝트에서는 커뮤니티와 함께 탄생한 작품의 온라인 전시와 판매 채널을 담당한다.
               </p>
@@ -576,11 +592,11 @@
           <div class="card-inner" style="padding:clamp(28px,4vw,48px);">
             <div style="margin-bottom:32px;">
               <a href="https://conx.xyz/" target="_blank" rel="noopener" style="display:inline-block;">
-                <img src="ConX_logo_white.png" alt="CONX" loading="lazy" decoding="async" style="height:40px;width:auto;display:block;" />
+                <img src="ConX_logo_black.png" alt="CONX" loading="lazy" decoding="async" style="height:40px;width:auto;display:block;" />
               </a>
             </div>
             <div style="margin-bottom:24px;">
-              <p style="font-size:0.7rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#1E2D5A;margin-bottom:12px;">문화 금융 기술의 결합을 위한 신뢰 기반 메인넷</p>
+              <p style="font-size:0.7rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#6B7280;margin-bottom:12px;">문화 금융 기술의 결합을 위한 신뢰 기반 메인넷</p>
               <p style="font-size:clamp(0.85rem,1.4vw,1rem);line-height:1.8;color:#333333;" class="keep-all">
                 주재범 아레나의 작품의 가치를 기록하는 토대. CONX(콘엑스)는 CONX Origin이라는 기술을 통해 현실 작품을 블록체인 인프라에 기록하여 이후 권리 기록과 정산 구조를 자동화한다. 이를 통해 각 창작자에게 본인의 기여가 보존되고, 그 가치를 투명하게 보호받는 경험을 제공한다.
               </p>
@@ -606,7 +622,7 @@
     <div style="max-width:1280px; margin:0 auto; position:relative; z-index:1;">
 
       <div class="reveal" style="margin-bottom:56px;">
-        <span style="font-family:'Outfit','Pretendard',system-ui,sans-serif; font-size:0.7rem; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; color:#1E2D5A; display:block; margin-bottom:12px;">Artist</span>
+        <span style="font-family:'Outfit','Pretendard',system-ui,sans-serif; font-size:0.7rem; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; color:#6B7280; display:block; margin-bottom:12px;">Artist</span>
         <h2 style="font-family:'Outfit','Pretendard',sans-serif;font-size:clamp(2.5rem,6vw,5.5rem);font-weight:900;line-height:0.95;letter-spacing:-0.04em;color:#1A1A1A;">주재범</h2>
       </div>
 
@@ -616,7 +632,7 @@
         <!-- Left: Slideshow -->
         <div class="reveal reveal-delay-1">
           <!-- Mobile credit (above) -->
-          <p style="font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:#999999;margin-bottom:8px;display:none;" id="credit-top">Photo by HypebeastKR</p>
+          
 
           <div style="position:relative;border-radius:1.5rem;overflow:hidden;aspect-ratio:3/4;background:#E8E8E8;">
             <div id="artist-slides" style="display:flex;height:100%;">
@@ -650,10 +666,10 @@
               <span class="arrow-circle"><iconify-icon icon="solar:arrow-right-bold" width="14"></iconify-icon></span>
             </a>
             <a href="https://www.instagram.com/joojaebum/" target="_blank" rel="noopener" class="btn-icon" aria-label="Instagram" style="color:#1A1A1A; border-color:rgba(26,26,26,0.2);">
-              <iconify-icon icon="solar:instagram-linear" width="20" style="color:#1A1A1A;"></iconify-icon>
+              <iconify-icon icon="solar:instagram-linear" width="20" style="color:#1A1A1A; display:block;"></iconify-icon>
             </a>
             <a href="https://x.com/joojaebum" target="_blank" rel="noopener" class="btn-icon" aria-label="X (Twitter)" style="color:#1A1A1A; border-color:rgba(26,26,26,0.2);">
-              <iconify-icon icon="solar:twitter-linear" width="18" style="color:#1A1A1A;"></iconify-icon>
+              <iconify-icon icon="solar:twitter-linear" width="18" style="color:#1A1A1A; display:block;"></iconify-icon>
             </a>
           </div>
 
@@ -672,36 +688,26 @@
     <div style="max-width:1280px; margin:0 auto; position:relative; z-index:1;">
 
       <div class="reveal" style="margin-bottom:72px;">
-        <span style="font-family:'Outfit','Pretendard',system-ui,sans-serif; font-size:0.7rem; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; color:#1E2D5A; display:block; margin-bottom:12px;">Artworks</span>
+        <span style="font-family:'Outfit','Pretendard',system-ui,sans-serif; font-size:0.7rem; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; color:#6B7280; display:block; margin-bottom:12px;">Artworks</span>
         <h2 style="font-family:'Outfit','Pretendard',sans-serif;font-size:clamp(2.5rem,6vw,5rem);font-weight:900;line-height:0.95;letter-spacing:-0.04em;color:#1A1A1A;">작품</h2>
       </div>
 
       <!-- Work 1: Bento Card -->
       <div class="card-outer reveal" style="margin-bottom:24px;">
         <div class="card-inner" style="padding:clamp(24px,4vw,48px);">
-          <div style="display:grid; grid-template-columns: auto 1fr; gap:clamp(24px,4vw,56px); align-items:start;">
+          <div style="display:grid; grid-template-columns: 35% 65%; gap:clamp(24px,4vw,48px); align-items:start;">
 
-            <!-- Work meta -->
-            <div style="min-width:180px; max-width:240px;">
-              <span style="font-family:'Outfit',sans-serif;font-size:0.65rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#1E2D5A;">No. 01</span>
-              <h3 style="font-size:clamp(1.1rem,2.2vw,1.6rem);font-weight:800;line-height:1.2;color:#1A1A1A;margin:12px 0 6px;" class="keep-all">계속되는 많고 작은 움직임</h3>
-              <p style="font-size:0.85rem;font-style:italic;color:#999999;margin:0 0 10px;font-weight:300;">A Flow of Countless Small Movements</p>
-              <p style="font-size:0.75rem;letter-spacing:0.04em;color:#1E2D5A;margin:0 0 6px;font-weight:600;">주재범 JOO JAEBUM × KDS</p>
-              <p style="font-size:0.7rem;letter-spacing:0.03em;color:#999999;line-height:1.6;">Acrylic on cut and Assembled Wood, Birch Wood frame<br />148 × 85 cm</p>
-            </div>
-
-            <!-- Right: images + description + links -->
+            <!-- Left: all text info (35%) -->
             <div>
-              <!-- Horizontal image strip -->
-              <div class="artwork-strip" style="margin-bottom:24px;">
-                <img src="art1_1.jpg" alt="계속되는 많고 작은 움직임 1" loading="lazy" decoding="async" style="height:280px;width:auto;object-fit:cover;border-radius:12px;flex-shrink:0;" />
-                <img src="art1_2.jpg" alt="계속되는 많고 작은 움직임 2" loading="lazy" decoding="async" style="height:280px;width:auto;object-fit:cover;border-radius:12px;flex-shrink:0;" />
-                <img src="art1_3.jpg" alt="계속되는 많고 작은 움직임 3" loading="lazy" decoding="async" style="height:280px;width:auto;object-fit:cover;border-radius:12px;flex-shrink:0;" />
-              </div>
-              <p style="font-size:clamp(0.88rem,1.4vw,1rem);line-height:1.8;color:#333333;margin-bottom:28px;max-width:540px;" class="keep-all">
+              <span style="font-family:'Outfit','Pretendard',system-ui,sans-serif;font-size:0.65rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#6B7280;">No. 01</span>
+              <h3 style="font-family:'Outfit','Pretendard',sans-serif;font-size:clamp(1.1rem,2.2vw,1.6rem);font-weight:800;line-height:1.2;color:#1A1A1A;margin:12px 0 6px;" class="keep-all">계속되는 많고 작은 움직임</h3>
+              <p style="font-size:0.85rem;font-style:italic;color:#999999;margin:0 0 10px;font-weight:300;">A Flow of Countless Small Movements</p>
+              <p style="font-size:0.75rem;letter-spacing:0.04em;color:#6B7280;margin:0 0 6px;font-weight:600;">주재범 JOO JAEBUM × KDS</p>
+              <p style="font-size:0.7rem;letter-spacing:0.03em;color:#999999;line-height:1.6;margin-bottom:20px;">Acrylic on cut and Assembled Wood, Birch Wood frame<br />148 × 85 cm</p>
+              <p style="font-size:clamp(0.88rem,1.4vw,1rem);line-height:1.8;color:#333333;margin-bottom:24px;" class="keep-all">
                 수 많은 존재들이 조각들로 한데 모여 움직임을 이루는 도시의 모습을 담고 있다. 그 움직임에서 느껴지는 운율을 픽셀 리듬으로 표현한다.
               </p>
-              <div style="display:flex;gap:12px;flex-wrap:wrap;">
+              <div style="display:flex;flex-direction:column;gap:10px;">
                 <a href="https://arena.conx.xyz/joojaebum/submission?id=FR3WCQq-ZEN-HFO4GKProA" target="_blank" rel="noopener" class="btn-ghost" style="font-size:0.75rem;padding:10px 20px;">
                   <iconify-icon icon="solar:link-minimalistic-2-linear" width="14"></iconify-icon>
                   아이디어 원본
@@ -710,6 +716,15 @@
                   작품 상세 보기
                   <span class="arrow-circle" style="width:24px;height:24px;"><iconify-icon icon="solar:arrow-right-bold" width="12"></iconify-icon></span>
                 </a>
+              </div>
+            </div>
+
+            <!-- Right: image strip (65%) -->
+            <div>
+              <div class="artwork-strip">
+                <img src="art1_1.jpg" alt="계속되는 많고 작은 움직임 1" loading="lazy" decoding="async" style="height:420px;width:auto;object-fit:cover;flex-shrink:0;" />
+                <img src="art1_2.jpg" alt="계속되는 많고 작은 움직임 2" loading="lazy" decoding="async" style="height:420px;width:auto;object-fit:cover;flex-shrink:0;" />
+                <img src="art1_3.jpg" alt="계속되는 많고 작은 움직임 3" loading="lazy" decoding="async" style="height:420px;width:auto;object-fit:cover;flex-shrink:0;" />
               </div>
             </div>
 
@@ -724,10 +739,10 @@
 
             <!-- Left: all text info (35%) -->
             <div>
-              <span style="font-family:'Outfit','Pretendard',system-ui,sans-serif;font-size:0.65rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#1E2D5A;">No. 02</span>
+              <span style="font-family:'Outfit','Pretendard',system-ui,sans-serif;font-size:0.65rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#6B7280;">No. 02</span>
               <h3 style="font-family:'Outfit','Pretendard',sans-serif;font-size:clamp(1.1rem,2.2vw,1.6rem);font-weight:800;line-height:1.2;color:#1A1A1A;margin:12px 0 6px;" class="keep-all">작고도 큰 귀여움</h3>
               <p style="font-size:0.85rem;font-style:italic;color:#999999;margin:0 0 10px;font-weight:300;">Small Yet Great Cuteness</p>
-              <p style="font-size:0.75rem;letter-spacing:0.04em;color:#1E2D5A;margin:0 0 6px;font-weight:600;">주재범 JOO JAEBUM × AzacielXD</p>
+              <p style="font-size:0.75rem;letter-spacing:0.04em;color:#6B7280;margin:0 0 6px;font-weight:600;">주재범 JOO JAEBUM × AzacielXD</p>
               <p style="font-size:0.7rem;letter-spacing:0.03em;color:#999999;line-height:1.6;">Acrylic and Velvet on Cut Wood<br />56 × 47 cm</p>
               <p style="font-size:clamp(0.88rem,1.4vw,1rem);line-height:1.8;color:#333333;margin:20px 0 24px;" class="keep-all">
                 일상 가장 가까이에서 바라보고 지켜보게 되는 작은 친구. 주고받는 시선 속에 어느새 묵직해진 존재감을 가진 귀여운 생명체.
@@ -768,7 +783,7 @@
     <div style="max-width:1280px; margin:0 auto; position:relative; z-index:1;">
 
       <div class="reveal">
-        <span style="font-family:'Outfit','Pretendard',system-ui,sans-serif; font-size:0.7rem; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; color:#1E2D5A; display:block; margin-bottom:12px;">Arena Overview</span>
+        <span style="font-family:'Outfit','Pretendard',system-ui,sans-serif; font-size:0.7rem; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; color:#6B7280; display:block; margin-bottom:12px;">Arena Overview</span>
         <h2 style="font-family:'Outfit','Pretendard',sans-serif;font-size:clamp(2.5rem,5.5vw,5rem);font-weight:900;line-height:0.95;letter-spacing:-0.04em;color:#1A1A1A;">
           JOO JAEBUM Arena
         </h2>
@@ -863,7 +878,7 @@
     <div style="max-width:1280px; margin:0 auto; position:relative; z-index:1;">
 
       <div class="reveal" style="margin-bottom:56px;">
-        <span style="font-family:'Outfit','Pretendard',system-ui,sans-serif; font-size:0.7rem; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; color:#1E2D5A; display:block; margin-bottom:12px;">세계 최초</span>
+        <span style="font-family:'Outfit','Pretendard',system-ui,sans-serif; font-size:0.7rem; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; color:#6B7280; display:block; margin-bottom:12px;">세계 최초</span>
         <h2 style="font-family:'Outfit','Pretendard',sans-serif;font-size:clamp(2.5rem,5.5vw,5rem);font-weight:900;line-height:0.95;letter-spacing:-0.04em;color:#1A1A1A;">
           순환형 RWA 프로젝트
         </h2>
@@ -912,24 +927,24 @@
       <!-- Header -->
       <div style="display:grid; grid-template-columns: 1.6fr 1fr; gap:clamp(32px,5vw,80px); align-items:end; margin-bottom:56px;">
         <div class="reveal">
-          <span style="font-family:'Outfit','Pretendard',system-ui,sans-serif; font-size:0.7rem; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; color:#1E2D5A; display:block; margin-bottom:12px;">Exhibition</span>
+          <span style="font-family:'Outfit','Pretendard',system-ui,sans-serif; font-size:0.7rem; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; color:#6B7280; display:block; margin-bottom:12px;">Exhibition</span>
           <h2 style="font-family:'Outfit','Pretendard',sans-serif;font-size:clamp(2.5rem,6vw,5.5rem);font-weight:900;line-height:0.95;letter-spacing:-0.04em;color:#1A1A1A;">
-            ART OnO<br /><span style="color:#1E2D5A;">2026</span>
+            ART OnO<br /><span style="color:#6B7280;">2026</span>
           </h2>
         </div>
         <div class="reveal reveal-delay-2" style="padding-bottom:8px;">
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:28px;">
             <div>
-              <p style="font-size:0.65rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#1E2D5A;margin-bottom:8px;">전시명</p>
+              <p style="font-size:0.65rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#6B7280;margin-bottom:8px;">전시명</p>
               <p style="font-size:1rem;font-weight:700;color:#1A1A1A;letter-spacing:-0.01em;">ART OnO 2026</p>
             </div>
             <div>
-              <p style="font-size:0.65rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#1E2D5A;margin-bottom:8px;">전시장소</p>
+              <p style="font-size:0.65rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#6B7280;margin-bottom:8px;">전시장소</p>
               <p style="font-size:1rem;font-weight:700;color:#1A1A1A;letter-spacing:-0.01em;">308 ARTUE</p>
             </div>
           </div>
           <div style="margin-top:24px;">
-            <p style="font-size:0.65rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#1E2D5A;margin-bottom:10px;">관련 링크</p>
+            <p style="font-size:0.65rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#6B7280;margin-bottom:10px;">관련 링크</p>
             <a href="https://art-ono.com/" target="_blank" rel="noopener" class="btn-ghost" style="font-size:0.75rem; padding:10px 20px;">
               art-ono.com
               <span class="arrow-circle" style="width:24px;height:24px;"><iconify-icon icon="solar:arrow-right-bold" width="12"></iconify-icon></span>
@@ -946,10 +961,10 @@
             <img id="exhib-img2" src="artono_Image_2.png" alt="ART OnO 2026 전경 2" loading="lazy" decoding="async" />
             <!-- Photo credit -->
             <div style="position:absolute;bottom:16px;left:20px;z-index:10;pointer-events:none;background:rgba(5,5,5,0.6);backdrop-filter:blur(8px);padding:6px 12px;border-radius:9999px;border:1px solid rgba(255,255,255,0.08);">
-              <span style="font-size:0.55rem;letter-spacing:0.14em;text-transform:uppercase;color:#666666;">Photo by ART OnO</span>
+              <span style="font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:#1A1A1A;font-weight:600;font-family:'Outfit',system-ui,sans-serif;">Photo by ART OnO</span>
             </div>
             <!-- Hover hint -->
-            <div style="position:absolute;bottom:16px;right:20px;z-index:10;pointer-events:none;background:rgba(30,45,90,0.12);backdrop-filter:blur(8px);padding:6px 12px;border-radius:9999px;border:1px solid rgba(30,45,90,0.15);">
+            <div style="position:absolute;bottom:16px;right:20px;z-index:10;pointer-events:none;background:rgba(107,114,128,0.12);backdrop-filter:blur(8px);padding:6px 12px;border-radius:9999px;border:1px solid rgba(107,114,128,0.15);">
               <span style="font-size:0.55rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(30,45,90,0.55);">
                 <iconify-icon icon="solar:cursor-bold" width="10" style="vertical-align:middle;"></iconify-icon>
                 Hover to reveal
