@@ -411,10 +411,13 @@
               <img src="artist_joojaebum_1.png" alt="주재범 작가 사진 1" style="width:100%; flex-shrink:0; height:auto; display:block; object-fit:cover;" />
               <img src="artist_joojaebum_2.jpg" alt="주재범 작가 사진 2" style="width:100%; flex-shrink:0; height:auto; display:block; object-fit:cover;" />
             </div>
-            <!-- Slide dots -->
-            <div style="position:absolute; bottom:12px; left:50%; transform:translateX(-50%); display:flex; gap:8px; z-index:10;">
-              <div class="slide-dot active" data-idx="0" style="width:6px; height:6px; background:#fff; cursor:pointer; transition:opacity 0.2s;"></div>
-              <div class="slide-dot" data-idx="1" style="width:6px; height:6px; background:#fff; opacity:0.4; cursor:pointer; transition:opacity 0.2s;"></div>
+            <!-- Photo credit + Slide dots -->
+            <div style="position:absolute; bottom:0; left:0; right:0; padding:28px 12px 10px; background:linear-gradient(to top, rgba(0,0,0,0.45) 0%, transparent 100%); display:flex; justify-content:space-between; align-items:flex-end; z-index:10;">
+              <span style="font-size:0.6rem; letter-spacing:0.12em; text-transform:uppercase; color:rgba(255,255,255,0.55); font-family:'Gowun Batang',serif;">Photo by HypebeastKR</span>
+              <div style="display:flex; gap:8px;">
+                <div class="slide-dot active" data-idx="0" style="width:5px; height:5px; background:#fff; cursor:pointer; transition:opacity 0.2s;"></div>
+                <div class="slide-dot" data-idx="1" style="width:5px; height:5px; background:#fff; opacity:0.4; cursor:pointer; transition:opacity 0.2s;"></div>
+              </div>
             </div>
           </div>
         </div>
@@ -604,6 +607,10 @@
       <img src="artono_Image_2.png" alt="전시 전경 2" style="display:block; width:100%; height:100%; position:absolute; top:0; left:0; z-index:2; opacity:0; object-fit:cover; transition: opacity 0.6s ease;" />
       <!-- 308 ARTUE hover highlight -->
       <div class="booth-highlight" style="top:18%; left:38%; width:14%; height:22%;" title="갤러리 ARTUE — 308호"></div>
+      <!-- Photo credit -->
+      <div style="position:absolute; bottom:0; left:0; right:0; padding:32px 16px 10px; background:linear-gradient(to top, rgba(0,0,0,0.4) 0%, transparent 100%); z-index:3; pointer-events:none;">
+        <span style="font-size:0.6rem; letter-spacing:0.12em; text-transform:uppercase; color:rgba(255,255,255,0.55); font-family:'Gowun Batang',serif;">Photo by ART OnO</span>
+      </div>
     </div>
 
     <!-- Info grid -->
