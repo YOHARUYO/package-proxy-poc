@@ -1026,12 +1026,8 @@
   <!-- ─────────────────────────────────────────
        SECTION 5: ARENA (WHITE)
   ───────────────────────────────────────── -->
-  <section id="arena" style="background:#F4F3F2; color:#000; padding: clamp(80px, 10vw, 120px) clamp(24px, 8vw, 120px); position:relative; overflow:hidden;">
-    <!-- Pixel grid decoration (moved from hero) -->
-    <div style="position:absolute; top:0; right:0; width:340px; height:340px; pointer-events:none; opacity:0.18; z-index:0;">
-      <div class="pixel-grid" id="pixel-grid-hero" aria-hidden="true" style="width:100%; aspect-ratio:1;"></div>
-    </div>
-    <div style="max-width: 1200px; margin: 0 auto; position:relative; z-index:1;">
+  <section id="arena" style="background:#F4F3F2; color:#000; padding: clamp(80px, 10vw, 120px) clamp(24px, 8vw, 120px);">
+    <div style="max-width: 1200px; margin: 0 auto;">
 
       <!-- 5a. Overview -->
       <div class="fade-in" style="margin-bottom: 80px;">
@@ -1142,13 +1138,14 @@
   <!-- 5c. 순환형 RWA -->
   <section style="background-image:url('back_4.png'); background-position:50% 50%; background-repeat:no-repeat; background-size:cover; color:#000; padding: clamp(80px, 10vw, 120px) clamp(24px, 8vw, 120px);">
     <div style="max-width: 1200px; margin: 0 auto;">
+      <div class="fade-in" style="display:grid; grid-template-columns: 55fr 45fr; gap: clamp(32px, 6vw, 80px); align-items:center;">
 
-      <div class="fade-in">
-        <span class="section-label">세계 최초</span>
-        <h2 class="section-heading" style="margin: 16px 0 32px;">
-          순환형 RWA<br />프로젝트
-        </h2>
-        <div style="max-width: 760px;">
+        <!-- LEFT: 텍스트 -->
+        <div>
+          <span class="section-label">세계 최초</span>
+          <h2 class="section-heading" style="margin: 16px 0 32px;">
+            순환형 RWA<br />프로젝트
+          </h2>
           <span class="divider"></span>
 
           <p class="body-text" style="color: #444; margin: 0 0 24px;">
@@ -1163,7 +1160,6 @@
             이렇게 블록체인 위로 실물 자산을 옮기는 일에 초점을 두어 한계를 갖고 있던 기존 RWA의 통념 상 정의를 뒤집어, 이 프로젝트는 한 걸음 더 나아간 그 가능성을 확인한다.
           </p>
 
-          <!-- Circular flow list -->
           <ul class="rwa-flow-list" style="margin-bottom: 40px;">
             <li>하나의 아이디어가 인터넷 상의 커뮤니티에서 발의되고,</li>
             <li>그 아이디어가 작가의 해석을 통해 현실의 작품이 되며,</li>
@@ -1178,8 +1174,13 @@
             Arena 사이트 방문 <iconify-icon icon="solar:arrow-right-linear"></iconify-icon>
           </a>
         </div>
-      </div>
 
+        <!-- RIGHT: pixel-grid -->
+        <div style="display:flex; align-items:center; justify-content:flex-end; height:100%;">
+          <div class="pixel-grid" id="pixel-grid-hero" aria-hidden="true" style="width:100%; aspect-ratio:1/1.1;"></div>
+        </div>
+
+      </div>
     </div>
   </section>
 
